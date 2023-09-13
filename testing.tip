@@ -1,0 +1,11 @@
+main(n) {
+    var r;
+    var i;
+    r = 0;
+    i = 0;
+    while (2*n > i) {
+        r = r + 1;
+        i = i + 2;
+    }
+    return r;
+}
