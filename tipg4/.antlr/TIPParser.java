@@ -1,4 +1,4 @@
-// Generated from TIP.g4 by ANTLR 4.13.0
+// Generated from /u/bhl9bcu/sipc-lai_strobel/tipg4/TIP.g4 by ANTLR 4.9.2
 import org.antlr.v4.runtime.atn.*;
 import org.antlr.v4.runtime.dfa.DFA;
 import org.antlr.v4.runtime.*;
@@ -8,9 +8,9 @@ import java.util.List;
 import java.util.Iterator;
 import java.util.ArrayList;
 
-@SuppressWarnings({"all", "warnings", "unchecked", "unused", "cast", "CheckReturnValue"})
+@SuppressWarnings({"all", "warnings", "unchecked", "unused", "cast"})
 public class TIPParser extends Parser {
-	static { RuntimeMetaData.checkVersion("4.13.0", RuntimeMetaData.VERSION); }
+	static { RuntimeMetaData.checkVersion("4.9.2", RuntimeMetaData.VERSION); }
 
 	protected static final DFA[] _decisionToDFA;
 	protected static final PredictionContextCache _sharedContextCache =
@@ -103,7 +103,6 @@ public class TIPParser extends Parser {
 		_interp = new ParserATNSimulator(this,_ATN,_decisionToDFA,_sharedContextCache);
 	}
 
-	@SuppressWarnings("CheckReturnValue")
 	public static class ProgramContext extends ParserRuleContext {
 		public List<FunctionContext> function() {
 			return getRuleContexts(FunctionContext.class);
@@ -115,14 +114,6 @@ public class TIPParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_program; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof TIPListener ) ((TIPListener)listener).enterProgram(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof TIPListener ) ((TIPListener)listener).exitProgram(this);
-		}
 	}
 
 	public final ProgramContext program() throws RecognitionException {
@@ -159,7 +150,6 @@ public class TIPParser extends Parser {
 		return _localctx;
 	}
 
-	@SuppressWarnings("CheckReturnValue")
 	public static class FunctionContext extends ParserRuleContext {
 		public List<NameDeclarationContext> nameDeclaration() {
 			return getRuleContexts(NameDeclarationContext.class);
@@ -187,14 +177,6 @@ public class TIPParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_function; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof TIPListener ) ((TIPListener)listener).enterFunction(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof TIPListener ) ((TIPListener)listener).exitFunction(this);
-		}
 	}
 
 	public final FunctionContext function() throws RecognitionException {
@@ -268,7 +250,7 @@ public class TIPParser extends Parser {
 			setState(61);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
-			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & 12413061394L) != 0)) {
+			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << T__0) | (1L << T__3) | (1L << T__7) | (1L << MUL) | (1L << SUB) | (1L << NUMBER) | (1L << KALLOC) | (1L << KINPUT) | (1L << KWHILE) | (1L << KIF) | (1L << KNULL) | (1L << KOUTPUT) | (1L << KERROR) | (1L << IDENTIFIER))) != 0)) {
 				{
 				{
 				setState(58);
@@ -297,7 +279,6 @@ public class TIPParser extends Parser {
 		return _localctx;
 	}
 
-	@SuppressWarnings("CheckReturnValue")
 	public static class DeclarationContext extends ParserRuleContext {
 		public TerminalNode KVAR() { return getToken(TIPParser.KVAR, 0); }
 		public List<NameDeclarationContext> nameDeclaration() {
@@ -310,14 +291,6 @@ public class TIPParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_declaration; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof TIPListener ) ((TIPListener)listener).enterDeclaration(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof TIPListener ) ((TIPListener)listener).exitDeclaration(this);
-		}
 	}
 
 	public final DeclarationContext declaration() throws RecognitionException {
@@ -362,21 +335,12 @@ public class TIPParser extends Parser {
 		return _localctx;
 	}
 
-	@SuppressWarnings("CheckReturnValue")
 	public static class NameDeclarationContext extends ParserRuleContext {
 		public TerminalNode IDENTIFIER() { return getToken(TIPParser.IDENTIFIER, 0); }
 		public NameDeclarationContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_nameDeclaration; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof TIPListener ) ((TIPListener)listener).enterNameDeclaration(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof TIPListener ) ((TIPListener)listener).exitNameDeclaration(this);
-		}
 	}
 
 	public final NameDeclarationContext nameDeclaration() throws RecognitionException {
@@ -400,7 +364,6 @@ public class TIPParser extends Parser {
 		return _localctx;
 	}
 
-	@SuppressWarnings("CheckReturnValue")
 	public static class ExprContext extends ParserRuleContext {
 		public ExprContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -412,78 +375,32 @@ public class TIPParser extends Parser {
 			super.copyFrom(ctx);
 		}
 	}
-	@SuppressWarnings("CheckReturnValue")
 	public static class RecordRuleContext extends ExprContext {
 		public RecordExprContext recordExpr() {
 			return getRuleContext(RecordExprContext.class,0);
 		}
 		public RecordRuleContext(ExprContext ctx) { copyFrom(ctx); }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof TIPListener ) ((TIPListener)listener).enterRecordRule(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof TIPListener ) ((TIPListener)listener).exitRecordRule(this);
-		}
 	}
-	@SuppressWarnings("CheckReturnValue")
 	public static class NullExprContext extends ExprContext {
 		public TerminalNode KNULL() { return getToken(TIPParser.KNULL, 0); }
 		public NullExprContext(ExprContext ctx) { copyFrom(ctx); }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof TIPListener ) ((TIPListener)listener).enterNullExpr(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof TIPListener ) ((TIPListener)listener).exitNullExpr(this);
-		}
 	}
-	@SuppressWarnings("CheckReturnValue")
 	public static class AllocExprContext extends ExprContext {
 		public TerminalNode KALLOC() { return getToken(TIPParser.KALLOC, 0); }
 		public ExprContext expr() {
 			return getRuleContext(ExprContext.class,0);
 		}
 		public AllocExprContext(ExprContext ctx) { copyFrom(ctx); }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof TIPListener ) ((TIPListener)listener).enterAllocExpr(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof TIPListener ) ((TIPListener)listener).exitAllocExpr(this);
-		}
 	}
-	@SuppressWarnings("CheckReturnValue")
 	public static class NegNumberContext extends ExprContext {
 		public TerminalNode SUB() { return getToken(TIPParser.SUB, 0); }
 		public TerminalNode NUMBER() { return getToken(TIPParser.NUMBER, 0); }
 		public NegNumberContext(ExprContext ctx) { copyFrom(ctx); }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof TIPListener ) ((TIPListener)listener).enterNegNumber(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof TIPListener ) ((TIPListener)listener).exitNegNumber(this);
-		}
 	}
-	@SuppressWarnings("CheckReturnValue")
 	public static class InputExprContext extends ExprContext {
 		public TerminalNode KINPUT() { return getToken(TIPParser.KINPUT, 0); }
 		public InputExprContext(ExprContext ctx) { copyFrom(ctx); }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof TIPListener ) ((TIPListener)listener).enterInputExpr(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof TIPListener ) ((TIPListener)listener).exitInputExpr(this);
-		}
 	}
-	@SuppressWarnings("CheckReturnValue")
 	public static class AdditiveExprContext extends ExprContext {
 		public Token op;
 		public List<ExprContext> expr() {
@@ -495,16 +412,7 @@ public class TIPParser extends Parser {
 		public TerminalNode ADD() { return getToken(TIPParser.ADD, 0); }
 		public TerminalNode SUB() { return getToken(TIPParser.SUB, 0); }
 		public AdditiveExprContext(ExprContext ctx) { copyFrom(ctx); }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof TIPListener ) ((TIPListener)listener).enterAdditiveExpr(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof TIPListener ) ((TIPListener)listener).exitAdditiveExpr(this);
-		}
 	}
-	@SuppressWarnings("CheckReturnValue")
 	public static class RelationalExprContext extends ExprContext {
 		public Token op;
 		public List<ExprContext> expr() {
@@ -515,88 +423,34 @@ public class TIPParser extends Parser {
 		}
 		public TerminalNode GT() { return getToken(TIPParser.GT, 0); }
 		public RelationalExprContext(ExprContext ctx) { copyFrom(ctx); }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof TIPListener ) ((TIPListener)listener).enterRelationalExpr(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof TIPListener ) ((TIPListener)listener).exitRelationalExpr(this);
-		}
 	}
-	@SuppressWarnings("CheckReturnValue")
 	public static class DeRefExprContext extends ExprContext {
 		public TerminalNode MUL() { return getToken(TIPParser.MUL, 0); }
 		public ExprContext expr() {
 			return getRuleContext(ExprContext.class,0);
 		}
 		public DeRefExprContext(ExprContext ctx) { copyFrom(ctx); }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof TIPListener ) ((TIPListener)listener).enterDeRefExpr(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof TIPListener ) ((TIPListener)listener).exitDeRefExpr(this);
-		}
 	}
-	@SuppressWarnings("CheckReturnValue")
 	public static class NumExprContext extends ExprContext {
 		public TerminalNode NUMBER() { return getToken(TIPParser.NUMBER, 0); }
 		public NumExprContext(ExprContext ctx) { copyFrom(ctx); }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof TIPListener ) ((TIPListener)listener).enterNumExpr(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof TIPListener ) ((TIPListener)listener).exitNumExpr(this);
-		}
 	}
-	@SuppressWarnings("CheckReturnValue")
 	public static class ParenExprContext extends ExprContext {
 		public ExprContext expr() {
 			return getRuleContext(ExprContext.class,0);
 		}
 		public ParenExprContext(ExprContext ctx) { copyFrom(ctx); }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof TIPListener ) ((TIPListener)listener).enterParenExpr(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof TIPListener ) ((TIPListener)listener).exitParenExpr(this);
-		}
 	}
-	@SuppressWarnings("CheckReturnValue")
 	public static class VarExprContext extends ExprContext {
 		public TerminalNode IDENTIFIER() { return getToken(TIPParser.IDENTIFIER, 0); }
 		public VarExprContext(ExprContext ctx) { copyFrom(ctx); }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof TIPListener ) ((TIPListener)listener).enterVarExpr(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof TIPListener ) ((TIPListener)listener).exitVarExpr(this);
-		}
 	}
-	@SuppressWarnings("CheckReturnValue")
 	public static class RefExprContext extends ExprContext {
 		public ExprContext expr() {
 			return getRuleContext(ExprContext.class,0);
 		}
 		public RefExprContext(ExprContext ctx) { copyFrom(ctx); }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof TIPListener ) ((TIPListener)listener).enterRefExpr(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof TIPListener ) ((TIPListener)listener).exitRefExpr(this);
-		}
 	}
-	@SuppressWarnings("CheckReturnValue")
 	public static class MultiplicativeExprContext extends ExprContext {
 		public Token op;
 		public List<ExprContext> expr() {
@@ -608,16 +462,7 @@ public class TIPParser extends Parser {
 		public TerminalNode MUL() { return getToken(TIPParser.MUL, 0); }
 		public TerminalNode DIV() { return getToken(TIPParser.DIV, 0); }
 		public MultiplicativeExprContext(ExprContext ctx) { copyFrom(ctx); }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof TIPListener ) ((TIPListener)listener).enterMultiplicativeExpr(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof TIPListener ) ((TIPListener)listener).exitMultiplicativeExpr(this);
-		}
 	}
-	@SuppressWarnings("CheckReturnValue")
 	public static class FunAppExprContext extends ExprContext {
 		public List<ExprContext> expr() {
 			return getRuleContexts(ExprContext.class);
@@ -626,16 +471,7 @@ public class TIPParser extends Parser {
 			return getRuleContext(ExprContext.class,i);
 		}
 		public FunAppExprContext(ExprContext ctx) { copyFrom(ctx); }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof TIPListener ) ((TIPListener)listener).enterFunAppExpr(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof TIPListener ) ((TIPListener)listener).exitFunAppExpr(this);
-		}
 	}
-	@SuppressWarnings("CheckReturnValue")
 	public static class EqualityExprContext extends ExprContext {
 		public Token op;
 		public List<ExprContext> expr() {
@@ -647,30 +483,13 @@ public class TIPParser extends Parser {
 		public TerminalNode EQ() { return getToken(TIPParser.EQ, 0); }
 		public TerminalNode NE() { return getToken(TIPParser.NE, 0); }
 		public EqualityExprContext(ExprContext ctx) { copyFrom(ctx); }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof TIPListener ) ((TIPListener)listener).enterEqualityExpr(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof TIPListener ) ((TIPListener)listener).exitEqualityExpr(this);
-		}
 	}
-	@SuppressWarnings("CheckReturnValue")
 	public static class AccessExprContext extends ExprContext {
 		public ExprContext expr() {
 			return getRuleContext(ExprContext.class,0);
 		}
 		public TerminalNode IDENTIFIER() { return getToken(TIPParser.IDENTIFIER, 0); }
 		public AccessExprContext(ExprContext ctx) { copyFrom(ctx); }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof TIPListener ) ((TIPListener)listener).enterAccessExpr(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof TIPListener ) ((TIPListener)listener).exitAccessExpr(this);
-		}
 	}
 
 	public final ExprContext expr() throws RecognitionException {
@@ -896,7 +715,7 @@ public class TIPParser extends Parser {
 						setState(122);
 						_errHandler.sync(this);
 						_la = _input.LA(1);
-						if ((((_la) & ~0x3f) == 0 && ((1L << _la) & 9141504274L) != 0)) {
+						if ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << T__0) | (1L << T__3) | (1L << T__7) | (1L << MUL) | (1L << SUB) | (1L << NUMBER) | (1L << KALLOC) | (1L << KINPUT) | (1L << KNULL) | (1L << IDENTIFIER))) != 0)) {
 							{
 							setState(114);
 							expr(0);
@@ -955,7 +774,6 @@ public class TIPParser extends Parser {
 		return _localctx;
 	}
 
-	@SuppressWarnings("CheckReturnValue")
 	public static class RecordExprContext extends ParserRuleContext {
 		public List<FieldExprContext> fieldExpr() {
 			return getRuleContexts(FieldExprContext.class);
@@ -967,14 +785,6 @@ public class TIPParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_recordExpr; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof TIPListener ) ((TIPListener)listener).enterRecordExpr(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof TIPListener ) ((TIPListener)listener).exitRecordExpr(this);
-		}
 	}
 
 	public final RecordExprContext recordExpr() throws RecognitionException {
@@ -1027,7 +837,6 @@ public class TIPParser extends Parser {
 		return _localctx;
 	}
 
-	@SuppressWarnings("CheckReturnValue")
 	public static class FieldExprContext extends ParserRuleContext {
 		public TerminalNode IDENTIFIER() { return getToken(TIPParser.IDENTIFIER, 0); }
 		public ExprContext expr() {
@@ -1037,14 +846,6 @@ public class TIPParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_fieldExpr; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof TIPListener ) ((TIPListener)listener).enterFieldExpr(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof TIPListener ) ((TIPListener)listener).exitFieldExpr(this);
-		}
 	}
 
 	public final FieldExprContext fieldExpr() throws RecognitionException {
@@ -1072,7 +873,6 @@ public class TIPParser extends Parser {
 		return _localctx;
 	}
 
-	@SuppressWarnings("CheckReturnValue")
 	public static class StatementContext extends ParserRuleContext {
 		public BlockStmtContext blockStmt() {
 			return getRuleContext(BlockStmtContext.class,0);
@@ -1096,14 +896,6 @@ public class TIPParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_statement; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof TIPListener ) ((TIPListener)listener).enterStatement(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof TIPListener ) ((TIPListener)listener).exitStatement(this);
-		}
 	}
 
 	public final StatementContext statement() throws RecognitionException {
@@ -1168,7 +960,6 @@ public class TIPParser extends Parser {
 		return _localctx;
 	}
 
-	@SuppressWarnings("CheckReturnValue")
 	public static class AssignStmtContext extends ParserRuleContext {
 		public List<ExprContext> expr() {
 			return getRuleContexts(ExprContext.class);
@@ -1180,14 +971,6 @@ public class TIPParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_assignStmt; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof TIPListener ) ((TIPListener)listener).enterAssignStmt(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof TIPListener ) ((TIPListener)listener).exitAssignStmt(this);
-		}
 	}
 
 	public final AssignStmtContext assignStmt() throws RecognitionException {
@@ -1217,7 +1000,6 @@ public class TIPParser extends Parser {
 		return _localctx;
 	}
 
-	@SuppressWarnings("CheckReturnValue")
 	public static class BlockStmtContext extends ParserRuleContext {
 		public List<StatementContext> statement() {
 			return getRuleContexts(StatementContext.class);
@@ -1229,14 +1011,6 @@ public class TIPParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_blockStmt; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof TIPListener ) ((TIPListener)listener).enterBlockStmt(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof TIPListener ) ((TIPListener)listener).exitBlockStmt(this);
-		}
 	}
 
 	public final BlockStmtContext blockStmt() throws RecognitionException {
@@ -1252,7 +1026,7 @@ public class TIPParser extends Parser {
 			setState(167);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
-			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & 12413061394L) != 0)) {
+			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << T__0) | (1L << T__3) | (1L << T__7) | (1L << MUL) | (1L << SUB) | (1L << NUMBER) | (1L << KALLOC) | (1L << KINPUT) | (1L << KWHILE) | (1L << KIF) | (1L << KNULL) | (1L << KOUTPUT) | (1L << KERROR) | (1L << IDENTIFIER))) != 0)) {
 				{
 				{
 				setState(164);
@@ -1279,7 +1053,6 @@ public class TIPParser extends Parser {
 		return _localctx;
 	}
 
-	@SuppressWarnings("CheckReturnValue")
 	public static class WhileStmtContext extends ParserRuleContext {
 		public TerminalNode KWHILE() { return getToken(TIPParser.KWHILE, 0); }
 		public ExprContext expr() {
@@ -1292,14 +1065,6 @@ public class TIPParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_whileStmt; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof TIPListener ) ((TIPListener)listener).enterWhileStmt(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof TIPListener ) ((TIPListener)listener).exitWhileStmt(this);
-		}
 	}
 
 	public final WhileStmtContext whileStmt() throws RecognitionException {
@@ -1331,7 +1096,6 @@ public class TIPParser extends Parser {
 		return _localctx;
 	}
 
-	@SuppressWarnings("CheckReturnValue")
 	public static class IfStmtContext extends ParserRuleContext {
 		public TerminalNode KIF() { return getToken(TIPParser.KIF, 0); }
 		public ExprContext expr() {
@@ -1348,14 +1112,6 @@ public class TIPParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_ifStmt; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof TIPListener ) ((TIPListener)listener).enterIfStmt(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof TIPListener ) ((TIPListener)listener).exitIfStmt(this);
-		}
 	}
 
 	public final IfStmtContext ifStmt() throws RecognitionException {
@@ -1399,7 +1155,6 @@ public class TIPParser extends Parser {
 		return _localctx;
 	}
 
-	@SuppressWarnings("CheckReturnValue")
 	public static class OutputStmtContext extends ParserRuleContext {
 		public TerminalNode KOUTPUT() { return getToken(TIPParser.KOUTPUT, 0); }
 		public ExprContext expr() {
@@ -1409,14 +1164,6 @@ public class TIPParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_outputStmt; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof TIPListener ) ((TIPListener)listener).enterOutputStmt(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof TIPListener ) ((TIPListener)listener).exitOutputStmt(this);
-		}
 	}
 
 	public final OutputStmtContext outputStmt() throws RecognitionException {
@@ -1444,7 +1191,6 @@ public class TIPParser extends Parser {
 		return _localctx;
 	}
 
-	@SuppressWarnings("CheckReturnValue")
 	public static class ErrorStmtContext extends ParserRuleContext {
 		public TerminalNode KERROR() { return getToken(TIPParser.KERROR, 0); }
 		public ExprContext expr() {
@@ -1454,14 +1200,6 @@ public class TIPParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_errorStmt; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof TIPListener ) ((TIPListener)listener).enterErrorStmt(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof TIPListener ) ((TIPListener)listener).exitErrorStmt(this);
-		}
 	}
 
 	public final ErrorStmtContext errorStmt() throws RecognitionException {
@@ -1489,7 +1227,6 @@ public class TIPParser extends Parser {
 		return _localctx;
 	}
 
-	@SuppressWarnings("CheckReturnValue")
 	public static class ReturnStmtContext extends ParserRuleContext {
 		public TerminalNode KRETURN() { return getToken(TIPParser.KRETURN, 0); }
 		public ExprContext expr() {
@@ -1499,14 +1236,6 @@ public class TIPParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_returnStmt; }
-		@Override
-		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof TIPListener ) ((TIPListener)listener).enterReturnStmt(this);
-		}
-		@Override
-		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof TIPListener ) ((TIPListener)listener).exitReturnStmt(this);
-		}
 	}
 
 	public final ReturnStmtContext returnStmt() throws RecognitionException {
@@ -1560,130 +1289,68 @@ public class TIPParser extends Parser {
 	}
 
 	public static final String _serializedATN =
-		"\u0004\u0001$\u00c8\u0002\u0000\u0007\u0000\u0002\u0001\u0007\u0001\u0002"+
-		"\u0002\u0007\u0002\u0002\u0003\u0007\u0003\u0002\u0004\u0007\u0004\u0002"+
-		"\u0005\u0007\u0005\u0002\u0006\u0007\u0006\u0002\u0007\u0007\u0007\u0002"+
-		"\b\u0007\b\u0002\t\u0007\t\u0002\n\u0007\n\u0002\u000b\u0007\u000b\u0002"+
-		"\f\u0007\f\u0002\r\u0007\r\u0002\u000e\u0007\u000e\u0001\u0000\u0004\u0000"+
-		" \b\u0000\u000b\u0000\f\u0000!\u0001\u0001\u0001\u0001\u0001\u0001\u0001"+
-		"\u0001\u0001\u0001\u0005\u0001)\b\u0001\n\u0001\f\u0001,\t\u0001\u0003"+
-		"\u0001.\b\u0001\u0001\u0001\u0001\u0001\u0003\u00012\b\u0001\u0001\u0001"+
-		"\u0001\u0001\u0005\u00016\b\u0001\n\u0001\f\u00019\t\u0001\u0001\u0001"+
-		"\u0005\u0001<\b\u0001\n\u0001\f\u0001?\t\u0001\u0001\u0001\u0001\u0001"+
-		"\u0001\u0001\u0001\u0002\u0001\u0002\u0001\u0002\u0001\u0002\u0005\u0002"+
-		"H\b\u0002\n\u0002\f\u0002K\t\u0002\u0001\u0002\u0001\u0002\u0001\u0003"+
-		"\u0001\u0003\u0001\u0004\u0001\u0004\u0001\u0004\u0001\u0004\u0001\u0004"+
-		"\u0001\u0004\u0001\u0004\u0001\u0004\u0001\u0004\u0001\u0004\u0001\u0004"+
-		"\u0001\u0004\u0001\u0004\u0001\u0004\u0001\u0004\u0001\u0004\u0001\u0004"+
-		"\u0001\u0004\u0003\u0004c\b\u0004\u0001\u0004\u0001\u0004\u0001\u0004"+
-		"\u0001\u0004\u0001\u0004\u0001\u0004\u0001\u0004\u0001\u0004\u0001\u0004"+
-		"\u0001\u0004\u0001\u0004\u0001\u0004\u0001\u0004\u0001\u0004\u0001\u0004"+
-		"\u0001\u0004\u0001\u0004\u0005\u0004v\b\u0004\n\u0004\f\u0004y\t\u0004"+
-		"\u0003\u0004{\b\u0004\u0001\u0004\u0001\u0004\u0001\u0004\u0001\u0004"+
-		"\u0005\u0004\u0081\b\u0004\n\u0004\f\u0004\u0084\t\u0004\u0001\u0005\u0001"+
-		"\u0005\u0001\u0005\u0001\u0005\u0005\u0005\u008a\b\u0005\n\u0005\f\u0005"+
-		"\u008d\t\u0005\u0003\u0005\u008f\b\u0005\u0001\u0005\u0001\u0005\u0001"+
-		"\u0006\u0001\u0006\u0001\u0006\u0001\u0006\u0001\u0007\u0001\u0007\u0001"+
-		"\u0007\u0001\u0007\u0001\u0007\u0001\u0007\u0003\u0007\u009d\b\u0007\u0001"+
-		"\b\u0001\b\u0001\b\u0001\b\u0001\b\u0001\t\u0001\t\u0005\t\u00a6\b\t\n"+
-		"\t\f\t\u00a9\t\t\u0001\t\u0001\t\u0001\n\u0001\n\u0001\n\u0001\n\u0001"+
-		"\n\u0001\n\u0001\u000b\u0001\u000b\u0001\u000b\u0001\u000b\u0001\u000b"+
-		"\u0001\u000b\u0001\u000b\u0003\u000b\u00ba\b\u000b\u0001\f\u0001\f\u0001"+
-		"\f\u0001\f\u0001\r\u0001\r\u0001\r\u0001\r\u0001\u000e\u0001\u000e\u0001"+
-		"\u000e\u0001\u000e\u0001\u000e\u0000\u0001\b\u000f\u0000\u0002\u0004\u0006"+
-		"\b\n\f\u000e\u0010\u0012\u0014\u0016\u0018\u001a\u001c\u0000\u0003\u0001"+
-		"\u0000\u000b\f\u0001\u0000\r\u000e\u0001\u0000\u0013\u0014\u00d9\u0000"+
-		"\u001f\u0001\u0000\u0000\u0000\u0002#\u0001\u0000\u0000\u0000\u0004C\u0001"+
-		"\u0000\u0000\u0000\u0006N\u0001\u0000\u0000\u0000\bb\u0001\u0000\u0000"+
-		"\u0000\n\u0085\u0001\u0000\u0000\u0000\f\u0092\u0001\u0000\u0000\u0000"+
-		"\u000e\u009c\u0001\u0000\u0000\u0000\u0010\u009e\u0001\u0000\u0000\u0000"+
-		"\u0012\u00a3\u0001\u0000\u0000\u0000\u0014\u00ac\u0001\u0000\u0000\u0000"+
-		"\u0016\u00b2\u0001\u0000\u0000\u0000\u0018\u00bb\u0001\u0000\u0000\u0000"+
-		"\u001a\u00bf\u0001\u0000\u0000\u0000\u001c\u00c3\u0001\u0000\u0000\u0000"+
-		"\u001e \u0003\u0002\u0001\u0000\u001f\u001e\u0001\u0000\u0000\u0000 !"+
-		"\u0001\u0000\u0000\u0000!\u001f\u0001\u0000\u0000\u0000!\"\u0001\u0000"+
-		"\u0000\u0000\"\u0001\u0001\u0000\u0000\u0000#$\u0003\u0006\u0003\u0000"+
-		"$-\u0005\u0001\u0000\u0000%*\u0003\u0006\u0003\u0000&\'\u0005\u0002\u0000"+
-		"\u0000\')\u0003\u0006\u0003\u0000(&\u0001\u0000\u0000\u0000),\u0001\u0000"+
-		"\u0000\u0000*(\u0001\u0000\u0000\u0000*+\u0001\u0000\u0000\u0000+.\u0001"+
-		"\u0000\u0000\u0000,*\u0001\u0000\u0000\u0000-%\u0001\u0000\u0000\u0000"+
-		"-.\u0001\u0000\u0000\u0000./\u0001\u0000\u0000\u0000/1\u0005\u0003\u0000"+
-		"\u000002\u0005 \u0000\u000010\u0001\u0000\u0000\u000012\u0001\u0000\u0000"+
-		"\u000023\u0001\u0000\u0000\u000037\u0005\u0004\u0000\u000046\u0003\u0004"+
-		"\u0002\u000054\u0001\u0000\u0000\u000069\u0001\u0000\u0000\u000075\u0001"+
-		"\u0000\u0000\u000078\u0001\u0000\u0000\u00008=\u0001\u0000\u0000\u0000"+
-		"97\u0001\u0000\u0000\u0000:<\u0003\u000e\u0007\u0000;:\u0001\u0000\u0000"+
-		"\u0000<?\u0001\u0000\u0000\u0000=;\u0001\u0000\u0000\u0000=>\u0001\u0000"+
-		"\u0000\u0000>@\u0001\u0000\u0000\u0000?=\u0001\u0000\u0000\u0000@A\u0003"+
-		"\u001c\u000e\u0000AB\u0005\u0005\u0000\u0000B\u0003\u0001\u0000\u0000"+
-		"\u0000CD\u0005\u001b\u0000\u0000DI\u0003\u0006\u0003\u0000EF\u0005\u0002"+
-		"\u0000\u0000FH\u0003\u0006\u0003\u0000GE\u0001\u0000\u0000\u0000HK\u0001"+
-		"\u0000\u0000\u0000IG\u0001\u0000\u0000\u0000IJ\u0001\u0000\u0000\u0000"+
-		"JL\u0001\u0000\u0000\u0000KI\u0001\u0000\u0000\u0000LM\u0005\u0006\u0000"+
-		"\u0000M\u0005\u0001\u0000\u0000\u0000NO\u0005!\u0000\u0000O\u0007\u0001"+
-		"\u0000\u0000\u0000PQ\u0006\u0004\uffff\uffff\u0000QR\u0005\u000b\u0000"+
-		"\u0000Rc\u0003\b\u0004\u000eST\u0005\u000e\u0000\u0000Tc\u0005\u0015\u0000"+
-		"\u0000UV\u0005\b\u0000\u0000Vc\u0003\b\u0004\fWc\u0005!\u0000\u0000Xc"+
-		"\u0005\u0015\u0000\u0000Yc\u0005\u0017\u0000\u0000Z[\u0005\u0016\u0000"+
-		"\u0000[c\u0003\b\u0004\u0004\\c\u0005\u001d\u0000\u0000]c\u0003\n\u0005"+
-		"\u0000^_\u0005\u0001\u0000\u0000_`\u0003\b\u0004\u0000`a\u0005\u0003\u0000"+
-		"\u0000ac\u0001\u0000\u0000\u0000bP\u0001\u0000\u0000\u0000bS\u0001\u0000"+
-		"\u0000\u0000bU\u0001\u0000\u0000\u0000bW\u0001\u0000\u0000\u0000bX\u0001"+
-		"\u0000\u0000\u0000bY\u0001\u0000\u0000\u0000bZ\u0001\u0000\u0000\u0000"+
-		"b\\\u0001\u0000\u0000\u0000b]\u0001\u0000\u0000\u0000b^\u0001\u0000\u0000"+
-		"\u0000c\u0082\u0001\u0000\u0000\u0000de\n\u000b\u0000\u0000ef\u0007\u0000"+
-		"\u0000\u0000f\u0081\u0003\b\u0004\fgh\n\n\u0000\u0000hi\u0007\u0001\u0000"+
-		"\u0000i\u0081\u0003\b\u0004\u000bjk\n\t\u0000\u0000kl\u0005\u000f\u0000"+
-		"\u0000l\u0081\u0003\b\u0004\nmn\n\b\u0000\u0000no\u0007\u0002\u0000\u0000"+
-		"o\u0081\u0003\b\u0004\tpq\n\u0010\u0000\u0000qz\u0005\u0001\u0000\u0000"+
-		"rw\u0003\b\u0004\u0000st\u0005\u0002\u0000\u0000tv\u0003\b\u0004\u0000"+
-		"us\u0001\u0000\u0000\u0000vy\u0001\u0000\u0000\u0000wu\u0001\u0000\u0000"+
-		"\u0000wx\u0001\u0000\u0000\u0000x{\u0001\u0000\u0000\u0000yw\u0001\u0000"+
-		"\u0000\u0000zr\u0001\u0000\u0000\u0000z{\u0001\u0000\u0000\u0000{|\u0001"+
-		"\u0000\u0000\u0000|\u0081\u0005\u0003\u0000\u0000}~\n\u000f\u0000\u0000"+
-		"~\u007f\u0005\u0007\u0000\u0000\u007f\u0081\u0005!\u0000\u0000\u0080d"+
-		"\u0001\u0000\u0000\u0000\u0080g\u0001\u0000\u0000\u0000\u0080j\u0001\u0000"+
-		"\u0000\u0000\u0080m\u0001\u0000\u0000\u0000\u0080p\u0001\u0000\u0000\u0000"+
-		"\u0080}\u0001\u0000\u0000\u0000\u0081\u0084\u0001\u0000\u0000\u0000\u0082"+
-		"\u0080\u0001\u0000\u0000\u0000\u0082\u0083\u0001\u0000\u0000\u0000\u0083"+
-		"\t\u0001\u0000\u0000\u0000\u0084\u0082\u0001\u0000\u0000\u0000\u0085\u008e"+
-		"\u0005\u0004\u0000\u0000\u0086\u008b\u0003\f\u0006\u0000\u0087\u0088\u0005"+
-		"\u0002\u0000\u0000\u0088\u008a\u0003\f\u0006\u0000\u0089\u0087\u0001\u0000"+
-		"\u0000\u0000\u008a\u008d\u0001\u0000\u0000\u0000\u008b\u0089\u0001\u0000"+
-		"\u0000\u0000\u008b\u008c\u0001\u0000\u0000\u0000\u008c\u008f\u0001\u0000"+
-		"\u0000\u0000\u008d\u008b\u0001\u0000\u0000\u0000\u008e\u0086\u0001\u0000"+
-		"\u0000\u0000\u008e\u008f\u0001\u0000\u0000\u0000\u008f\u0090\u0001\u0000"+
-		"\u0000\u0000\u0090\u0091\u0005\u0005\u0000\u0000\u0091\u000b\u0001\u0000"+
-		"\u0000\u0000\u0092\u0093\u0005!\u0000\u0000\u0093\u0094\u0005\t\u0000"+
-		"\u0000\u0094\u0095\u0003\b\u0004\u0000\u0095\r\u0001\u0000\u0000\u0000"+
-		"\u0096\u009d\u0003\u0012\t\u0000\u0097\u009d\u0003\u0010\b\u0000\u0098"+
-		"\u009d\u0003\u0014\n\u0000\u0099\u009d\u0003\u0016\u000b\u0000\u009a\u009d"+
-		"\u0003\u0018\f\u0000\u009b\u009d\u0003\u001a\r\u0000\u009c\u0096\u0001"+
-		"\u0000\u0000\u0000\u009c\u0097\u0001\u0000\u0000\u0000\u009c\u0098\u0001"+
-		"\u0000\u0000\u0000\u009c\u0099\u0001\u0000\u0000\u0000\u009c\u009a\u0001"+
-		"\u0000\u0000\u0000\u009c\u009b\u0001\u0000\u0000\u0000\u009d\u000f\u0001"+
-		"\u0000\u0000\u0000\u009e\u009f\u0003\b\u0004\u0000\u009f\u00a0\u0005\n"+
-		"\u0000\u0000\u00a0\u00a1\u0003\b\u0004\u0000\u00a1\u00a2\u0005\u0006\u0000"+
-		"\u0000\u00a2\u0011\u0001\u0000\u0000\u0000\u00a3\u00a7\u0005\u0004\u0000"+
-		"\u0000\u00a4\u00a6\u0003\u000e\u0007\u0000\u00a5\u00a4\u0001\u0000\u0000"+
-		"\u0000\u00a6\u00a9\u0001\u0000\u0000\u0000\u00a7\u00a5\u0001\u0000\u0000"+
-		"\u0000\u00a7\u00a8\u0001\u0000\u0000\u0000\u00a8\u00aa\u0001\u0000\u0000"+
-		"\u0000\u00a9\u00a7\u0001\u0000\u0000\u0000\u00aa\u00ab\u0005\u0005\u0000"+
-		"\u0000\u00ab\u0013\u0001\u0000\u0000\u0000\u00ac\u00ad\u0005\u0018\u0000"+
-		"\u0000\u00ad\u00ae\u0005\u0001\u0000\u0000\u00ae\u00af\u0003\b\u0004\u0000"+
-		"\u00af\u00b0\u0005\u0003\u0000\u0000\u00b0\u00b1\u0003\u000e\u0007\u0000"+
-		"\u00b1\u0015\u0001\u0000\u0000\u0000\u00b2\u00b3\u0005\u0019\u0000\u0000"+
-		"\u00b3\u00b4\u0005\u0001\u0000\u0000\u00b4\u00b5\u0003\b\u0004\u0000\u00b5"+
-		"\u00b6\u0005\u0003\u0000\u0000\u00b6\u00b9\u0003\u000e\u0007\u0000\u00b7"+
-		"\u00b8\u0005\u001a\u0000\u0000\u00b8\u00ba\u0003\u000e\u0007\u0000\u00b9"+
-		"\u00b7\u0001\u0000\u0000\u0000\u00b9\u00ba\u0001\u0000\u0000\u0000\u00ba"+
-		"\u0017\u0001\u0000\u0000\u0000\u00bb\u00bc\u0005\u001e\u0000\u0000\u00bc"+
-		"\u00bd\u0003\b\u0004\u0000\u00bd\u00be\u0005\u0006\u0000\u0000\u00be\u0019"+
-		"\u0001\u0000\u0000\u0000\u00bf\u00c0\u0005\u001f\u0000\u0000\u00c0\u00c1"+
-		"\u0003\b\u0004\u0000\u00c1\u00c2\u0005\u0006\u0000\u0000\u00c2\u001b\u0001"+
-		"\u0000\u0000\u0000\u00c3\u00c4\u0005\u001c\u0000\u0000\u00c4\u00c5\u0003"+
-		"\b\u0004\u0000\u00c5\u00c6\u0005\u0006\u0000\u0000\u00c6\u001d\u0001\u0000"+
-		"\u0000\u0000\u0011!*-17=Ibwz\u0080\u0082\u008b\u008e\u009c\u00a7\u00b9";
+		"\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\3&\u00ca\4\2\t\2\4"+
+		"\3\t\3\4\4\t\4\4\5\t\5\4\6\t\6\4\7\t\7\4\b\t\b\4\t\t\t\4\n\t\n\4\13\t"+
+		"\13\4\f\t\f\4\r\t\r\4\16\t\16\4\17\t\17\4\20\t\20\3\2\6\2\"\n\2\r\2\16"+
+		"\2#\3\3\3\3\3\3\3\3\3\3\7\3+\n\3\f\3\16\3.\13\3\5\3\60\n\3\3\3\3\3\5\3"+
+		"\64\n\3\3\3\3\3\7\38\n\3\f\3\16\3;\13\3\3\3\7\3>\n\3\f\3\16\3A\13\3\3"+
+		"\3\3\3\3\3\3\4\3\4\3\4\3\4\7\4J\n\4\f\4\16\4M\13\4\3\4\3\4\3\5\3\5\3\6"+
+		"\3\6\3\6\3\6\3\6\3\6\3\6\3\6\3\6\3\6\3\6\3\6\3\6\3\6\3\6\3\6\3\6\3\6\5"+
+		"\6e\n\6\3\6\3\6\3\6\3\6\3\6\3\6\3\6\3\6\3\6\3\6\3\6\3\6\3\6\3\6\3\6\3"+
+		"\6\3\6\7\6x\n\6\f\6\16\6{\13\6\5\6}\n\6\3\6\3\6\3\6\3\6\7\6\u0083\n\6"+
+		"\f\6\16\6\u0086\13\6\3\7\3\7\3\7\3\7\7\7\u008c\n\7\f\7\16\7\u008f\13\7"+
+		"\5\7\u0091\n\7\3\7\3\7\3\b\3\b\3\b\3\b\3\t\3\t\3\t\3\t\3\t\3\t\5\t\u009f"+
+		"\n\t\3\n\3\n\3\n\3\n\3\n\3\13\3\13\7\13\u00a8\n\13\f\13\16\13\u00ab\13"+
+		"\13\3\13\3\13\3\f\3\f\3\f\3\f\3\f\3\f\3\r\3\r\3\r\3\r\3\r\3\r\3\r\5\r"+
+		"\u00bc\n\r\3\16\3\16\3\16\3\16\3\17\3\17\3\17\3\17\3\20\3\20\3\20\3\20"+
+		"\3\20\2\3\n\21\2\4\6\b\n\f\16\20\22\24\26\30\32\34\36\2\5\3\2\r\16\3\2"+
+		"\17\20\3\2\25\26\2\u00db\2!\3\2\2\2\4%\3\2\2\2\6E\3\2\2\2\bP\3\2\2\2\n"+
+		"d\3\2\2\2\f\u0087\3\2\2\2\16\u0094\3\2\2\2\20\u009e\3\2\2\2\22\u00a0\3"+
+		"\2\2\2\24\u00a5\3\2\2\2\26\u00ae\3\2\2\2\30\u00b4\3\2\2\2\32\u00bd\3\2"+
+		"\2\2\34\u00c1\3\2\2\2\36\u00c5\3\2\2\2 \"\5\4\3\2! \3\2\2\2\"#\3\2\2\2"+
+		"#!\3\2\2\2#$\3\2\2\2$\3\3\2\2\2%&\5\b\5\2&/\7\3\2\2\',\5\b\5\2()\7\4\2"+
+		"\2)+\5\b\5\2*(\3\2\2\2+.\3\2\2\2,*\3\2\2\2,-\3\2\2\2-\60\3\2\2\2.,\3\2"+
+		"\2\2/\'\3\2\2\2/\60\3\2\2\2\60\61\3\2\2\2\61\63\7\5\2\2\62\64\7\"\2\2"+
+		"\63\62\3\2\2\2\63\64\3\2\2\2\64\65\3\2\2\2\659\7\6\2\2\668\5\6\4\2\67"+
+		"\66\3\2\2\28;\3\2\2\29\67\3\2\2\29:\3\2\2\2:?\3\2\2\2;9\3\2\2\2<>\5\20"+
+		"\t\2=<\3\2\2\2>A\3\2\2\2?=\3\2\2\2?@\3\2\2\2@B\3\2\2\2A?\3\2\2\2BC\5\36"+
+		"\20\2CD\7\7\2\2D\5\3\2\2\2EF\7\35\2\2FK\5\b\5\2GH\7\4\2\2HJ\5\b\5\2IG"+
+		"\3\2\2\2JM\3\2\2\2KI\3\2\2\2KL\3\2\2\2LN\3\2\2\2MK\3\2\2\2NO\7\b\2\2O"+
+		"\7\3\2\2\2PQ\7#\2\2Q\t\3\2\2\2RS\b\6\1\2ST\7\r\2\2Te\5\n\6\20UV\7\20\2"+
+		"\2Ve\7\27\2\2WX\7\n\2\2Xe\5\n\6\16Ye\7#\2\2Ze\7\27\2\2[e\7\31\2\2\\]\7"+
+		"\30\2\2]e\5\n\6\6^e\7\37\2\2_e\5\f\7\2`a\7\3\2\2ab\5\n\6\2bc\7\5\2\2c"+
+		"e\3\2\2\2dR\3\2\2\2dU\3\2\2\2dW\3\2\2\2dY\3\2\2\2dZ\3\2\2\2d[\3\2\2\2"+
+		"d\\\3\2\2\2d^\3\2\2\2d_\3\2\2\2d`\3\2\2\2e\u0084\3\2\2\2fg\f\r\2\2gh\t"+
+		"\2\2\2h\u0083\5\n\6\16ij\f\f\2\2jk\t\3\2\2k\u0083\5\n\6\rlm\f\13\2\2m"+
+		"n\7\21\2\2n\u0083\5\n\6\fop\f\n\2\2pq\t\4\2\2q\u0083\5\n\6\13rs\f\22\2"+
+		"\2s|\7\3\2\2ty\5\n\6\2uv\7\4\2\2vx\5\n\6\2wu\3\2\2\2x{\3\2\2\2yw\3\2\2"+
+		"\2yz\3\2\2\2z}\3\2\2\2{y\3\2\2\2|t\3\2\2\2|}\3\2\2\2}~\3\2\2\2~\u0083"+
+		"\7\5\2\2\177\u0080\f\21\2\2\u0080\u0081\7\t\2\2\u0081\u0083\7#\2\2\u0082"+
+		"f\3\2\2\2\u0082i\3\2\2\2\u0082l\3\2\2\2\u0082o\3\2\2\2\u0082r\3\2\2\2"+
+		"\u0082\177\3\2\2\2\u0083\u0086\3\2\2\2\u0084\u0082\3\2\2\2\u0084\u0085"+
+		"\3\2\2\2\u0085\13\3\2\2\2\u0086\u0084\3\2\2\2\u0087\u0090\7\6\2\2\u0088"+
+		"\u008d\5\16\b\2\u0089\u008a\7\4\2\2\u008a\u008c\5\16\b\2\u008b\u0089\3"+
+		"\2\2\2\u008c\u008f\3\2\2\2\u008d\u008b\3\2\2\2\u008d\u008e\3\2\2\2\u008e"+
+		"\u0091\3\2\2\2\u008f\u008d\3\2\2\2\u0090\u0088\3\2\2\2\u0090\u0091\3\2"+
+		"\2\2\u0091\u0092\3\2\2\2\u0092\u0093\7\7\2\2\u0093\r\3\2\2\2\u0094\u0095"+
+		"\7#\2\2\u0095\u0096\7\13\2\2\u0096\u0097\5\n\6\2\u0097\17\3\2\2\2\u0098"+
+		"\u009f\5\24\13\2\u0099\u009f\5\22\n\2\u009a\u009f\5\26\f\2\u009b\u009f"+
+		"\5\30\r\2\u009c\u009f\5\32\16\2\u009d\u009f\5\34\17\2\u009e\u0098\3\2"+
+		"\2\2\u009e\u0099\3\2\2\2\u009e\u009a\3\2\2\2\u009e\u009b\3\2\2\2\u009e"+
+		"\u009c\3\2\2\2\u009e\u009d\3\2\2\2\u009f\21\3\2\2\2\u00a0\u00a1\5\n\6"+
+		"\2\u00a1\u00a2\7\f\2\2\u00a2\u00a3\5\n\6\2\u00a3\u00a4\7\b\2\2\u00a4\23"+
+		"\3\2\2\2\u00a5\u00a9\7\6\2\2\u00a6\u00a8\5\20\t\2\u00a7\u00a6\3\2\2\2"+
+		"\u00a8\u00ab\3\2\2\2\u00a9\u00a7\3\2\2\2\u00a9\u00aa\3\2\2\2\u00aa\u00ac"+
+		"\3\2\2\2\u00ab\u00a9\3\2\2\2\u00ac\u00ad\7\7\2\2\u00ad\25\3\2\2\2\u00ae"+
+		"\u00af\7\32\2\2\u00af\u00b0\7\3\2\2\u00b0\u00b1\5\n\6\2\u00b1\u00b2\7"+
+		"\5\2\2\u00b2\u00b3\5\20\t\2\u00b3\27\3\2\2\2\u00b4\u00b5\7\33\2\2\u00b5"+
+		"\u00b6\7\3\2\2\u00b6\u00b7\5\n\6\2\u00b7\u00b8\7\5\2\2\u00b8\u00bb\5\20"+
+		"\t\2\u00b9\u00ba\7\34\2\2\u00ba\u00bc\5\20\t\2\u00bb\u00b9\3\2\2\2\u00bb"+
+		"\u00bc\3\2\2\2\u00bc\31\3\2\2\2\u00bd\u00be\7 \2\2\u00be\u00bf\5\n\6\2"+
+		"\u00bf\u00c0\7\b\2\2\u00c0\33\3\2\2\2\u00c1\u00c2\7!\2\2\u00c2\u00c3\5"+
+		"\n\6\2\u00c3\u00c4\7\b\2\2\u00c4\35\3\2\2\2\u00c5\u00c6\7\36\2\2\u00c6"+
+		"\u00c7\5\n\6\2\u00c7\u00c8\7\b\2\2\u00c8\37\3\2\2\2\23#,/\639?Kdy|\u0082"+
+		"\u0084\u008d\u0090\u009e\u00a9\u00bb";
 	public static final ATN _ATN =
 		new ATNDeserializer().deserialize(_serializedATN.toCharArray());
 	static {
