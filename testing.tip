@@ -1,5 +1,5 @@
 main(n) {
-    if (n < 4) {
+    if (n > 4) {
         n = 1;
     }
     return 0;
