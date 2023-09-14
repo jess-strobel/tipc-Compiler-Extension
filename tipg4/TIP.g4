@@ -39,7 +39,7 @@ nameDeclaration : IDENTIFIER ;
 expr : expr '(' (expr (',' expr)*)? ')' 	#funAppExpr
      | expr '.' IDENTIFIER 			#accessExpr
      | '*' expr 				#deRefExpr
-     | SUB NUMBER				#negNumber
+     | SUB expr				#negNumber
      | '&' expr					#refExpr
      | expr op=(MUL | DIV | MOD) expr 		#multiplicativeExpr
      | expr op=(ADD | SUB) expr 		#additiveExpr

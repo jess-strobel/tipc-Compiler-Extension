@@ -464,7 +464,9 @@ public class TIPParser extends Parser {
 	@SuppressWarnings("CheckReturnValue")
 	public static class NegNumberContext extends ExprContext {
 		public TerminalNode SUB() { return getToken(TIPParser.SUB, 0); }
-		public TerminalNode NUMBER() { return getToken(TIPParser.NUMBER, 0); }
+		public ExprContext expr() {
+			return getRuleContext(ExprContext.class,0);
+		}
 		public NegNumberContext(ExprContext ctx) { copyFrom(ctx); }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
@@ -753,7 +755,7 @@ public class TIPParser extends Parser {
 				setState(83);
 				match(SUB);
 				setState(84);
-				match(NUMBER);
+				expr(15);
 				}
 				break;
 			case T__7:
@@ -1814,7 +1816,7 @@ public class TIPParser extends Parser {
 		"KI\u0001\u0000\u0000\u0000LM\u0005\u0006\u0000\u0000M\u0005\u0001\u0000"+
 		"\u0000\u0000NO\u0005\"\u0000\u0000O\u0007\u0001\u0000\u0000\u0000PQ\u0006"+
 		"\u0004\uffff\uffff\u0000QR\u0005\u000b\u0000\u0000Re\u0003\b\u0004\u0010"+
-		"ST\u0005\u000e\u0000\u0000Te\u0005\u0016\u0000\u0000UV\u0005\b\u0000\u0000"+
+		"ST\u0005\u000e\u0000\u0000Te\u0003\b\u0004\u000fUV\u0005\b\u0000\u0000"+
 		"Ve\u0003\b\u0004\u000eWe\u0005\"\u0000\u0000Xe\u0005\u0016\u0000\u0000"+
 		"Ye\u0005\u0018\u0000\u0000Z[\u0005\u0017\u0000\u0000[e\u0003\b\u0004\u0006"+
 		"\\e\u0005\u001e\u0000\u0000]e\u0003\n\u0005\u0000^_\u0005\u0001\u0000"+
