@@ -41,9 +41,9 @@ expr : expr '(' (expr (',' expr)*)? ')' 	#funAppExpr
      | '*' expr 				#deRefExpr
      | SUB NUMBER				#negNumber
      | '&' expr					#refExpr
-     | expr op=(MUL | DIV) expr 		#multiplicativeExpr
+     | expr op=(MUL | DIV | MOD) expr 		#multiplicativeExpr
      | expr op=(ADD | SUB) expr 		#additiveExpr
-     | expr op=GT expr 				#relationalExpr
+     | expr op=(GT | LT | LTE | GTE) expr 	#relationalExpr
      | expr op=(EQ | NE) expr 			#equalityExpr
      | IDENTIFIER				#varExpr
      | NUMBER					#numExpr
@@ -52,6 +52,8 @@ expr : expr '(' (expr (',' expr)*)? ')' 	#funAppExpr
      | KNULL					#nullExpr
      | recordExpr				#recordRule
      | '(' expr ')'				#parenExpr
+     | INC                      #incrExpr
+     | DEC                      #decrExpr
 ;
 
 recordExpr : '{' (fieldExpr (',' fieldExpr)*)? '}' ;
@@ -91,6 +93,7 @@ MUL : '*' ;
 DIV : '/' ;
 ADD : '+' ;
 SUB : '-' ;
+MOD : '%' ;
 GT  : '>' ;
 GTE : '>=' ;
 LT  : '<' ;
@@ -129,3 +132,7 @@ WS : [ \t\n\r]+ -> skip ;
 BLOCKCOMMENT: '/*' .*? '*/' -> skip ;
 
 COMMENT : '//' ~[\n\r]* -> skip ;
+
+INC : [a-zA-Z0-9]+'++' ;
+
+DEC : [a-zA-Z0-9]+'--' ;
