@@ -52,8 +52,6 @@ expr : expr '(' (expr (',' expr)*)? ')' 	#funAppExpr
      | KNULL					#nullExpr
      | recordExpr				#recordRule
      | '(' expr ')'				#parenExpr
-     | INC                      #incrExpr
-     | DEC                      #decrExpr
 ;
 
 recordExpr : '{' (fieldExpr (',' fieldExpr)*)? '}' ;
@@ -68,6 +66,8 @@ statement : blockStmt
     | ifStmt
     | outputStmt
     | errorStmt
+    | incStmt
+    | decStmt
 ;
 
 assignStmt : expr '=' expr ';' ;
@@ -84,6 +84,9 @@ errorStmt : KERROR expr ';'  ;
 
 returnStmt : KRETURN expr ';'  ;
 
+incStmt : expr '++' ';' ;
+
+decStmt : expr '--' ';';
 
 ////////////////////// TIP Lexicon ////////////////////////// 
 
@@ -133,6 +136,6 @@ BLOCKCOMMENT: '/*' .*? '*/' -> skip ;
 
 COMMENT : '//' ~[\n\r]* -> skip ;
 
-INC : [a-zA-Z0-9]+'++' ;
+//INC : [a-zA-Z0-9_]+'++' ;
 
-DEC : [a-zA-Z0-9]+'--' ;
+//DEC : [a-zA-Z0-9_]+'--' ;

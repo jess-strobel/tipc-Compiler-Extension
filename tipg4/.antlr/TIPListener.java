@@ -95,18 +95,6 @@ public interface TIPListener extends ParseTreeListener {
 	 */
 	void exitNegNumber(TIPParser.NegNumberContext ctx);
 	/**
-	 * Enter a parse tree produced by the {@code decrExpr}
-	 * labeled alternative in {@link TIPParser#expr}.
-	 * @param ctx the parse tree
-	 */
-	void enterDecrExpr(TIPParser.DecrExprContext ctx);
-	/**
-	 * Exit a parse tree produced by the {@code decrExpr}
-	 * labeled alternative in {@link TIPParser#expr}.
-	 * @param ctx the parse tree
-	 */
-	void exitDecrExpr(TIPParser.DecrExprContext ctx);
-	/**
 	 * Enter a parse tree produced by the {@code inputExpr}
 	 * labeled alternative in {@link TIPParser#expr}.
 	 * @param ctx the parse tree
@@ -118,18 +106,6 @@ public interface TIPListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitInputExpr(TIPParser.InputExprContext ctx);
-	/**
-	 * Enter a parse tree produced by the {@code incrExpr}
-	 * labeled alternative in {@link TIPParser#expr}.
-	 * @param ctx the parse tree
-	 */
-	void enterIncrExpr(TIPParser.IncrExprContext ctx);
-	/**
-	 * Exit a parse tree produced by the {@code incrExpr}
-	 * labeled alternative in {@link TIPParser#expr}.
-	 * @param ctx the parse tree
-	 */
-	void exitIncrExpr(TIPParser.IncrExprContext ctx);
 	/**
 	 * Enter a parse tree produced by the {@code additiveExpr}
 	 * labeled alternative in {@link TIPParser#expr}.
@@ -362,4 +338,24 @@ public interface TIPListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitReturnStmt(TIPParser.ReturnStmtContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link TIPParser#incStmt}.
+	 * @param ctx the parse tree
+	 */
+	void enterIncStmt(TIPParser.IncStmtContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link TIPParser#incStmt}.
+	 * @param ctx the parse tree
+	 */
+	void exitIncStmt(TIPParser.IncStmtContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link TIPParser#decStmt}.
+	 * @param ctx the parse tree
+	 */
+	void enterDecStmt(TIPParser.DecStmtContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link TIPParser#decStmt}.
+	 * @param ctx the parse tree
+	 */
+	void exitDecStmt(TIPParser.DecStmtContext ctx);
 }
