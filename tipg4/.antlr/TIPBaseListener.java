@@ -88,6 +88,18 @@ public class TIPBaseListener implements TIPListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterTrueExpr(TIPParser.TrueExprContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitTrueExpr(TIPParser.TrueExprContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterAllocExpr(TIPParser.AllocExprContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -119,6 +131,18 @@ public class TIPBaseListener implements TIPListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitInputExpr(TIPParser.InputExprContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterBinaryOpExpr(TIPParser.BinaryOpExprContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitBinaryOpExpr(TIPParser.BinaryOpExprContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -196,6 +220,18 @@ public class TIPBaseListener implements TIPListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterNotExpr(TIPParser.NotExprContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitNotExpr(TIPParser.NotExprContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterRefExpr(TIPParser.RefExprContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -203,6 +239,42 @@ public class TIPBaseListener implements TIPListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitRefExpr(TIPParser.RefExprContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterArithmeticNegExpr(TIPParser.ArithmeticNegExprContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitArithmeticNegExpr(TIPParser.ArithmeticNegExprContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterTernaryCondExpr(TIPParser.TernaryCondExprContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitTernaryCondExpr(TIPParser.TernaryCondExprContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterFalseExpr(TIPParser.FalseExprContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitFalseExpr(TIPParser.FalseExprContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -395,6 +467,30 @@ public class TIPBaseListener implements TIPListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitDecStmt(TIPParser.DecStmtContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterForItrStmt(TIPParser.ForItrStmtContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitForItrStmt(TIPParser.ForItrStmtContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterForRangeStmt(TIPParser.ForRangeStmtContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitForRangeStmt(TIPParser.ForRangeStmtContext ctx) { }
 
 	/**
 	 * {@inheritDoc}

@@ -39,14 +39,20 @@ nameDeclaration : IDENTIFIER ;
 expr : expr '(' (expr (',' expr)*)? ')' 	#funAppExpr
      | expr '.' IDENTIFIER 			#accessExpr
      | '*' expr 				#deRefExpr
-     | SUB expr				#negNumber
+     | SUB expr				    #negNumber
+     | op=SUB expr              #arithmeticNegExpr
      | '&' expr					#refExpr
+     | NOT expr                 #notExpr
      | expr op=(MUL | DIV | MOD) expr 		#multiplicativeExpr
-     | expr op=(ADD | SUB) expr 		#additiveExpr
+     | expr op=(ADD | SUB) expr 		    #additiveExpr
      | expr op=(GT | LT | LTE | GTE) expr 	#relationalExpr
-     | expr op=(EQ | NE) expr 			#equalityExpr
+     | expr op=(EQ | NE) expr 			    #equalityExpr
+     | expr op=(AND | OR) expr  #binaryOpExpr
+     | expr '?' expr ':' expr   #ternaryCondExpr
      | IDENTIFIER				#varExpr
      | NUMBER					#numExpr
+     | T                        #trueExpr
+     | F                        #falseExpr
      | KINPUT					#inputExpr
      | KALLOC expr				#allocExpr
      | KNULL					#nullExpr
@@ -68,6 +74,8 @@ statement : blockStmt
     | errorStmt
     | incStmt
     | decStmt
+    | forItrStmt
+    | forRangeStmt
 ;
 
 assignStmt : expr '=' expr ';' ;
@@ -84,9 +92,13 @@ errorStmt : KERROR expr ';'  ;
 
 returnStmt : KRETURN expr ';'  ;
 
-incStmt : expr '++' ';' ;
+incStmt : expr '++;';
 
-decStmt : expr '--' ';';
+decStmt : expr '--;';
+
+forItrStmt : KFOR '(' expr ':' expr ')' statement ;
+
+forRangeStmt : KFOR '(' expr ':' expr '..' expr ('by' expr)? ')' statement ;
 
 ////////////////////// TIP Lexicon ////////////////////////// 
 
@@ -103,6 +115,11 @@ LT  : '<' ;
 LTE : '<=' ;
 EQ  : '==' ;
 NE  : '!=' ;
+T   : 'true' ;
+F   : 'false' ;
+NOT : 'not' ;
+AND : 'and' ;
+OR  : 'or' ;
 
 NUMBER : [0-9]+ ;
 
@@ -111,6 +128,7 @@ NUMBER : [0-9]+ ;
 KALLOC  : 'alloc' ;
 KINPUT  : 'input' ;
 KWHILE  : 'while' ;
+KFOR    : 'for' ;
 KIF     : 'if' ;
 KELSE   : 'else' ;
 KVAR    : 'var' ;
@@ -135,7 +153,3 @@ WS : [ \t\n\r]+ -> skip ;
 BLOCKCOMMENT: '/*' .*? '*/' -> skip ;
 
 COMMENT : '//' ~[\n\r]* -> skip ;
-
-//INC : [a-zA-Z0-9_]+'++' ;
-
-//DEC : [a-zA-Z0-9_]+'--' ;

@@ -71,6 +71,18 @@ public interface TIPListener extends ParseTreeListener {
 	 */
 	void exitNullExpr(TIPParser.NullExprContext ctx);
 	/**
+	 * Enter a parse tree produced by the {@code trueExpr}
+	 * labeled alternative in {@link TIPParser#expr}.
+	 * @param ctx the parse tree
+	 */
+	void enterTrueExpr(TIPParser.TrueExprContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code trueExpr}
+	 * labeled alternative in {@link TIPParser#expr}.
+	 * @param ctx the parse tree
+	 */
+	void exitTrueExpr(TIPParser.TrueExprContext ctx);
+	/**
 	 * Enter a parse tree produced by the {@code allocExpr}
 	 * labeled alternative in {@link TIPParser#expr}.
 	 * @param ctx the parse tree
@@ -106,6 +118,18 @@ public interface TIPListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitInputExpr(TIPParser.InputExprContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code binaryOpExpr}
+	 * labeled alternative in {@link TIPParser#expr}.
+	 * @param ctx the parse tree
+	 */
+	void enterBinaryOpExpr(TIPParser.BinaryOpExprContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code binaryOpExpr}
+	 * labeled alternative in {@link TIPParser#expr}.
+	 * @param ctx the parse tree
+	 */
+	void exitBinaryOpExpr(TIPParser.BinaryOpExprContext ctx);
 	/**
 	 * Enter a parse tree produced by the {@code additiveExpr}
 	 * labeled alternative in {@link TIPParser#expr}.
@@ -179,6 +203,18 @@ public interface TIPListener extends ParseTreeListener {
 	 */
 	void exitVarExpr(TIPParser.VarExprContext ctx);
 	/**
+	 * Enter a parse tree produced by the {@code notExpr}
+	 * labeled alternative in {@link TIPParser#expr}.
+	 * @param ctx the parse tree
+	 */
+	void enterNotExpr(TIPParser.NotExprContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code notExpr}
+	 * labeled alternative in {@link TIPParser#expr}.
+	 * @param ctx the parse tree
+	 */
+	void exitNotExpr(TIPParser.NotExprContext ctx);
+	/**
 	 * Enter a parse tree produced by the {@code refExpr}
 	 * labeled alternative in {@link TIPParser#expr}.
 	 * @param ctx the parse tree
@@ -190,6 +226,42 @@ public interface TIPListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitRefExpr(TIPParser.RefExprContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code arithmeticNegExpr}
+	 * labeled alternative in {@link TIPParser#expr}.
+	 * @param ctx the parse tree
+	 */
+	void enterArithmeticNegExpr(TIPParser.ArithmeticNegExprContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code arithmeticNegExpr}
+	 * labeled alternative in {@link TIPParser#expr}.
+	 * @param ctx the parse tree
+	 */
+	void exitArithmeticNegExpr(TIPParser.ArithmeticNegExprContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code ternaryCondExpr}
+	 * labeled alternative in {@link TIPParser#expr}.
+	 * @param ctx the parse tree
+	 */
+	void enterTernaryCondExpr(TIPParser.TernaryCondExprContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code ternaryCondExpr}
+	 * labeled alternative in {@link TIPParser#expr}.
+	 * @param ctx the parse tree
+	 */
+	void exitTernaryCondExpr(TIPParser.TernaryCondExprContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code falseExpr}
+	 * labeled alternative in {@link TIPParser#expr}.
+	 * @param ctx the parse tree
+	 */
+	void enterFalseExpr(TIPParser.FalseExprContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code falseExpr}
+	 * labeled alternative in {@link TIPParser#expr}.
+	 * @param ctx the parse tree
+	 */
+	void exitFalseExpr(TIPParser.FalseExprContext ctx);
 	/**
 	 * Enter a parse tree produced by the {@code multiplicativeExpr}
 	 * labeled alternative in {@link TIPParser#expr}.
@@ -358,4 +430,24 @@ public interface TIPListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitDecStmt(TIPParser.DecStmtContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link TIPParser#forItrStmt}.
+	 * @param ctx the parse tree
+	 */
+	void enterForItrStmt(TIPParser.ForItrStmtContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link TIPParser#forItrStmt}.
+	 * @param ctx the parse tree
+	 */
+	void exitForItrStmt(TIPParser.ForItrStmtContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link TIPParser#forRangeStmt}.
+	 * @param ctx the parse tree
+	 */
+	void enterForRangeStmt(TIPParser.ForRangeStmtContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link TIPParser#forRangeStmt}.
+	 * @param ctx the parse tree
+	 */
+	void exitForRangeStmt(TIPParser.ForRangeStmtContext ctx);
 }
