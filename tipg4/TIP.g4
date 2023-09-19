@@ -49,6 +49,9 @@ expr : expr '(' (expr (',' expr)*)? ')' 	#funAppExpr
      | expr op=(EQ | NE) expr 			    #equalityExpr
      | expr op=(AND | OR) expr  #binaryOpExpr
      | expr '?' expr ':' expr   #ternaryCondExpr
+     | arrayConstructorExpr     #arrConstructorExpr
+     | '#' (arrayConstructorExpr | expr) #arrLenOpExpr
+     | expr '[' expr ']'        #arrBinRefOpExpr
      | IDENTIFIER				#varExpr
      | NUMBER					#numExpr
      | T                        #trueExpr
@@ -59,6 +62,8 @@ expr : expr '(' (expr (',' expr)*)? ')' 	#funAppExpr
      | recordExpr				#recordRule
      | '(' expr ')'				#parenExpr
 ;
+
+arrayConstructorExpr : '[' ((expr (',' expr)*)? | expr ' of ' expr) ']' ;
 
 recordExpr : '{' (fieldExpr (',' fieldExpr)*)? '}' ;
 
