@@ -50,7 +50,7 @@ expr : expr '(' (expr (',' expr)*)? ')' 	#funAppExpr
      | expr op=(AND | OR) expr  #binaryOpExpr
      | expr '?' expr ':' expr   #ternaryCondExpr
      | arrayConstructorExpr     #arrConstructorExpr
-     | '#' (arrayConstructorExpr | expr) #arrLenOpExpr
+     | '#' (arrayConstructorExpr | IDENTIFIER) #arrLenOpExpr
      | expr '[' expr ']'        #arrBinRefOpExpr
      | IDENTIFIER				#varExpr
      | NUMBER					#numExpr

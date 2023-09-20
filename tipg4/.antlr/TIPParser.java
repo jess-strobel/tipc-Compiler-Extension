@@ -425,9 +425,7 @@ public class TIPParser extends Parser {
 		public ArrayConstructorExprContext arrayConstructorExpr() {
 			return getRuleContext(ArrayConstructorExprContext.class,0);
 		}
-		public ExprContext expr() {
-			return getRuleContext(ExprContext.class,0);
-		}
+		public TerminalNode IDENTIFIER() { return getToken(TIPParser.IDENTIFIER, 0); }
 		public ArrLenOpExprContext(ExprContext ctx) { copyFrom(ctx); }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
@@ -929,19 +927,21 @@ public class TIPParser extends Parser {
 				match(T__10);
 				setState(105);
 				_errHandler.sync(this);
-				switch ( getInterpreter().adaptivePredict(_input,7,_ctx) ) {
-				case 1:
+				switch (_input.LA(1)) {
+				case T__11:
 					{
 					setState(103);
 					arrayConstructorExpr();
 					}
 					break;
-				case 2:
+				case IDENTIFIER:
 					{
 					setState(104);
-					expr(0);
+					match(IDENTIFIER);
 					}
 					break;
+				default:
+					throw new NoViableAltException(this);
 				}
 				}
 				break;
@@ -2292,7 +2292,7 @@ public class TIPParser extends Parser {
 		"\u0004\u0017]^\u0005\u0017\u0000\u0000^y\u0003\b\u0004\u0016_`\u0005\u0017"+
 		"\u0000\u0000`y\u0003\b\u0004\u0015ab\u0005\b\u0000\u0000by\u0003\b\u0004"+
 		"\u0014cd\u0005!\u0000\u0000dy\u0003\b\u0004\u0013ey\u0003\n\u0005\u0000"+
-		"fi\u0005\u000b\u0000\u0000gj\u0003\n\u0005\u0000hj\u0003\b\u0004\u0000"+
+		"fi\u0005\u000b\u0000\u0000gj\u0003\n\u0005\u0000hj\u00051\u0000\u0000"+
 		"ig\u0001\u0000\u0000\u0000ih\u0001\u0000\u0000\u0000jy\u0001\u0000\u0000"+
 		"\u0000ky\u00051\u0000\u0000ly\u0005$\u0000\u0000my\u0005\u001f\u0000\u0000"+
 		"ny\u0005 \u0000\u0000oy\u0005&\u0000\u0000pq\u0005%\u0000\u0000qy\u0003"+
