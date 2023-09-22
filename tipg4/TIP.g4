@@ -39,20 +39,31 @@ nameDeclaration : IDENTIFIER ;
 expr : expr '(' (expr (',' expr)*)? ')' 	#funAppExpr
      | expr '.' IDENTIFIER 			#accessExpr
      | '*' expr 				#deRefExpr
-     | SUB NUMBER				#negNumber
+     | SUB expr				    #negNumber
+     | op=SUB expr              #arithmeticNegExpr
      | '&' expr					#refExpr
-     | expr op=(MUL | DIV) expr 		#multiplicativeExpr
-     | expr op=(ADD | SUB) expr 		#additiveExpr
-     | expr op=GT expr 				#relationalExpr
-     | expr op=(EQ | NE) expr 			#equalityExpr
+     | NOT expr                 #notExpr
+     | expr op=(MUL | DIV | MOD) expr 		#multiplicativeExpr
+     | expr op=(ADD | SUB) expr 		    #additiveExpr
+     | expr op=(GT | LT | LTE | GTE) expr 	#relationalExpr
+     | expr op=(EQ | NE) expr 			    #equalityExpr
+     | expr op=(AND | OR) expr  #binaryOpExpr
+     | expr '?' expr ':' expr   #ternaryCondExpr
+     | arrayConstructorExpr     #arrConstructorExpr
+     | '#' expr                 #arrLenOpExpr
+     | expr '[' expr ']'        #arrBinRefOpExpr
      | IDENTIFIER				#varExpr
      | NUMBER					#numExpr
+     | T                        #trueExpr
+     | F                        #falseExpr
      | KINPUT					#inputExpr
      | KALLOC expr				#allocExpr
      | KNULL					#nullExpr
      | recordExpr				#recordRule
      | '(' expr ')'				#parenExpr
 ;
+
+arrayConstructorExpr : '[' ((expr (',' expr)*)? | expr ' of ' expr) ']' ;
 
 recordExpr : '{' (fieldExpr (',' fieldExpr)*)? '}' ;
 
@@ -66,6 +77,10 @@ statement : blockStmt
     | ifStmt
     | outputStmt
     | errorStmt
+    | incStmt
+    | decStmt
+    | forItrStmt
+    | forRangeStmt
 ;
 
 assignStmt : expr '=' expr ';' ;
@@ -82,6 +97,13 @@ errorStmt : KERROR expr ';'  ;
 
 returnStmt : KRETURN expr ';'  ;
 
+incStmt : expr '++;';
+
+decStmt : expr '--;';
+
+forItrStmt : KFOR '(' expr ':' expr ')' statement ;
+
+forRangeStmt : KFOR '(' expr ':' expr '..' expr ('by' expr)? ')' statement ;
 
 ////////////////////// TIP Lexicon ////////////////////////// 
 
@@ -91,9 +113,18 @@ MUL : '*' ;
 DIV : '/' ;
 ADD : '+' ;
 SUB : '-' ;
+MOD : '%' ;
 GT  : '>' ;
+GTE : '>=' ;
+LT  : '<' ;
+LTE : '<=' ;
 EQ  : '==' ;
 NE  : '!=' ;
+T   : 'true' ;
+F   : 'false' ;
+NOT : 'not' ;
+AND : 'and' ;
+OR  : 'or' ;
 
 NUMBER : [0-9]+ ;
 
@@ -102,6 +133,7 @@ NUMBER : [0-9]+ ;
 KALLOC  : 'alloc' ;
 KINPUT  : 'input' ;
 KWHILE  : 'while' ;
+KFOR    : 'for' ;
 KIF     : 'if' ;
 KELSE   : 'else' ;
 KVAR    : 'var' ;

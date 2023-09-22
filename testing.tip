@@ -1,0 +1,30 @@
+main(n) {
+    var j;
+    var x;
+    var y;
+    var z;
+    j = - -3;
+    y = false;
+    z = (j == 0) ? 1 : 2; 
+    x = [1, 2, 3];
+    x = [];
+    x = [3 of 7];
+    y = #[1, 2, 3];
+    y = #[3 of 7];
+    x = #xyz;
+    if (n > 4 and not (j == 0)) {
+        n = 1;
+        n++;
+        n--;
+        n = n % 2;
+    }
+
+    for (j : j < 5) {
+        n++;
+    }
+
+    for (j : 5 .. 9) {
+        n++;
+    }
+    return 0;
+}

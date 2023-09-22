@@ -140,7 +140,7 @@ Any ASTBuilder::visitFunction(TIPParser::FunctionContext *ctx) {
 }
 
 Any ASTBuilder::visitNegNumber(TIPParser::NegNumberContext *ctx) {
-  int val = std::stoi(ctx->NUMBER()->getText());
+  int val = std::stoi(ctx->expr()->getText());
   val = -val;
   visitedExpr = std::make_shared<ASTNumberExpr>(val);
 
