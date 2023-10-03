@@ -2,7 +2,7 @@
 
 #include "AST.h"
 
-#include "TIPBaseVisitor.h"
+#include "TIPBaseVisitor.h"  //Auto-generated file that is an instance of visitor pattern
 #include "TIPParser.h"
 #include "antlr4-runtime.h"
 
@@ -18,10 +18,10 @@ using namespace antlrcpp;
  * of the parse tree and, if succesful, generates a shared ASTProgram whose
  * ownership is transferred to the caller.
  */
-class ASTBuilder : public TIPBaseVisitor {
+class ASTBuilder : public TIPBaseVisitor { //ASTBuilder is a subtype of TIPBaseVisitor
 private:
   TIPParser *parser;
-  std::string opString(int op);
+  std::string opString(int op);  //Local function to convert integer encodings of operators to strings
   std::string generateSHA256(std::string tohash);
 
 public:
@@ -30,21 +30,24 @@ public:
   /*! \fn build
    *  \brief Builds an instance of ASTProgram from an ANTLR4 parse tree.
    *
-   * The caller obtains "ownership" of the resulting ASTProgram.
+   * The caller obtains "ownership" of the resulting ASTProgram. (only owner can write to the structure)
    */
-  std::shared_ptr<ASTProgram> build(TIPParser::ProgramContext *ctx);
+  std::shared_ptr<ASTProgram> build(TIPParser::ProgramContext *ctx);  //ProgramContext = data structure that records root of parse tree
 
   /**
    * a helper function to build binary expressions
    */
   template <typename T> void visitBinaryExpr(T *ctx, const std::string &op);
-
+  
+  /** Each visit function is where the parse-tree specific logic is embedded, and 
+   *  constructs an appropriate AST node for the parse-tree node
+  */
   Any visitFunction(TIPParser::FunctionContext *ctx) override;
   Any visitNegNumber(TIPParser::NegNumberContext *ctx) override;
   Any visitAdditiveExpr(TIPParser::AdditiveExprContext *ctx) override;
   Any visitRelationalExpr(TIPParser::RelationalExprContext *ctx) override;
   Any visitMultiplicativeExpr(
-      TIPParser::MultiplicativeExprContext *ctx) override;
+      TIPParser::MultiplicativeExprContext *ctx) override; //Any context represents an expr that has been parsed and matched by antlr
   Any visitEqualityExpr(TIPParser::EqualityExprContext *ctx) override;
   Any visitParenExpr(TIPParser::ParenExprContext *ctx) override;
   Any visitNumExpr(TIPParser::NumExprContext *ctx) override;
@@ -68,3 +71,4 @@ public:
   Any visitErrorStmt(TIPParser::ErrorStmtContext *ctx) override;
   Any visitReturnStmt(TIPParser::ReturnStmtContext *ctx) override;
 };
+//Visit methods are where parse-tree specific logic is defined, which constructs its corresponding AST Node

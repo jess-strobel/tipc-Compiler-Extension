@@ -65,6 +65,14 @@ TEST_CASE("SIP Parser: arithmetic operators", "[SIP Parser]") {
   REQUIRE(ParserHelper::is_parsable(stream));
 }
 
+TEST_CASE("SIP Parser: testing right-associativity and precedence for ternary operators", "[SIP Parser]") {
+  std::stringstream stream;
+  stream << R"( main() { return 2 > 3 ? (3 > 4 ? 1 : 2) : 1; })";
+  std::string expected = "(expr (expr (expr 2) > (expr 3)) ? (expr ( (expr (expr (expr 3) > (expr 4)) ? (expr 1) : (expr 2)) )) : (expr 1))";
+  std::string tree = ParserHelper::parsetree(stream);
+  REQUIRE(tree.find(expected) != std::string::npos);
+}
+
 TEST_CASE("SIP Parser: ternary operator", "[SIP Parser]") {
   std::stringstream stream;
   stream << R"(
@@ -73,6 +81,8 @@ TEST_CASE("SIP Parser: ternary operator", "[SIP Parser]") {
         x = 1;
         y = 2;
         z = (x > y) ? x : y;
+        z = (x > y) ? ((x > y) ? x : y) : ((x > y) ? x : y);
+        z = (x > y) ? ((x > y) ? x : y) : z;
         return z;
       }
     )";

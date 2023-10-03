@@ -4,7 +4,7 @@
 #include <sstream>
 
 void PrettyPrinter::print(ASTProgram *p, std::ostream &os, char c, int n) {
-  PrettyPrinter visitor(os, c, n);
+  PrettyPrinter visitor(os, c, n);  //Create visitor and start traversal of AST p
   p->accept(&visitor);
 }
 
@@ -86,11 +86,11 @@ void PrettyPrinter::endVisit(ASTVariableExpr *element) {
 }
 
 void PrettyPrinter::endVisit(ASTBinaryExpr *element) {
-  std::string rightString = visitResults.back();
+  std::string rightString = visitResults.back(); //Record top of stack and pop it (do each time for left/right string) 
   visitResults.pop_back();
   std::string leftString = visitResults.back();
   visitResults.pop_back();
-
+  //Construct string representation from left operand, space, operator, space, and right operand, all enclosed in parentheses
   visitResults.push_back("(" + leftString + " " + element->getOp() + " " +
                          rightString + ")");
 }

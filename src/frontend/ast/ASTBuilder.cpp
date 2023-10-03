@@ -10,7 +10,7 @@ using namespace antlrcpp;
 
 ASTBuilder::ASTBuilder(TIPParser *p) : parser{p} {}
 
-std::string ASTBuilder::opString(int op) {
+std::string ASTBuilder::opString(int op) { //Operators represented as strings internally in TIPC compiler
   std::string opStr;
   switch (op) {
   case TIPParser::MUL:
@@ -18,6 +18,9 @@ std::string ASTBuilder::opString(int op) {
     break;
   case TIPParser::DIV:
     opStr = "/";
+    break;
+  case TIPParser::MOD:
+    opStr = "%";
     break;
   case TIPParser::ADD:
     opStr = "+";
@@ -28,11 +31,29 @@ std::string ASTBuilder::opString(int op) {
   case TIPParser::GT:
     opStr = ">";
     break;
+  case TIPParser::GTE:
+    opStr = ">=";
+    break;
+  case TIPParser::LT:
+    opStr = "<";
+    break;
+  case TIPParser::LTE:
+    opStr = "<=";
+    break;
   case TIPParser::EQ:
     opStr = "==";
     break;
   case TIPParser::NE:
     opStr = "!=";
+    break;
+  case TIPParser::AND:
+    opStr = "and";
+    break;
+  case TIPParser::OR:
+    opStr = "or";
+    break;
+  case TIPParser::NOT:
+    opStr = "not";
     break;
   default:
     throw std::runtime_error(
@@ -46,10 +67,11 @@ std::string ASTBuilder::opString(int op) {
  * Globals for communicating information up from visited subtrees
  * These are overwritten by every visit call.
  * We use multiple variables here to avoid downcasting of shared smart pointers.
+ * These are multiple nodes declared of the appropriate subtype
  */
 static std::shared_ptr<ASTStmt> visitedStmt = nullptr;
-static std::shared_ptr<ASTDeclNode> visitedDeclNode = nullptr;
-static std::shared_ptr<ASTDeclStmt> visitedDeclStmt = nullptr;
+static std::shared_ptr<ASTDeclNode> visitedDeclNode = nullptr;  //When visiting a parse tree node that is a _, we define visited_
+static std::shared_ptr<ASTDeclStmt> visitedDeclStmt = nullptr;  //Always define value that corresponds to return type associated with parse tree node
 static std::shared_ptr<ASTExpr> visitedExpr = nullptr;
 static std::shared_ptr<ASTFieldExpr> visitedFieldExpr = nullptr;
 static std::shared_ptr<ASTFunction> visitedFunction = nullptr;
@@ -82,16 +104,16 @@ static std::shared_ptr<ASTFunction> visitedFunction = nullptr;
  * of the fields that contain the program elements captured during the parse.
  * You will access these from the method overrides in your visitor.
  */
-
+//Visit functions build AST Node for their respective context
 std::shared_ptr<ASTProgram> ASTBuilder::build(TIPParser::ProgramContext *ctx) {
-  std::vector<std::shared_ptr<ASTFunction>> pFunctions;
-  for (auto fn : ctx->function()) {
-    visit(fn);
+  std::vector<std::shared_ptr<ASTFunction>> pFunctions; //Build vector using pointers of AST functions
+  for (auto fn : ctx->function()) { //Visit each matched function, set visitedFunction each time,
+    visit(fn);                      //and push to pFunctions vector
     pFunctions.push_back(visitedFunction);
   }
 
-  auto prog = std::make_shared<ASTProgram>(pFunctions);
-  prog->setName(generateSHA256(ctx->getText()));
+  auto prog = std::make_shared<ASTProgram>(pFunctions); //Call constructor for AST program, allocate
+  prog->setName(generateSHA256(ctx->getText()));        //memory, and return shared ptr for it
   return prog;
 }
 
@@ -104,22 +126,22 @@ Any ASTBuilder::visitFunction(TIPParser::FunctionContext *ctx) {
   bool firstId = true;
   for (auto decl : ctx->nameDeclaration()) {
     visit(decl);
-    if (firstId) {
+    if (firstId) {  //Pull out first name declaration and move it to be function name
       firstId = !firstId;
       fName = visitedDeclNode;
     } else {
-      fParams.push_back(visitedDeclNode);
+      fParams.push_back(visitedDeclNode);  //Any subsequent name declarations pushed onto fParams list
     }
   }
 
   bool isPoly = ctx->KPOLY() != nullptr;
 
-  for (auto decl : ctx->declaration()) {
+  for (auto decl : ctx->declaration()) { //Accumulate declarations
     visit(decl);
     fDecls.push_back(visitedDeclStmt);
   }
 
-  for (auto stmt : ctx->statement()) {
+  for (auto stmt : ctx->statement()) { //Accumulate statements
     visit(stmt);
     fBody.push_back(visitedStmt);
   }
@@ -164,13 +186,13 @@ Any ASTBuilder::visitNegNumber(TIPParser::NegNumberContext *ctx) {
  */
 template <typename T>
 void ASTBuilder::visitBinaryExpr(T *ctx, const std::string &op) {
-  visit(ctx->expr(0));
+  visit(ctx->expr(0));   //visit left operand, then move resulting value into lhs
   auto lhs = visitedExpr;
 
-  visit(ctx->expr(1));
+  visit(ctx->expr(1));   //visit right operand, then move resulting value into rhs
   auto rhs = visitedExpr;
 
-  visitedExpr = std::make_shared<ASTBinaryExpr>(op, lhs, rhs);
+  visitedExpr = std::make_shared<ASTBinaryExpr>(op, lhs, rhs); //Call constructor for AST expr
 
   LOG_S(1) << "Built AST node " << *visitedExpr;
 
@@ -180,7 +202,7 @@ void ASTBuilder::visitBinaryExpr(T *ctx, const std::string &op) {
 }
 
 Any ASTBuilder::visitAdditiveExpr(TIPParser::AdditiveExprContext *ctx) {
-  visitBinaryExpr(ctx, opString(ctx->op->getType()));
+  visitBinaryExpr(ctx, opString(ctx->op->getType())); //Convert operator from context to c++ standard string
   return "";
 } // LCOV_EXCL_LINE
 
@@ -432,7 +454,7 @@ Any ASTBuilder::visitIfStmt(TIPParser::IfStmtContext *ctx) {
     elseBody = visitedStmt;
   }
 
-  visitedStmt = std::make_shared<ASTIfStmt>(cond, thenBody, elseBody);
+  visitedStmt = std::make_shared<ASTIfStmt>(cond, thenBody, elseBody); //Create a shared pointer of type ASTIfStmt
 
   LOG_S(1) << "Built AST node " << *visitedStmt;
 

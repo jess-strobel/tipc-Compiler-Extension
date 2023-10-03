@@ -3,11 +3,11 @@ grammar TIP;
 
 ////////////////////// TIP Programs ////////////////////////// 
 
-program : (function)+
-;
+program : (function)+    //function causes ANTLR4 to generate the type FunctionContext
+;                        //Another visualization is viewing program as node of AST, and you can have >= 1 function children
 
 function : nameDeclaration 
-           '(' (nameDeclaration (',' nameDeclaration)*)? ')'
+           '(' (nameDeclaration (',' nameDeclaration)*)? ')'   
            KPOLY?
            '{' (declaration*) (statement*) returnStmt '}' 
 ;
@@ -38,6 +38,7 @@ nameDeclaration : IDENTIFIER ;
 //
 expr : expr '(' (expr (',' expr)*)? ')' 	#funAppExpr
      | expr '.' IDENTIFIER 			#accessExpr
+     | expr '[' expr ']'        #arrBinRefOpExpr
      | '*' expr 				#deRefExpr
      | SUB expr				    #negNumber
      | op=SUB expr              #arithmeticNegExpr
@@ -47,15 +48,14 @@ expr : expr '(' (expr (',' expr)*)? ')' 	#funAppExpr
      | expr op=(ADD | SUB) expr 		    #additiveExpr
      | expr op=(GT | LT | LTE | GTE) expr 	#relationalExpr
      | expr op=(EQ | NE) expr 			    #equalityExpr
-     | expr op=(AND | OR) expr  #binaryOpExpr
-     | expr '?' expr ':' expr   #ternaryCondExpr
+     | expr op=AND expr         #andOpExpr
+     | expr op=OR expr          #orOpExpr
+     | <assoc=right> expr '?' expr ':' expr   #ternaryCondExpr 
      | arrayConstructorExpr     #arrConstructorExpr
      | '#' expr                 #arrLenOpExpr
-     | expr '[' expr ']'        #arrBinRefOpExpr
      | IDENTIFIER				#varExpr
      | NUMBER					#numExpr
-     | T                        #trueExpr
-     | F                        #falseExpr
+     | (T | F)                  #boolExpr
      | KINPUT					#inputExpr
      | KALLOC expr				#allocExpr
      | KNULL					#nullExpr
