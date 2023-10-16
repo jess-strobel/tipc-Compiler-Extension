@@ -34,3 +34,8 @@
 #include "ASTStmt.h"
 #include "ASTVariableExpr.h"
 #include "ASTWhileStmt.h"
+#include "ASTDecStmt.h"
+#include "ASTForItrStmt.h"
+#include "ASTForRangeStmt.h"
+#include "ASTIncStmt.h"
+#include "ASTTernaryCondExpr.h"
