@@ -15,7 +15,7 @@ FunctionNameCollector::build(ASTProgram *p) {
 bool FunctionNameCollector::visit(ASTFunction *element) {
   auto decl = element->getDecl();
   // check to see if the name has been declared
-  if (fMap.count(decl->getName()) == 0) {
+  if (fMap.count(decl->getName()) == 0) { // if not insert AST Decl node into map
     auto declPolyPair = std::make_pair(decl, element->isPoly());
     fMap.insert(std::pair<std::string, std::pair<ASTDeclNode *, bool>>(
         decl->getName(), declPolyPair));

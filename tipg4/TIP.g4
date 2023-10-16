@@ -40,8 +40,7 @@ expr : expr '(' (expr (',' expr)*)? ')' 	#funAppExpr
      | expr '.' IDENTIFIER 			#accessExpr
      | expr '[' expr ']'        #arrBinRefOpExpr
      | '*' expr 				#deRefExpr
-     | SUB expr				    #negNumber
-     | op=SUB expr              #arithmeticNegExpr
+     | SUB expr				    #negExpr
      | '&' expr					#refExpr
      | NOT expr                 #notExpr
      | expr op=(MUL | DIV | MOD) expr 		#multiplicativeExpr

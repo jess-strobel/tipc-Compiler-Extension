@@ -31,7 +31,7 @@ void LocalNameCollector::endVisit(ASTDeclNode *element) {
     // is in the function map so we skip it
     first = false;
   } else {
-    if (fMap.count(element->getName()) == 0) {
+    if (fMap.count(element->getName()) == 0) { //AST Decl is not in function map, but is in current map (redeclaration error)
       if (curMap.count(element->getName()) == 0) {
         LOG_S(1) << "Adding var [[" << element->getName() << "@"
                  << element->getLine() << ":" << element->getColumn()
