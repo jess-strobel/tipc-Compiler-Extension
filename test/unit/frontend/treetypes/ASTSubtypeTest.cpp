@@ -2,6 +2,7 @@
 #include "ASTVisitor.h"
 #include "ExceptionContainsWhat.h"
 #include <sstream>
+#include "AST.h"
 // #include "FrontEnd.h"
 // #include "ParseError.h"
 // #include "ParserHelper.h"
@@ -19,6 +20,6 @@ TEST_CASE("ASTSubtypeTest: instance of ASTTernaryCondExpr can be created ", "[AS
 //     )";
 
   //ASTTernaryCondExpr *expectedTernaryCondExpr = ASTTernaryCondExpr(ASTBinaryExpr(">", ASTNumberExpr(10), ASTNumberExpr(5)), ASTNumberExpr(10), ASTNumberExpr(5));
-  auto expected = std::make_unique<ASTIncStmt>(50);
+  auto expected = std::make_shared<ASTIncStmt>(50);
   REQUIRE(expected != nullptr);
 }

@@ -1,4 +1,5 @@
 #include "ASTHelper.h"
+#include "AST.h"
 
 #include <catch2/catch_test_macros.hpp>
 
@@ -36,6 +37,8 @@ public:
     void endVisit(ASTReturnStmt * element) { record(element); }
     void endVisit(ASTErrorStmt * element) { record(element); }
     void endVisit(ASTBlockStmt * element) { record(element); }
+    void endVisit(ASTDecStmt * element) { record(element); }
+    void endVisit(ASTIncStmt * element) { record(element); }
 };
 
 // Helper function that checks for raw node pointer in list
@@ -51,17 +54,9 @@ bool contains(std::vector<std::shared_ptr<ASTNode>> nodeList, ASTNode * nodeP) {
 }
 
 TEST_CASE("ASTNodeTest: ASTAssign", "[ASTNode]") {
-  auto rhs = std::make_unique<ASTNumberExpr>(42);
-  auto lhs = std::make_unique<ASTVariableExpr>("x");
-
-  // Record the raw pointers for these values because rhs and lhs will not be 
-  // usable after the call to the constructor below.  This is because of the
-  // move semantics associated with unique pointers, i.e., after the move the
-  // locals rhs and lhs are nullptrs
-  auto rhsValue = rhs.get();
-  auto lhsValue = lhs.get();
-
-  auto assign = std::make_unique<ASTAssignStmt>(std::move(lhs), std::move(rhs));
+  auto rhs = std::make_shared<ASTNumberExpr>(42);
+  auto lhs = std::make_shared<ASTVariableExpr>("x");
+  auto assign = std::make_shared<ASTAssignStmt>(lhs, rhs);
 
   // Test Print Method
   std::stringstream nodePrintStream;
@@ -69,19 +64,215 @@ TEST_CASE("ASTNodeTest: ASTAssign", "[ASTNode]") {
   REQUIRE(nodePrintStream.str() == "x = 42;");
 
   // Test getters 
-  REQUIRE(rhsValue == assign->getRHS());
-  REQUIRE(lhsValue == assign->getLHS());
+  REQUIRE(rhs.get() == assign->getRHS());
+  REQUIRE(lhs.get() == assign->getLHS());
 
   // Test getChildren
   auto children = assign->getChildren();
   REQUIRE(children.size() == 2);
-  REQUIRE(contains(children, rhsValue));
-  REQUIRE(contains(children, lhsValue));
+  REQUIRE(contains(children, rhs.get()));
+  REQUIRE(contains(children, lhs.get()));
 
   // Test accept
   RecordPostPrint visitor;
   assign->accept(&visitor);
   std::string expected[] = { "x", "42", "x = 42;" };
+  for (int i=0; i < 3; i++) {
+    REQUIRE(visitor.postPrintStrings[i] == expected[i]);
+  }
+}
+
+TEST_CASE("ASTIncStmtTest", "[ASTIncStmt]") {
+  auto num = std::make_shared<ASTNumberExpr>(42);
+  auto lhs = std::make_shared<ASTIncStmt>(num);
+
+  // Test Print Method
+  std::stringstream nodePrintStream;
+  nodePrintStream << *lhs;
+  REQUIRE(nodePrintStream.str() == "42++");
+
+  // Test getters 
+  REQUIRE(lhs->getNum() == num.get());
+
+  // Test getChildren
+  auto children = lhs->getChildren();
+  REQUIRE(children.size() == 1);
+  REQUIRE(contains(children, num.get()));
+
+  // Test accept
+  RecordPostPrint visitor;
+  lhs->accept(&visitor);
+  std::string expected[] = { "42" };
+  for (int i=0; i < 1; i++) {
+    REQUIRE(visitor.postPrintStrings[i] == expected[i]);
+  }
+}
+
+TEST_CASE("ASTDecStmtTest", "[ASTDecStmt]") {
+  auto num = std::make_shared<ASTNumberExpr>(42);
+  auto lhs = std::make_shared<ASTDecStmt>(num);
+
+  // Test Print Method
+  std::stringstream nodePrintStream;
+  nodePrintStream << *lhs;
+  REQUIRE(nodePrintStream.str() == "42--");
+
+  // Test getters 
+  REQUIRE(lhs->getNum() == num.get());
+
+  // Test getChildren
+  auto children = lhs->getChildren();
+  REQUIRE(children.size() == 1);
+  REQUIRE(contains(children, num.get()));
+
+  // Test accept
+  RecordPostPrint visitor;
+  lhs->accept(&visitor);
+  std::string expected[] = { "42" };
+  for (int i=0; i < 1; i++) {
+    REQUIRE(visitor.postPrintStrings[i] == expected[i]);
+  }
+}
+
+TEST_CASE("ASTTernaryCondExprTest", "[ASTTernaryCondExpr]") {
+  auto left = std::make_shared<ASTNumberExpr>(20);
+  auto right = std::make_shared<ASTNumberExpr>(10);
+  auto cond = std::make_shared<ASTBinaryExpr>(">", left, right);
+  auto rhs = std::make_shared<ASTTernaryCondExpr>(cond, left, right);
+
+  // Test Print Method
+  std::stringstream nodePrintStream;
+  nodePrintStream << *rhs;
+  REQUIRE(nodePrintStream.str() == "(20>10) ? 20 : 10");
+
+  // Test getters 
+  REQUIRE(rhs->getCondition() == cond.get());
+  REQUIRE(rhs->getThen() == left.get());
+  REQUIRE(rhs->getElse() == right.get());
+
+  // Test getChildren
+  auto children = rhs->getChildren();
+  REQUIRE(children.size() == 3);
+  REQUIRE(contains(children, cond.get()));
+  REQUIRE(contains(children, left.get()));
+  REQUIRE(contains(children, right.get()));
+
+  // Test accept
+  RecordPostPrint visitor;
+  rhs->accept(&visitor);
+  std::string expected[] = { "20", "10", "(20>10)", "20", "10" };
+  for (int i=0; i < 5; i++) {
+    REQUIRE(visitor.postPrintStrings[i] == expected[i]);
+  }
+}
+
+TEST_CASE("ASTTForItrStmtTest", "[ASTForItrStmt]") {
+  auto num = std::make_shared<ASTNumberExpr>(42);
+  auto stmt = std::make_shared<ASTIncStmt>(num);
+  auto var = std::make_shared<ASTVariableExpr>("x");
+  auto iterable = std::make_shared<ASTVariableExpr>("arr");
+  auto itr = std::make_shared<ASTForItrStmt>(var, iterable, stmt);
+
+  // Test Print Method
+  std::stringstream nodePrintStream;
+  nodePrintStream << *itr;
+  REQUIRE(nodePrintStream.str() == "for (x : arr) 42++");
+
+  // Test getters 
+  REQUIRE(itr->getVar() == var.get());
+  REQUIRE(itr->getIterable() == iterable.get());
+  REQUIRE(itr->getStmt() == stmt.get());
+
+  // Test getChildren
+  auto children = itr->getChildren();
+  REQUIRE(children.size() == 3);
+  REQUIRE(contains(children, var.get()));
+  REQUIRE(contains(children, iterable.get()));
+  REQUIRE(contains(children, stmt.get()));
+
+  // Test accept
+  RecordPostPrint visitor;
+  itr->accept(&visitor);
+  std::string expected[] = { "x", "arr", "42" };
+  for (int i=0; i < 3; i++) {
+    REQUIRE(visitor.postPrintStrings[i] == expected[i]);
+  }
+}
+
+TEST_CASE("ASTTForRangeStmtTest", "[ASTForRangeStmt]") {
+  auto num = std::make_shared<ASTNumberExpr>(42);
+  auto num2 = std::make_shared<ASTNumberExpr>(50);
+  auto stmt = std::make_shared<ASTIncStmt>(num);
+  auto var = std::make_shared<ASTVariableExpr>("x");
+  auto range = std::make_shared<ASTForRangeStmt>(var, num, num2, num, stmt);
+
+  // Test Print Method
+  std::stringstream nodePrintStream;
+  nodePrintStream << *range;
+  REQUIRE(nodePrintStream.str() == "for (x : 42 .. 50 by 42) 42++");
+
+  // Test getters 
+  REQUIRE(range->getVar() == var.get());
+  REQUIRE(range->getLBound() == num.get());
+  REQUIRE(range->getRBound() == num2.get());
+  REQUIRE(range->getStep() == num.get());
+  REQUIRE(range->getStmt() == stmt.get());
+
+  // Test getChildren
+  auto children = range->getChildren();
+  REQUIRE(children.size() == 5);
+  REQUIRE(contains(children, var.get()));
+  REQUIRE(contains(children, num.get()));
+  REQUIRE(contains(children, num2.get()));
+  REQUIRE(contains(children, num.get()));
+  REQUIRE(contains(children, stmt.get()));
+
+  // Test accept
+  RecordPostPrint visitor;
+  range->accept(&visitor);
+  std::string expected[] = { "x", "42", "50", "42", "42", "42++" };
+  for (int i=0; i < 6; i++) {
+    REQUIRE(visitor.postPrintStrings[i] == expected[i]);
+  }
+}
+
+TEST_CASE("ASTRelationalOperatorsTest", "[ASTBinaryExpr]") {
+  auto left = std::make_shared<ASTNumberExpr>(20);
+  auto right = std::make_shared<ASTNumberExpr>(10);
+  auto cond = std::make_shared<ASTBinaryExpr>(">=", left, right);
+  auto cond2 = std::make_shared<ASTBinaryExpr>("<", left, right);
+  auto cond3 = std::make_shared<ASTBinaryExpr>("<=", left, right);
+
+  // Test Print Method
+  std::stringstream nodePrintStream;
+  nodePrintStream << *cond;
+  REQUIRE(nodePrintStream.str() == "(20>=10)");
+
+  std::stringstream node2PrintStream;
+  node2PrintStream << *cond2;
+  REQUIRE(node2PrintStream.str() == "(20<10)");
+
+  std::stringstream node3PrintStream;
+  node3PrintStream << *cond3;
+  REQUIRE(node3PrintStream.str() == "(20<=10)");
+
+  // Test getters 
+  REQUIRE(cond->getOp() == ">=");
+  REQUIRE(cond->getLeft() == left.get());
+  REQUIRE(cond->getRight() == right.get());
+  REQUIRE(cond2->getOp() == "<");
+  REQUIRE(cond3->getOp() == "<=");
+
+  // Test getChildren
+  auto children = cond->getChildren();
+  REQUIRE(children.size() == 2);
+  REQUIRE(contains(children, left.get()));
+  REQUIRE(contains(children, right.get()));
+
+  // Test accept
+  RecordPostPrint visitor;
+  cond->accept(&visitor);
+  std::string expected[] = { "20", "10", "(20>=10)"};
   for (int i=0; i < 3; i++) {
     REQUIRE(visitor.postPrintStrings[i] == expected[i]);
   }

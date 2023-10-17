@@ -1108,3 +1108,23 @@ llvm::Value *ASTReturnStmt::codegen() {
   Value *argVal = getArg()->codegen();
   return Builder.CreateRet(argVal);
 } // LCOV_EXCL_LINE
+
+llvm::Value *ASTIncStmt::codegen() { 
+  return 0; 
+}
+
+llvm::Value *ASTDecStmt::codegen() { 
+  return 0; 
+}
+
+llvm::Value *ASTForRangeStmt::codegen() { 
+  return 0; 
+}
+
+llvm::Value *ASTForItrStmt::codegen() { 
+  return 0; 
+}
+
+llvm::Value *ASTTernaryCondExpr::codegen() { 
+  return 0; 
+}
