@@ -1,1 +1,1 @@
-operators() { var x, y; for (x : 2 . y) {} return x; }
+main() { var x, y; for (x : 2 . y) {} return x; }

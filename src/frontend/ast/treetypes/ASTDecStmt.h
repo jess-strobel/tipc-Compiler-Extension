@@ -8,7 +8,7 @@ class ASTDecStmt : public ASTStmt {
 
 public:
     std::vector<std::shared_ptr<ASTNode>> getChildren() override;
-    ASTDecStmt(std::shared_ptr<ASTExpr> NUM)
+    ASTDecStmt(std::shared_ptr<ASTExpr> NUM) : NUM(NUM) {}
     ASTExpr *getNum() const { return NUM.get(); }
 
     void accept(ASTVisitor *visitor) override;

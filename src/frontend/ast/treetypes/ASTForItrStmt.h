@@ -12,11 +12,11 @@ class ASTForItrStmt : public ASTStmt {
 public:
   std::vector<std::shared_ptr<ASTNode>> getChildren() override;
   ASTForItrStmt(std::shared_ptr<ASTExpr> VAR, std::shared_ptr<ASTExpr> ITERABLE,
-            std::shared_ptr<ASTStmt> STMT)
+                std::shared_ptr<ASTStmt> STMT)
       : VAR(VAR), ITERABLE(ITERABLE), STMT(STMT) {}
   ASTExpr *getVar() const { return VAR.get(); }
   ASTExpr *getIterable() const { return ITERABLE.get(); }
-  ASTExpr *getStmt() const { return STMT.get(); }
+  ASTStmt *getStmt() const { return STMT.get(); }
 
   void accept(ASTVisitor *visitor) override;
   llvm::Value *codegen() override;

@@ -1,7 +1,7 @@
 #include "ASTIncStmt.h"
 #include "ASTVisitor.h"
 
-void accept(ASTVisitor *visitor) {
+void ASTIncStmt::accept(ASTVisitor *visitor) {
     if (visitor->visit(this)) {
         getNum()->accept(visitor);
     }

@@ -511,14 +511,6 @@ public class TIPParser extends Parser {
 		public AndOpExprContext(ExprContext ctx) { copyFrom(ctx); }
 	}
 	@SuppressWarnings("CheckReturnValue")
-	public static class NegExprContext extends ExprContext {
-		public TerminalNode SUB() { return getToken(TIPParser.SUB, 0); }
-		public ExprContext expr() {
-			return getRuleContext(ExprContext.class,0);
-		}
-		public NegExprContext(ExprContext ctx) { copyFrom(ctx); }
-	}
-	@SuppressWarnings("CheckReturnValue")
 	public static class RefExprContext extends ExprContext {
 		public ExprContext expr() {
 			return getRuleContext(ExprContext.class,0);
@@ -546,6 +538,14 @@ public class TIPParser extends Parser {
 			return getRuleContext(ExprContext.class,i);
 		}
 		public TernaryCondExprContext(ExprContext ctx) { copyFrom(ctx); }
+	}
+	@SuppressWarnings("CheckReturnValue")
+	public static class NegNumberExprContext extends ExprContext {
+		public TerminalNode SUB() { return getToken(TIPParser.SUB, 0); }
+		public ExprContext expr() {
+			return getRuleContext(ExprContext.class,0);
+		}
+		public NegNumberExprContext(ExprContext ctx) { copyFrom(ctx); }
 	}
 	@SuppressWarnings("CheckReturnValue")
 	public static class BoolExprContext extends ExprContext {
@@ -632,7 +632,7 @@ public class TIPParser extends Parser {
 				break;
 			case SUB:
 				{
-				_localctx = new NegExprContext(_localctx);
+				_localctx = new NegNumberExprContext(_localctx);
 				_ctx = _localctx;
 				_prevctx = _localctx;
 				setState(93);

@@ -13,8 +13,8 @@ public:
             std::shared_ptr<ASTExpr> ELSE)
       : COND(COND), THEN(THEN), ELSE(ELSE) {}
   ASTExpr *getCondition() const { return COND.get(); }
-  ASTStmt *getThen() const { return THEN.get(); }
-  ASTStmt *getElse() const { return ELSE.get(); }
+  ASTExpr *getThen() const { return THEN.get(); }
+  ASTExpr *getElse() const { return ELSE.get(); }
   
   void accept(ASTVisitor *visitor) override;
   llvm::Value *codegen() override;
