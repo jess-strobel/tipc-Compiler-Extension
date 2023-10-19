@@ -78,4 +78,20 @@ public:
   virtual void endVisit(ASTForRangeStmt *element) {}
   virtual bool visit(ASTForItrStmt *element) { return true; }
   virtual void endVisit(ASTForItrStmt *element) {}  
+  virtual bool visit(ASTArrConstructorExpr *element) { return true; }
+  virtual void endVisit(ASTArrConstructorExpr *element) {} 
+  virtual bool visit(ASTArrLenOpExpr *element) { return true; }
+  virtual void endVisit(ASTArrLenOpExpr *element) {}   
+  virtual bool visit(ASTArrOrConstructorExpr *element) { return true; }
+  virtual void endVisit(ASTArrOrConstructorExpr *element) {}  
+  virtual bool visit(ASTArrRefExpr *element) { return true; }
+  virtual void endVisit(ASTArrRefExpr *element) {}  
+  virtual bool visit(ASTFalseExpr *element) { return true; }
+  virtual void endVisit(ASTFalseExpr *element) {}  
+  virtual bool visit(ASTNegExpr *element) { return true; }
+  virtual void endVisit(ASTNegExpr *element) {}  
+  virtual bool visit(ASTNotExpr *element) { return true; }
+  virtual void endVisit(ASTNotExpr *element) {}  
+  virtual bool visit(ASTTrueExpr *element) { return true; }
+  virtual void endVisit(ASTTrueExpr *element) {}  
 };
