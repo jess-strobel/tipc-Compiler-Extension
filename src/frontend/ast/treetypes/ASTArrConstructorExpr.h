@@ -9,7 +9,7 @@ class ASTArrConstructorExpr : public ASTExpr {
 
 public:
     std::vector<std::shared_ptr<ASTNode>> getChildren() override;
-    ASTArrConstructorExpr(std::vector<shared_ptr<ASTExpr>> ARGS)
+    ASTArrConstructorExpr(std::vector<std::shared_ptr<ASTExpr>> ARGS)
             : ARGS(ARGS) {}
     std::vector<ASTExpr *> getArgs() const;
     void accept(ASTVisitor *visitor) override;
