@@ -1128,3 +1128,7 @@ llvm::Value *ASTForItrStmt::codegen() {
 llvm::Value *ASTTernaryCondExpr::codegen() { 
   return 0; 
 }
+
+llvm::Value *ASTNotExpr::codegen() { 
+  return 0; 
+}

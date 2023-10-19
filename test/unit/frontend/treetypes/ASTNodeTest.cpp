@@ -39,6 +39,7 @@ public:
     void endVisit(ASTBlockStmt * element) { record(element); }
     void endVisit(ASTDecStmt * element) { record(element); }
     void endVisit(ASTIncStmt * element) { record(element); }
+    void endVisit(ASTNotExpr * element) { record(element); }
 };
 
 // Helper function that checks for raw node pointer in list
@@ -81,6 +82,36 @@ TEST_CASE("ASTNodeTest: ASTAssign", "[ASTNode]") {
     REQUIRE(visitor.postPrintStrings[i] == expected[i]);
   }
 }
+
+// ---------------- test creation in progress ------------------------ //
+
+TEST_CASE("ASTNodeTest: ASTNot", "[ASTNode]") {
+  auto rhs = std::make_shared<ASTVariableExpr>("x");
+  auto notexpr = std::make_shared<ASTNotExpr>(rhs);
+
+  // test print method
+  std::stringstream nodePrintStream;
+  nodePrintStream << *notexpr;
+  REQUIRE(nodePrintStream.str() == "not x;");
+
+  // test getters
+  REQUIRE(rhs.get() == notexpr->getRight());
+
+  // test getchildren
+  auto children = notexpr->getChildren();
+  REQUIRE(children.size() == 1);
+  REQUIRE(contains(children, rhs.get()));
+
+  // test accept
+  RecordPostPrint visitor;
+  notexpr->accept(&visitor);
+  std::string expected[] = { "x", "not x" };
+  for (int i=0; i < 2; i++) {
+    REQUIRE(visitor.postPrintStrings[i] == expected[i]);
+  }
+}
+
+// ---------------- test creation in progress ------------------------ //
 
 TEST_CASE("ASTIncStmtTest", "[ASTIncStmt]") {
   auto num = std::make_shared<ASTNumberExpr>(42);
