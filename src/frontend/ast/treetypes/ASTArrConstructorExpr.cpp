@@ -14,7 +14,7 @@ std::vector<ASTExpr *> ASTArrConstructorExpr::getArgs() const {
     return rawRefs(ARGS);
 }
 
-void ASTArrOrConstructorExpr::accept(ASTVisitor *visitor) {
+void ASTArrConstructorExpr::accept(ASTVisitor *visitor) {
     if (visitor->visit(this)) {
         for (auto a : getArgs()) {
             a->accept(visitor);
