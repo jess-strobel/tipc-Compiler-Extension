@@ -2,7 +2,7 @@
 #include "ASTVisitor.h"
 
 void ASTTrueExpr::accept(ASTVisitor *visitor) {
-    visitor->visit(this)
+    visitor->visit(this);
     visitor->endVisit(this);
 }
 
