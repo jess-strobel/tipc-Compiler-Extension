@@ -13,8 +13,8 @@ public:
             : ARGS(ARGS) {}
     std::vector<ASTExpr *> getArgs() const;
     void accept(ASTVisitor *visitor) override;
-    llvm:Value *codegen() override;
+    llvm::Value *codegen() override;
 
 protected:
     std::ostream &print(std::ostream &out) const override;
-}
+};
