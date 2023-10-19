@@ -11,6 +11,14 @@ target_sources(
           ${CMAKE_CURRENT_SOURCE_DIR}/treetypes/ASTAccessExpr.h
           ${CMAKE_CURRENT_SOURCE_DIR}/treetypes/ASTAllocExpr.cpp
           ${CMAKE_CURRENT_SOURCE_DIR}/treetypes/ASTAllocExpr.h
+          ${CMAKE_CURRENT_SOURCE_DIR}/treetypes/ASTArrConstructorExpr.cpp
+          ${CMAKE_CURRENT_SOURCE_DIR}/treetypes/ASTArrConstructorExpr.h
+          ${CMAKE_CURRENT_SOURCE_DIR}/treetypes/ASTArrLenOpExpr.cpp
+          ${CMAKE_CURRENT_SOURCE_DIR}/treetypes/ASTArrLenOpExpr.h
+          ${CMAKE_CURRENT_SOURCE_DIR}/treetypes/ASTArrOrConstructorExpr.cpp
+          ${CMAKE_CURRENT_SOURCE_DIR}/treetypes/ASTArrOrConstructorExpr.h
+          ${CMAKE_CURRENT_SOURCE_DIR}/treetypes/ASTArrRefExpr.cpp
+          ${CMAKE_CURRENT_SOURCE_DIR}/treetypes/ASTArrRefExpr.h
           ${CMAKE_CURRENT_SOURCE_DIR}/treetypes/ASTAssignStmt.cpp
           ${CMAKE_CURRENT_SOURCE_DIR}/treetypes/ASTAssignStmt.h
           ${CMAKE_CURRENT_SOURCE_DIR}/treetypes/ASTBinaryExpr.cpp
@@ -28,6 +36,8 @@ target_sources(
           ${CMAKE_CURRENT_SOURCE_DIR}/treetypes/ASTErrorStmt.cpp
           ${CMAKE_CURRENT_SOURCE_DIR}/treetypes/ASTErrorStmt.h
           ${CMAKE_CURRENT_SOURCE_DIR}/treetypes/ASTExpr.h
+          ${CMAKE_CURRENT_SOURCE_DIR}/treetypes/ASTFalseExpr.cpp
+          ${CMAKE_CURRENT_SOURCE_DIR}/treetypes/ASTFalseExpr.h
           ${CMAKE_CURRENT_SOURCE_DIR}/treetypes/ASTFieldExpr.cpp
           ${CMAKE_CURRENT_SOURCE_DIR}/treetypes/ASTFieldExpr.h
           ${CMAKE_CURRENT_SOURCE_DIR}/treetypes/ASTForItrStmt.cpp
@@ -44,7 +54,11 @@ target_sources(
           ${CMAKE_CURRENT_SOURCE_DIR}/treetypes/ASTIncStmt.cpp
           ${CMAKE_CURRENT_SOURCE_DIR}/treetypes/ASTInputExpr.cpp
           ${CMAKE_CURRENT_SOURCE_DIR}/treetypes/ASTInputExpr.h
+          ${CMAKE_CURRENT_SOURCE_DIR}/treetypes/ASTNegExpr.cpp
+          ${CMAKE_CURRENT_SOURCE_DIR}/treetypes/ASTNegExpr.h
           ${CMAKE_CURRENT_SOURCE_DIR}/treetypes/ASTNode.h
+          ${CMAKE_CURRENT_SOURCE_DIR}/treetypes/ASTNotExpr.cpp
+          ${CMAKE_CURRENT_SOURCE_DIR}/treetypes/ASTNotExpr.h
           ${CMAKE_CURRENT_SOURCE_DIR}/treetypes/ASTNullExpr.cpp
           ${CMAKE_CURRENT_SOURCE_DIR}/treetypes/ASTNullExpr.h
           ${CMAKE_CURRENT_SOURCE_DIR}/treetypes/ASTNumberExpr.cpp
@@ -62,6 +76,8 @@ target_sources(
           ${CMAKE_CURRENT_SOURCE_DIR}/treetypes/ASTStmt.h
           ${CMAKE_CURRENT_SOURCE_DIR}/treetypes/ASTTernaryCondExpr.cpp
           ${CMAKE_CURRENT_SOURCE_DIR}/treetypes/ASTTernaryCondExpr.h
+          ${CMAKE_CURRENT_SOURCE_DIR}/treetypes/ASTTrueExpr.cpp
+          ${CMAKE_CURRENT_SOURCE_DIR}/treetypes/ASTTrueExpr.h
           ${CMAKE_CURRENT_SOURCE_DIR}/treetypes/ASTVariableExpr.cpp
           ${CMAKE_CURRENT_SOURCE_DIR}/treetypes/ASTVariableExpr.h
           ${CMAKE_CURRENT_SOURCE_DIR}/treetypes/ASTWhileStmt.cpp
