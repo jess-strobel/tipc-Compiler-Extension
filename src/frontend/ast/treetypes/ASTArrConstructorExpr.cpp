@@ -1,5 +1,6 @@
 #include "ASTArrConstructorExpr.h"
 #include "ASTVisitor.h"
+#include "ASTinternal.h"
 
 ASTArrConstructorExpr::ASTArrConstructorExpr(
         std::vector<std::shared_ptr<ASTExpr>> ARGS) {
