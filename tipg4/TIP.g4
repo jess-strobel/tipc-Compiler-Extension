@@ -38,9 +38,9 @@ nameDeclaration : IDENTIFIER ;
 //
 expr : expr '(' (expr (',' expr)*)? ')' 	#funAppExpr
      | expr '.' IDENTIFIER 			#accessExpr
-     | expr '[' expr ']'        #arrBinRefOpExpr
+     | expr '[' expr ']'        #arrRefExpr
      | '*' expr 				#deRefExpr
-     | SUB expr				    #negNumber
+     | SUB expr				    #negExpr
      | '&' expr					#refExpr
      | NOT expr                 #notExpr
      | expr op=(MUL | DIV | MOD) expr 		#multiplicativeExpr
@@ -50,11 +50,13 @@ expr : expr '(' (expr (',' expr)*)? ')' 	#funAppExpr
      | expr op=AND expr         #andOpExpr
      | expr op=OR expr          #orOpExpr
      | <assoc=right> expr '?' expr ':' expr   #ternaryCondExpr 
-     | arrayConstructorExpr     #arrConstructorExpr
+     | arrConstructorExpr       #arrConstructorExpr
+     | arrOrConstructorExpr     #arrOrConstructorExpr
      | '#' expr                 #arrLenOpExpr
      | IDENTIFIER				#varExpr
      | NUMBER					#numExpr
-     | (T | F)                  #boolExpr
+     | T                        #trueExpr
+     | F                        #falseExpr
      | KINPUT					#inputExpr
      | KALLOC expr				#allocExpr
      | KNULL					#nullExpr
@@ -62,7 +64,8 @@ expr : expr '(' (expr (',' expr)*)? ')' 	#funAppExpr
      | '(' expr ')'				#parenExpr
 ;
 
-arrayConstructorExpr : '[' ((expr (',' expr)*)? | expr ' of ' expr) ']' ;
+arrConstructorExpr : '[' (expr (',' expr)*)? ']' ;
+arrOrConstructorExpr : '[' (expr ' of ' expr) ']' ;
 
 recordExpr : '{' (fieldExpr (',' fieldExpr)*)? '}' ;
 
