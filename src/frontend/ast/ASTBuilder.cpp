@@ -405,18 +405,18 @@ Any ASTBuilder::visitFalseExpr(TIPParser::FalseExprContext *ctx) {
   return "";
 } // LCOV_EXCL_LINE
 
-// check this w one above
-Any ASTBuilder::visitNegExpr(TIPParser::NegExprContext *ctx) {
-  visit(ctx->expr());
-  visitedExpr = std::make_shared<ASTNegExpr>(visitedExpr);
+// // check this w one above
+// Any ASTBuilder::visitNegExpr(TIPParser::NegExprContext *ctx) {
+//   visit(ctx->expr());
+//   visitedExpr = std::make_shared<ASTNegExpr>(visitedExpr);
 
-  LOG_S(1) << "Built AST node " << *visitedExpr;
+//   LOG_S(1) << "Built AST node " << *visitedExpr;
 
-  // Set source location
-  visitedExpr->setLocation(ctx->getStart()->getLine(),
-                           ctx->getStart()->getCharPositionInLine());
-  return "";
-} // LCOV_EXCL_LINE
+//   // Set source location
+//   visitedExpr->setLocation(ctx->getStart()->getLine(),
+//                            ctx->getStart()->getCharPositionInLine());
+//   return "";
+// } // LCOV_EXCL_LINE
 
 Any ASTBuilder::visitNotExpr(TIPParser::NotExprContext *ctx) {
   visit(ctx->expr());

@@ -43,7 +43,7 @@ public:
    *  constructs an appropriate AST node for the parse-tree node
   */
   Any visitFunction(TIPParser::FunctionContext *ctx) override;
-  //Any visitNegNumber(TIPParser::NegNumberContext *ctx) override;
+  Any visitNegNumber(TIPParser::NegNumberContext *ctx) override;
   Any visitAdditiveExpr(TIPParser::AdditiveExprContext *ctx) override;
   Any visitRelationalExpr(TIPParser::RelationalExprContext *ctx) override;
   Any visitMultiplicativeExpr(
@@ -75,7 +75,7 @@ public:
   Any visitArrOrConstructorExpr(TIPParser::ArrOrConstructorExprContext *ctx) override;
   Any visitArrRefExpr(TIPParser::ArrRefExprContext *ctx) override;
   Any visitFalseExpr(TIPParser::FalseExprContext *ctx) override;
-  Any visitNegExpr(TIPParser::NegExprContext *ctx) override;
+  //Any visitNegExpr(TIPParser::NegExprContext *ctx) override;
   Any visitNotExpr(TIPParser::NotExprContext *ctx) override;
   Any visitTrueExpr(TIPParser::TrueExprContext *ctx) override;
 };
