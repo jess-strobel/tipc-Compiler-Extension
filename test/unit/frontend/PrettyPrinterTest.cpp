@@ -503,3 +503,25 @@ TEST_CASE("PrettyPrinter: Test arr const", "[PrettyPrinter]") {
   expected = GeneralHelper::removeTrailingWhitespace(expected);
   REQUIRE(ppString == expected);
 }
+
+TEST_CASE("PrettyPrinter: Test binary exprs", "[PrettyPrinter]") {
+  std::stringstream stream;
+  stream << R"(prog() { var x; x = true and false; y = false or true; z = 5 % 3; return 0; })";
+
+  std::string expected = R"(prog() 
+{
+  var x;
+  x = false;
+  y = true;
+  z = (5 % 3);
+  return 0;
+}
+)";
+
+  std::stringstream pp;
+  auto ast = ASTHelper::build_ast(stream);
+  PrettyPrinter::print(ast.get(), pp, ' ', 2);
+  std::string ppString = GeneralHelper::removeTrailingWhitespace(pp.str());
+  expected = GeneralHelper::removeTrailingWhitespace(expected);
+  REQUIRE(ppString == expected);
+}
