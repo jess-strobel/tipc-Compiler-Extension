@@ -1129,6 +1129,34 @@ llvm::Value *ASTTernaryCondExpr::codegen() {
   return 0; 
 }
 
+llvm::Value *ASTArrConstructorExpr::codegen() { 
+  return 0; 
+}
+
+llvm::Value *ASTArrLenOpExpr::codegen() { 
+  return 0; 
+}
+
+llvm::Value *ASTArrOrConstructorExpr::codegen() { 
+  return 0; 
+}
+
+llvm::Value *ASTArrRefExpr::codegen() { 
+  return 0; 
+}
+
+llvm::Value *ASTFalseExpr::codegen() { 
+  return 0; 
+}
+
+llvm::Value *ASTNegExpr::codegen() { 
+  return 0; 
+}
+
 llvm::Value *ASTNotExpr::codegen() { 
+  return 0; 
+}
+
+llvm::Value *ASTTrueExpr::codegen() { 
   return 0; 
 }
