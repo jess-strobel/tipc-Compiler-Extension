@@ -123,6 +123,14 @@ public class TIPParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_program; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof TIPListener ) ((TIPListener)listener).enterProgram(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof TIPListener ) ((TIPListener)listener).exitProgram(this);
+		}
 	}
 
 	public final ProgramContext program() throws RecognitionException {
@@ -187,6 +195,14 @@ public class TIPParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_function; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof TIPListener ) ((TIPListener)listener).enterFunction(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof TIPListener ) ((TIPListener)listener).exitFunction(this);
+		}
 	}
 
 	public final FunctionContext function() throws RecognitionException {
@@ -302,6 +318,14 @@ public class TIPParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_declaration; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof TIPListener ) ((TIPListener)listener).enterDeclaration(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof TIPListener ) ((TIPListener)listener).exitDeclaration(this);
+		}
 	}
 
 	public final DeclarationContext declaration() throws RecognitionException {
@@ -353,6 +377,14 @@ public class TIPParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_nameDeclaration; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof TIPListener ) ((TIPListener)listener).enterNameDeclaration(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof TIPListener ) ((TIPListener)listener).exitNameDeclaration(this);
+		}
 	}
 
 	public final NameDeclarationContext nameDeclaration() throws RecognitionException {
@@ -394,6 +426,14 @@ public class TIPParser extends Parser {
 			return getRuleContext(ExprContext.class,0);
 		}
 		public ArrLenOpExprContext(ExprContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof TIPListener ) ((TIPListener)listener).enterArrLenOpExpr(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof TIPListener ) ((TIPListener)listener).exitArrLenOpExpr(this);
+		}
 	}
 	@SuppressWarnings("CheckReturnValue")
 	public static class RecordRuleContext extends ExprContext {
@@ -401,6 +441,14 @@ public class TIPParser extends Parser {
 			return getRuleContext(RecordExprContext.class,0);
 		}
 		public RecordRuleContext(ExprContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof TIPListener ) ((TIPListener)listener).enterRecordRule(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof TIPListener ) ((TIPListener)listener).exitRecordRule(this);
+		}
 	}
 	@SuppressWarnings("CheckReturnValue")
 	public static class ArrBinRefOpExprContext extends ExprContext {
@@ -411,11 +459,27 @@ public class TIPParser extends Parser {
 			return getRuleContext(ExprContext.class,i);
 		}
 		public ArrBinRefOpExprContext(ExprContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof TIPListener ) ((TIPListener)listener).enterArrBinRefOpExpr(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof TIPListener ) ((TIPListener)listener).exitArrBinRefOpExpr(this);
+		}
 	}
 	@SuppressWarnings("CheckReturnValue")
 	public static class NullExprContext extends ExprContext {
 		public TerminalNode KNULL() { return getToken(TIPParser.KNULL, 0); }
 		public NullExprContext(ExprContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof TIPListener ) ((TIPListener)listener).enterNullExpr(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof TIPListener ) ((TIPListener)listener).exitNullExpr(this);
+		}
 	}
 	@SuppressWarnings("CheckReturnValue")
 	public static class AllocExprContext extends ExprContext {
@@ -424,6 +488,14 @@ public class TIPParser extends Parser {
 			return getRuleContext(ExprContext.class,0);
 		}
 		public AllocExprContext(ExprContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof TIPListener ) ((TIPListener)listener).enterAllocExpr(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof TIPListener ) ((TIPListener)listener).exitAllocExpr(this);
+		}
 	}
 	@SuppressWarnings("CheckReturnValue")
 	public static class NegNumberContext extends ExprContext {
@@ -432,6 +504,14 @@ public class TIPParser extends Parser {
 			return getRuleContext(ExprContext.class,0);
 		}
 		public NegNumberContext(ExprContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof TIPListener ) ((TIPListener)listener).enterNegNumber(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof TIPListener ) ((TIPListener)listener).exitNegNumber(this);
+		}
 	}
 	@SuppressWarnings("CheckReturnValue")
 	public static class ArrConstructorExprContext extends ExprContext {
@@ -439,11 +519,27 @@ public class TIPParser extends Parser {
 			return getRuleContext(ArrayConstructorExprContext.class,0);
 		}
 		public ArrConstructorExprContext(ExprContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof TIPListener ) ((TIPListener)listener).enterArrConstructorExpr(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof TIPListener ) ((TIPListener)listener).exitArrConstructorExpr(this);
+		}
 	}
 	@SuppressWarnings("CheckReturnValue")
 	public static class InputExprContext extends ExprContext {
 		public TerminalNode KINPUT() { return getToken(TIPParser.KINPUT, 0); }
 		public InputExprContext(ExprContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof TIPListener ) ((TIPListener)listener).enterInputExpr(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof TIPListener ) ((TIPListener)listener).exitInputExpr(this);
+		}
 	}
 	@SuppressWarnings("CheckReturnValue")
 	public static class AdditiveExprContext extends ExprContext {
@@ -457,6 +553,14 @@ public class TIPParser extends Parser {
 		public TerminalNode ADD() { return getToken(TIPParser.ADD, 0); }
 		public TerminalNode SUB() { return getToken(TIPParser.SUB, 0); }
 		public AdditiveExprContext(ExprContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof TIPListener ) ((TIPListener)listener).enterAdditiveExpr(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof TIPListener ) ((TIPListener)listener).exitAdditiveExpr(this);
+		}
 	}
 	@SuppressWarnings("CheckReturnValue")
 	public static class RelationalExprContext extends ExprContext {
@@ -472,6 +576,14 @@ public class TIPParser extends Parser {
 		public TerminalNode LTE() { return getToken(TIPParser.LTE, 0); }
 		public TerminalNode GTE() { return getToken(TIPParser.GTE, 0); }
 		public RelationalExprContext(ExprContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof TIPListener ) ((TIPListener)listener).enterRelationalExpr(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof TIPListener ) ((TIPListener)listener).exitRelationalExpr(this);
+		}
 	}
 	@SuppressWarnings("CheckReturnValue")
 	public static class DeRefExprContext extends ExprContext {
@@ -480,11 +592,27 @@ public class TIPParser extends Parser {
 			return getRuleContext(ExprContext.class,0);
 		}
 		public DeRefExprContext(ExprContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof TIPListener ) ((TIPListener)listener).enterDeRefExpr(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof TIPListener ) ((TIPListener)listener).exitDeRefExpr(this);
+		}
 	}
 	@SuppressWarnings("CheckReturnValue")
 	public static class NumExprContext extends ExprContext {
 		public TerminalNode NUMBER() { return getToken(TIPParser.NUMBER, 0); }
 		public NumExprContext(ExprContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof TIPListener ) ((TIPListener)listener).enterNumExpr(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof TIPListener ) ((TIPListener)listener).exitNumExpr(this);
+		}
 	}
 	@SuppressWarnings("CheckReturnValue")
 	public static class ParenExprContext extends ExprContext {
@@ -492,11 +620,27 @@ public class TIPParser extends Parser {
 			return getRuleContext(ExprContext.class,0);
 		}
 		public ParenExprContext(ExprContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof TIPListener ) ((TIPListener)listener).enterParenExpr(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof TIPListener ) ((TIPListener)listener).exitParenExpr(this);
+		}
 	}
 	@SuppressWarnings("CheckReturnValue")
 	public static class VarExprContext extends ExprContext {
 		public TerminalNode IDENTIFIER() { return getToken(TIPParser.IDENTIFIER, 0); }
 		public VarExprContext(ExprContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof TIPListener ) ((TIPListener)listener).enterVarExpr(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof TIPListener ) ((TIPListener)listener).exitVarExpr(this);
+		}
 	}
 	@SuppressWarnings("CheckReturnValue")
 	public static class NotExprContext extends ExprContext {
@@ -505,6 +649,14 @@ public class TIPParser extends Parser {
 			return getRuleContext(ExprContext.class,0);
 		}
 		public NotExprContext(ExprContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof TIPListener ) ((TIPListener)listener).enterNotExpr(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof TIPListener ) ((TIPListener)listener).exitNotExpr(this);
+		}
 	}
 	@SuppressWarnings("CheckReturnValue")
 	public static class AndOpExprContext extends ExprContext {
@@ -517,6 +669,14 @@ public class TIPParser extends Parser {
 		}
 		public TerminalNode AND() { return getToken(TIPParser.AND, 0); }
 		public AndOpExprContext(ExprContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof TIPListener ) ((TIPListener)listener).enterAndOpExpr(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof TIPListener ) ((TIPListener)listener).exitAndOpExpr(this);
+		}
 	}
 	@SuppressWarnings("CheckReturnValue")
 	public static class RefExprContext extends ExprContext {
@@ -524,6 +684,14 @@ public class TIPParser extends Parser {
 			return getRuleContext(ExprContext.class,0);
 		}
 		public RefExprContext(ExprContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof TIPListener ) ((TIPListener)listener).enterRefExpr(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof TIPListener ) ((TIPListener)listener).exitRefExpr(this);
+		}
 	}
 	@SuppressWarnings("CheckReturnValue")
 	public static class OrOpExprContext extends ExprContext {
@@ -536,6 +704,14 @@ public class TIPParser extends Parser {
 		}
 		public TerminalNode OR() { return getToken(TIPParser.OR, 0); }
 		public OrOpExprContext(ExprContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof TIPListener ) ((TIPListener)listener).enterOrOpExpr(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof TIPListener ) ((TIPListener)listener).exitOrOpExpr(this);
+		}
 	}
 	@SuppressWarnings("CheckReturnValue")
 	public static class TernaryCondExprContext extends ExprContext {
@@ -546,11 +722,27 @@ public class TIPParser extends Parser {
 			return getRuleContext(ExprContext.class,i);
 		}
 		public TernaryCondExprContext(ExprContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof TIPListener ) ((TIPListener)listener).enterTernaryCondExpr(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof TIPListener ) ((TIPListener)listener).exitTernaryCondExpr(this);
+		}
 	}
 	@SuppressWarnings("CheckReturnValue")
 	public static class BoolExprContext extends ExprContext {
 		public TerminalNode BOOL() { return getToken(TIPParser.BOOL, 0); }
 		public BoolExprContext(ExprContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof TIPListener ) ((TIPListener)listener).enterBoolExpr(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof TIPListener ) ((TIPListener)listener).exitBoolExpr(this);
+		}
 	}
 	@SuppressWarnings("CheckReturnValue")
 	public static class MultiplicativeExprContext extends ExprContext {
@@ -565,6 +757,14 @@ public class TIPParser extends Parser {
 		public TerminalNode DIV() { return getToken(TIPParser.DIV, 0); }
 		public TerminalNode MOD() { return getToken(TIPParser.MOD, 0); }
 		public MultiplicativeExprContext(ExprContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof TIPListener ) ((TIPListener)listener).enterMultiplicativeExpr(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof TIPListener ) ((TIPListener)listener).exitMultiplicativeExpr(this);
+		}
 	}
 	@SuppressWarnings("CheckReturnValue")
 	public static class FunAppExprContext extends ExprContext {
@@ -575,6 +775,14 @@ public class TIPParser extends Parser {
 			return getRuleContext(ExprContext.class,i);
 		}
 		public FunAppExprContext(ExprContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof TIPListener ) ((TIPListener)listener).enterFunAppExpr(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof TIPListener ) ((TIPListener)listener).exitFunAppExpr(this);
+		}
 	}
 	@SuppressWarnings("CheckReturnValue")
 	public static class EqualityExprContext extends ExprContext {
@@ -588,6 +796,14 @@ public class TIPParser extends Parser {
 		public TerminalNode EQ() { return getToken(TIPParser.EQ, 0); }
 		public TerminalNode NE() { return getToken(TIPParser.NE, 0); }
 		public EqualityExprContext(ExprContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof TIPListener ) ((TIPListener)listener).enterEqualityExpr(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof TIPListener ) ((TIPListener)listener).exitEqualityExpr(this);
+		}
 	}
 	@SuppressWarnings("CheckReturnValue")
 	public static class AccessExprContext extends ExprContext {
@@ -596,6 +812,14 @@ public class TIPParser extends Parser {
 		}
 		public TerminalNode IDENTIFIER() { return getToken(TIPParser.IDENTIFIER, 0); }
 		public AccessExprContext(ExprContext ctx) { copyFrom(ctx); }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof TIPListener ) ((TIPListener)listener).enterAccessExpr(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof TIPListener ) ((TIPListener)listener).exitAccessExpr(this);
+		}
 	}
 
 	public final ExprContext expr() throws RecognitionException {
@@ -995,6 +1219,14 @@ public class TIPParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_arrayConstructorExpr; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof TIPListener ) ((TIPListener)listener).enterArrayConstructorExpr(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof TIPListener ) ((TIPListener)listener).exitArrayConstructorExpr(this);
+		}
 	}
 
 	public final ArrayConstructorExprContext arrayConstructorExpr() throws RecognitionException {
@@ -1077,6 +1309,14 @@ public class TIPParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_recordExpr; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof TIPListener ) ((TIPListener)listener).enterRecordExpr(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof TIPListener ) ((TIPListener)listener).exitRecordExpr(this);
+		}
 	}
 
 	public final RecordExprContext recordExpr() throws RecognitionException {
@@ -1139,6 +1379,14 @@ public class TIPParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_fieldExpr; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof TIPListener ) ((TIPListener)listener).enterFieldExpr(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof TIPListener ) ((TIPListener)listener).exitFieldExpr(this);
+		}
 	}
 
 	public final FieldExprContext fieldExpr() throws RecognitionException {
@@ -1202,6 +1450,14 @@ public class TIPParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_statement; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof TIPListener ) ((TIPListener)listener).enterStatement(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof TIPListener ) ((TIPListener)listener).exitStatement(this);
+		}
 	}
 
 	public final StatementContext statement() throws RecognitionException {
@@ -1306,6 +1562,14 @@ public class TIPParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_assignStmt; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof TIPListener ) ((TIPListener)listener).enterAssignStmt(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof TIPListener ) ((TIPListener)listener).exitAssignStmt(this);
+		}
 	}
 
 	public final AssignStmtContext assignStmt() throws RecognitionException {
@@ -1347,6 +1611,14 @@ public class TIPParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_blockStmt; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof TIPListener ) ((TIPListener)listener).enterBlockStmt(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof TIPListener ) ((TIPListener)listener).exitBlockStmt(this);
+		}
 	}
 
 	public final BlockStmtContext blockStmt() throws RecognitionException {
@@ -1402,6 +1674,14 @@ public class TIPParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_whileStmt; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof TIPListener ) ((TIPListener)listener).enterWhileStmt(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof TIPListener ) ((TIPListener)listener).exitWhileStmt(this);
+		}
 	}
 
 	public final WhileStmtContext whileStmt() throws RecognitionException {
@@ -1450,6 +1730,14 @@ public class TIPParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_ifStmt; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof TIPListener ) ((TIPListener)listener).enterIfStmt(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof TIPListener ) ((TIPListener)listener).exitIfStmt(this);
+		}
 	}
 
 	public final IfStmtContext ifStmt() throws RecognitionException {
@@ -1503,6 +1791,14 @@ public class TIPParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_outputStmt; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof TIPListener ) ((TIPListener)listener).enterOutputStmt(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof TIPListener ) ((TIPListener)listener).exitOutputStmt(this);
+		}
 	}
 
 	public final OutputStmtContext outputStmt() throws RecognitionException {
@@ -1540,6 +1836,14 @@ public class TIPParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_errorStmt; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof TIPListener ) ((TIPListener)listener).enterErrorStmt(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof TIPListener ) ((TIPListener)listener).exitErrorStmt(this);
+		}
 	}
 
 	public final ErrorStmtContext errorStmt() throws RecognitionException {
@@ -1577,6 +1881,14 @@ public class TIPParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_returnStmt; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof TIPListener ) ((TIPListener)listener).enterReturnStmt(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof TIPListener ) ((TIPListener)listener).exitReturnStmt(this);
+		}
 	}
 
 	public final ReturnStmtContext returnStmt() throws RecognitionException {
@@ -1613,6 +1925,14 @@ public class TIPParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_incStmt; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof TIPListener ) ((TIPListener)listener).enterIncStmt(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof TIPListener ) ((TIPListener)listener).exitIncStmt(this);
+		}
 	}
 
 	public final IncStmtContext incStmt() throws RecognitionException {
@@ -1647,6 +1967,14 @@ public class TIPParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_decStmt; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof TIPListener ) ((TIPListener)listener).enterDecStmt(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof TIPListener ) ((TIPListener)listener).exitDecStmt(this);
+		}
 	}
 
 	public final DecStmtContext decStmt() throws RecognitionException {
@@ -1688,6 +2016,14 @@ public class TIPParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_forItrStmt; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof TIPListener ) ((TIPListener)listener).enterForItrStmt(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof TIPListener ) ((TIPListener)listener).exitForItrStmt(this);
+		}
 	}
 
 	public final ForItrStmtContext forItrStmt() throws RecognitionException {
@@ -1739,6 +2075,14 @@ public class TIPParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_forRangeStmt; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof TIPListener ) ((TIPListener)listener).enterForRangeStmt(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof TIPListener ) ((TIPListener)listener).exitForRangeStmt(this);
+		}
 	}
 
 	public final ForRangeStmtContext forRangeStmt() throws RecognitionException {
