@@ -7,6 +7,7 @@
 
 #include <sstream>
 #include "ASTVisitor.h"
+#include "ASTinternal.h"
 
 class RecordPostPrint : public ASTVisitor {
 public:
@@ -98,7 +99,7 @@ TEST_CASE("ASTNodeTest: ASTArrConstructorExpr", "[ASTNode]") {
   REQUIRE(nodePrintStream.str() == "[1, 2, 3]");
 
   // test getters
-  REQUIRE(vect.get() == arrconst->getArgs());
+  REQUIRE(rawRefs(vect) == arrconst->getArgs());
 
   // test getchildren
   auto children = arrconst->getChildren();
@@ -145,7 +146,7 @@ TEST_CASE("ASTNodeTest: ASTArrLenOp", "[ASTNode]") {
 TEST_CASE("ASTNodeTest: ASTArrOrConstructor", "[ASTNode]") {
   auto lhs = std::make_shared<ASTNumberExpr>(2);
   auto rhs = std::make_shared<ASTNumberExpr>(6);
-  auto arrorconst = std::make_shared<ASTArrOrConstructor>(lhs, rhs);
+  auto arrorconst = std::make_shared<ASTArrOrConstructorExpr>(lhs, rhs);
 
   // test print method
   std::stringstream nodePrintStream;
@@ -174,7 +175,7 @@ TEST_CASE("ASTNodeTest: ASTArrOrConstructor", "[ASTNode]") {
 TEST_CASE("ASTNodeTest: ASTArrRefExpr", "[ASTNode]") {
   auto lhs = std::make_shared<ASTVariableExpr>("x");
   auto rhs = std::make_shared<ASTNumberExpr>(6);
-  auto refexpr = std::make_shared<ASTRefExpr>(lhs, rhs);
+  auto refexpr = std::make_shared<ASTArrRefExpr>(lhs, rhs);
 
   // test print method
   std::stringstream nodePrintStream;
@@ -236,7 +237,7 @@ TEST_CASE("ASTNodeTest: ASTNeg", "[ASTNode]") {
 
   // test accept
   RecordPostPrint visitor;
-  notexpr->accept(&visitor);
+  negexpr->accept(&visitor);
   std::string expected[] = { "x", "-x" };
   for (int i=0; i < 2; i++) {
     REQUIRE(visitor.postPrintStrings[i] == expected[i]);
