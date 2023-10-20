@@ -1108,3 +1108,51 @@ llvm::Value *ASTReturnStmt::codegen() {
   Value *argVal = getArg()->codegen();
   return Builder.CreateRet(argVal);
 } // LCOV_EXCL_LINE
+
+llvm::Value *ASTIncStmt::codegen() { 
+  return 0; 
+}
+
+llvm::Value *ASTDecStmt::codegen() { 
+  return 0; 
+}
+
+llvm::Value *ASTForRangeStmt::codegen() { 
+  return 0; 
+}
+
+llvm::Value *ASTForItrStmt::codegen() { 
+  return 0; 
+}
+
+llvm::Value *ASTTernaryCondExpr::codegen() { 
+  return 0; 
+}
+
+llvm::Value *ASTArrConstructorExpr::codegen() { 
+  return 0; 
+}
+
+llvm::Value *ASTArrLenOpExpr::codegen() { 
+  return 0; 
+}
+
+llvm::Value *ASTArrOrConstructorExpr::codegen() { 
+  return 0; 
+}
+
+llvm::Value *ASTArrRefExpr::codegen() { 
+  return 0; 
+}
+
+llvm::Value *ASTBoolExpr::codegen() { 
+  return 0; 
+}
+
+llvm::Value *ASTNegExpr::codegen() { 
+  return 0; 
+}
+
+llvm::Value *ASTNotExpr::codegen() { 
+  return 0; 
+}

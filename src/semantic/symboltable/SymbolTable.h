@@ -16,7 +16,7 @@
  */
 class SymbolTable {
   std::map<std::string, std::pair<ASTDeclNode *, bool>> functionNames;
-  std::map<ASTDeclNode *, std::map<std::string, ASTDeclNode *>> localNames;
+  std::map<ASTDeclNode *, std::map<std::string, ASTDeclNode *>> localNames; //From ASTDeclNode of function, get local symbol table of function
   std::vector<std::string> fieldNames;
 
 public:

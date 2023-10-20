@@ -11,7 +11,6 @@ main(n) {
     x = [3 of 7];
     y = #[1, 2, 3];
     y = #[3 of 7];
-    x = #xyz;
     if (n > 4 and not (j == 0)) {
         n = 1;
         n++;
