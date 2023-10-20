@@ -373,6 +373,8 @@ Any ASTBuilder::visitArrOrConstructorExpr(TIPParser::ArrOrConstructorExprContext
   // Set source location
   visitedExpr->setLocation(ctx->getStart()->getLine(),
                            ctx->getStart()->getCharPositionInLine());
+
+  return "";
 }
 
 // arr ref expr
@@ -390,6 +392,8 @@ Any ASTBuilder::visitArrRefExpr(TIPParser::ArrRefExprContext *ctx) {
   // Set source location
   visitedExpr->setLocation(ctx->getStart()->getLine(),
                            ctx->getStart()->getCharPositionInLine());
+
+  return "";
 }
 
 // // unneccessary i think
