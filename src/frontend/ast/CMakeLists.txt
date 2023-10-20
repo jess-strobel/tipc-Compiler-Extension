@@ -25,6 +25,8 @@ target_sources(
           ${CMAKE_CURRENT_SOURCE_DIR}/treetypes/ASTBinaryExpr.h
           ${CMAKE_CURRENT_SOURCE_DIR}/treetypes/ASTBlockStmt.cpp
           ${CMAKE_CURRENT_SOURCE_DIR}/treetypes/ASTBlockStmt.h
+          ${CMAKE_CURRENT_SOURCE_DIR}/treetypes/ASTBoolExpr.cpp
+          ${CMAKE_CURRENT_SOURCE_DIR}/treetypes/ASTBoolExpr.h
           ${CMAKE_CURRENT_SOURCE_DIR}/treetypes/ASTDeRefExpr.cpp
           ${CMAKE_CURRENT_SOURCE_DIR}/treetypes/ASTDeRefExpr.h
           ${CMAKE_CURRENT_SOURCE_DIR}/treetypes/ASTDeclNode.cpp
@@ -36,8 +38,6 @@ target_sources(
           ${CMAKE_CURRENT_SOURCE_DIR}/treetypes/ASTErrorStmt.cpp
           ${CMAKE_CURRENT_SOURCE_DIR}/treetypes/ASTErrorStmt.h
           ${CMAKE_CURRENT_SOURCE_DIR}/treetypes/ASTExpr.h
-          ${CMAKE_CURRENT_SOURCE_DIR}/treetypes/ASTFalseExpr.cpp
-          ${CMAKE_CURRENT_SOURCE_DIR}/treetypes/ASTFalseExpr.h
           ${CMAKE_CURRENT_SOURCE_DIR}/treetypes/ASTFieldExpr.cpp
           ${CMAKE_CURRENT_SOURCE_DIR}/treetypes/ASTFieldExpr.h
           ${CMAKE_CURRENT_SOURCE_DIR}/treetypes/ASTForItrStmt.cpp
@@ -76,8 +76,6 @@ target_sources(
           ${CMAKE_CURRENT_SOURCE_DIR}/treetypes/ASTStmt.h
           ${CMAKE_CURRENT_SOURCE_DIR}/treetypes/ASTTernaryCondExpr.cpp
           ${CMAKE_CURRENT_SOURCE_DIR}/treetypes/ASTTernaryCondExpr.h
-          ${CMAKE_CURRENT_SOURCE_DIR}/treetypes/ASTTrueExpr.cpp
-          ${CMAKE_CURRENT_SOURCE_DIR}/treetypes/ASTTrueExpr.h
           ${CMAKE_CURRENT_SOURCE_DIR}/treetypes/ASTVariableExpr.cpp
           ${CMAKE_CURRENT_SOURCE_DIR}/treetypes/ASTVariableExpr.h
           ${CMAKE_CURRENT_SOURCE_DIR}/treetypes/ASTWhileStmt.cpp

@@ -54,7 +54,7 @@ expr : expr '(' (expr (',' expr)*)? ')' 	#funAppExpr
      | '#' expr                 #arrLenOpExpr
      | IDENTIFIER				#varExpr
      | NUMBER					#numExpr
-     | (T | F)                  #boolExpr
+     | BOOL                     #boolExpr
      | KINPUT					#inputExpr
      | KALLOC expr				#allocExpr
      | KNULL					#nullExpr
@@ -67,6 +67,8 @@ arrayConstructorExpr : '[' ((expr (',' expr)*)? | expr ' of ' expr) ']' ;
 recordExpr : '{' (fieldExpr (',' fieldExpr)*)? '}' ;
 
 fieldExpr : IDENTIFIER ':' expr ;
+
+BOOL : (KTRUE | KFALSE);
 
 ////////////////////// TIP Statements ////////////////////////// 
 
@@ -119,8 +121,6 @@ LT  : '<' ;
 LTE : '<=' ;
 EQ  : '==' ;
 NE  : '!=' ;
-T   : 'true' ;
-F   : 'false' ;
 NOT : 'not' ;
 AND : 'and' ;
 OR  : 'or' ;
@@ -140,6 +140,8 @@ KRETURN : 'return' ;
 KNULL   : 'null' ;
 KOUTPUT : 'output' ;
 KERROR  : 'error' ;
+KTRUE   : 'true' ;
+KFALSE  : 'false' ;
 
 // Keyword to declare functions as polymorphic
 KPOLY   : 'poly' ;

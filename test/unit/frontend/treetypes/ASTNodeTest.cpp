@@ -38,16 +38,15 @@ public:
     void endVisit(ASTReturnStmt * element) { record(element); }
     void endVisit(ASTErrorStmt * element) { record(element); }
     void endVisit(ASTBlockStmt * element) { record(element); }
+    void endVisit(ASTBoolExpr * element) { record(element); }
     void endVisit(ASTDecStmt * element) { record(element); }
     void endVisit(ASTIncStmt * element) { record(element); }
     void endVisit(ASTArrConstructorExpr * element) { record(element); }
     void endVisit(ASTArrLenOpExpr * element) { record(element); }
     void endVisit(ASTArrOrConstructorExpr * element) { record(element); }
     void endVisit(ASTArrRefExpr * element) { record(element); }
-    void endVisit(ASTFalseExpr * element) { record(element); }
     void endVisit(ASTNegExpr * element) { record(element); }
     void endVisit(ASTNotExpr * element) { record(element); }
-    void endVisit(ASTTrueExpr * element) { record(element); }
 };
 
 // Helper function that checks for raw node pointer in list
@@ -206,18 +205,23 @@ TEST_CASE("ASTNodeTest: ASTArrRef", "[ASTNode]") {
   }
 }
 
-TEST_CASE("ASTNodeTest: ASTFalse", "[ASTNode]") {
-  auto falseexpr = std::make_shared<ASTFalseExpr>();
+TEST_CASE("ASTNodeTest: ASTBool", "[ASTNode]") {
+  auto trueBoolExpr = std::make_shared<ASTBoolExpr>(true);
+  auto falseBoolExpr = std::make_shared<ASTBoolExpr>(false);
 
   // test print method
   std::stringstream nodePrintStream;
-  nodePrintStream << *falseexpr;
-  REQUIRE(nodePrintStream.str() == "false");
+  nodePrintStream << *trueBoolExpr;
+  REQUIRE(nodePrintStream.str() == "true");
+
+  std::stringstream node2PrintStream;
+  node2PrintStream << *falseBoolExpr;
+  REQUIRE(node2PrintStream.str() == "false");
 
   // test accept
   RecordPostPrint visitor;
-  falseexpr->accept(&visitor);
-  std::string expected[] = { "false" };
+  trueBoolExpr->accept(&visitor);
+  std::string expected[] = { "true" };
   for (int i=0; i < 1; i++) {
     REQUIRE(visitor.postPrintStrings[i] == expected[i]);
   }
@@ -271,23 +275,6 @@ TEST_CASE("ASTNodeTest: ASTNot", "[ASTNode]") {
   notexpr->accept(&visitor);
   std::string expected[] = { "x", "not x" };
   for (int i=0; i < 2; i++) {
-    REQUIRE(visitor.postPrintStrings[i] == expected[i]);
-  }
-}
-
-TEST_CASE("ASTNodeTest: ASTTrue", "[ASTNode]") {
-  auto trueexpr = std::make_shared<ASTTrueExpr>();
-
-  // test print method
-  std::stringstream nodePrintStream;
-  nodePrintStream << *trueexpr;
-  REQUIRE(nodePrintStream.str() == "true");
-
-  // test accept
-  RecordPostPrint visitor;
-  trueexpr->accept(&visitor);
-  std::string expected[] = { "true" };
-  for (int i=0; i < 1; i++) {
     REQUIRE(visitor.postPrintStrings[i] == expected[i]);
   }
 }

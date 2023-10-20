@@ -61,6 +61,7 @@ public:
   virtual bool visit(ASTForItrStmt *element) override;
   virtual void endVisit(ASTForItrStmt *element) override;
   virtual void endVisit(ASTTernaryCondExpr *element) override;
+  virtual void endVisit(ASTBoolExpr *element) override;
 
 
 private:

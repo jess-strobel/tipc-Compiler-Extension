@@ -313,6 +313,10 @@ void PrettyPrinter::endVisit(ASTTernaryCondExpr *element) {
   visitResults.push_back(ternaryCondExprString);
 }
 
+void PrettyPrinter::endVisit(ASTBoolExpr *element) {
+  visitResults.push_back(element->getBool());
+}
+
 std::string PrettyPrinter::indent() const {
   return std::string(indentLevel * indentSize, indentChar);
 }

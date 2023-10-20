@@ -206,6 +206,21 @@ Any ASTBuilder::visitAdditiveExpr(TIPParser::AdditiveExprContext *ctx) {
   return "";
 } // LCOV_EXCL_LINE
 
+Any ASTBuilder::visitBoolExpr(TIPParser::BoolExprContext *ctx) {
+  bool b = false;
+  if (ctx->BOOL()->getText() == "true")
+    b = true;
+
+  visitedExpr = std::make_shared<ASTBoolExpr>(b);
+
+  LOG_S(1) << "Built AST node " << *visitedExpr;
+
+  // Set source location
+  visitedExpr->setLocation(ctx->getStart()->getLine(),
+                           ctx->getStart()->getCharPositionInLine());
+  return "";
+} // LCOV_EXCL_LINE
+
 Any ASTBuilder::visitRelationalExpr(TIPParser::RelationalExprContext *ctx) {
   visitBinaryExpr(ctx, opString(ctx->op->getType()));
   return "";

@@ -86,12 +86,10 @@ public:
   virtual void endVisit(ASTArrOrConstructorExpr *element) {}  
   virtual bool visit(ASTArrRefExpr *element) { return true; }
   virtual void endVisit(ASTArrRefExpr *element) {}  
-  virtual bool visit(ASTFalseExpr *element) { return true; }
-  virtual void endVisit(ASTFalseExpr *element) {}  
   virtual bool visit(ASTNegExpr *element) { return true; }
   virtual void endVisit(ASTNegExpr *element) {}  
   virtual bool visit(ASTNotExpr *element) { return true; }
   virtual void endVisit(ASTNotExpr *element) {}  
-  virtual bool visit(ASTTrueExpr *element) { return true; }
-  virtual void endVisit(ASTTrueExpr *element) {}  
+  virtual bool visit(ASTBoolExpr *element) { return true; }
+  virtual void endVisit(ASTBoolExpr *element) {}  
 };

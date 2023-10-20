@@ -1145,7 +1145,7 @@ llvm::Value *ASTArrRefExpr::codegen() {
   return 0; 
 }
 
-llvm::Value *ASTFalseExpr::codegen() { 
+llvm::Value *ASTBoolExpr::codegen() { 
   return 0; 
 }
 
@@ -1154,9 +1154,5 @@ llvm::Value *ASTNegExpr::codegen() {
 }
 
 llvm::Value *ASTNotExpr::codegen() { 
-  return 0; 
-}
-
-llvm::Value *ASTTrueExpr::codegen() { 
   return 0; 
 }

@@ -331,3 +331,32 @@ TEST_CASE("ASTPrinterTest: range-style for loop printers", "[ASTNodePrint]") {
       break;
   }
 }
+
+TEST_CASE("ASTPrinterTest: boolean printers", "[ASTNodePrint]") {
+  std::stringstream stream;
+  stream << R"(
+      fun() { 
+        var x, y;
+        x = true;
+        if (true)
+          y = false;
+        y = true;
+        return false;
+      }
+    )";
+
+  std::vector<std::string> expected{"x = true;", "if (true) y = false;",
+                                    "y = true;", "return false;"};
+
+  auto ast = ASTHelper::build_ast(stream);
+
+  auto f = ast->findFunctionByName("fun");
+
+  int i = 0;
+  for (auto s : f->getStmts()) {
+    stream = std::stringstream();
+    stream << *s;
+    auto actual = stream.str();
+    REQUIRE(actual == expected.at(i++));
+  }
+}
