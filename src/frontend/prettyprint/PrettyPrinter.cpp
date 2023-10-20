@@ -317,6 +317,46 @@ void PrettyPrinter::endVisit(ASTBoolExpr *element) {
   visitResults.push_back(element->getBool());
 }
 
+void PrettyPrinter::endVisit(ASTArrConstructorExpr *element) {
+  auto args = joinWithDelim(visitResults, ", ", element->getArgs().size(), 1);
+
+  visitResults.push_back("[" + args + "]");
+}
+
+void PrettyPrinter::endVisit(ASTArrRefExpr *element) {
+  std::string index = visitResults.back();
+  visitResults.pop_back();
+  std::string arr = visitResults.back();
+  visitResults.pop_back();
+  visitResults.push_back(arr + "[" + index + "]");
+}
+
+void PrettyPrinter::endVisit(ASTArrOrConstructorExpr *element) {
+  std::string right = visitResults.back();
+  visitResults.pop_back();
+  std::string left = visitResults.back();
+  visitResults.pop_back();
+  visitResults.push_back("[" + left + " of " + right + "]");
+}
+
+void PrettyPrinter::endVisit(ASTNotExpr *element) {
+  std::string val = visitResults.back();
+  visitResults.pop_back();
+  visitResults.push_back("not " + val);
+}
+
+void PrettyPrinter::endVisit(ASTNegExpr *element) {
+  std::string val = visitResults.back();
+  visitResults.pop_back();
+  visitResults.push_back("-" + val);
+}
+
+void PrettyPrinter::endVisit(ASTArrLenOpExpr *element) {
+  std::string var = visitResults.back();
+  visitResults.pop_back();
+  visitResults.push_back("#" + var);
+}
+
 std::string PrettyPrinter::indent() const {
   return std::string(indentLevel * indentSize, indentChar);
 }

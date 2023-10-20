@@ -161,10 +161,9 @@ Any ASTBuilder::visitFunction(TIPParser::FunctionContext *ctx) {
   return "";
 }
 
-Any ASTBuilder::visitNegNumber(TIPParser::NegNumberContext *ctx) {
-  int val = std::stoi(ctx->expr()->getText());
-  val = -val;
-  visitedExpr = std::make_shared<ASTNumberExpr>(val);
+Any ASTBuilder::visitNegExpr(TIPParser::NegExprContext *ctx) {
+  visit(ctx->expr());
+  visitedExpr = std::make_shared<ASTNegExpr>(visitedExpr);
 
   LOG_S(1) << "Built AST node " << *visitedExpr;
 
@@ -622,4 +621,80 @@ Any ASTBuilder::visitTernaryCondExpr(TIPParser::TernaryCondExprContext *ctx) {
                            ctx->getStart()->getCharPositionInLine());
   return "";
 }
+
+Any ASTBuilder::visitArrConstructorExpr(TIPParser::ArrConstructorExprContext *ctx) {
+  std::vector<std::shared_ptr<ASTExpr>> args;
+  for (auto a : ctx->expr()) {
+    visit(a);
+    args.push_back(visitedExpr);
+  }
+
+  visitedExpr = std::make_shared<ASTArrConstructorExpr>(args);
+
+  LOG_S(1) << "Built AST node " <<visitedExpr;
+
+  // Set source location
+  visitedExpr->setLocation(ctx->getStart()->getLine(),
+                           ctx->getStart()->getCharPositionInLine());
+  return "";
+}
+
+Any ASTBuilder::visitArrLenOpExpr(TIPParser::ArrLenOpExprContext *ctx) {
+  visit(ctx->expr());
+  visitedExpr = std::make_shared<ASTArrLenOpExpr>(visitedExpr);
+
+  LOG_S(1) << "Built AST node " <<visitedExpr;
+
+  // Set source location
+  visitedExpr->setLocation(ctx->getStart()->getLine(),
+                           ctx->getStart()->getCharPositionInLine());
+  return "";
+} // LCOV_EXCL_LINE
+Any ASTBuilder::visitArrOrConstructorExpr(TIPParser::ArrOrConstructorExprContext *ctx) {
+  visit(ctx->expr(0));
+  auto lhs = visitedExpr;
+
+  visit(ctx->expr(1));
+  auto rhs = visitedExpr;
+
+  visitedExpr = std::make_shared<ASTArrOrConstructorExpr>(lhs, rhs);
+
+  LOG_S(1) << "Built AST node " <<visitedExpr;
+
+  // Set source location
+  visitedExpr->setLocation(ctx->getStart()->getLine(),
+                           ctx->getStart()->getCharPositionInLine());
+
+  return "";
+}
+
+Any ASTBuilder::visitArrRefExpr(TIPParser::ArrRefExprContext *ctx) {
+  visit(ctx->expr(0));
+  auto lhs = visitedExpr;
+
+  visit(ctx->expr(1));
+  auto rhs = visitedExpr;
+
+  visitedExpr = std::make_shared<ASTArrRefExpr>(lhs, rhs);
+
+  LOG_S(1) << "Built AST node " <<visitedExpr;
+
+  // Set source location
+  visitedExpr->setLocation(ctx->getStart()->getLine(),
+                           ctx->getStart()->getCharPositionInLine());
+
+  return "";
+}
+
+Any ASTBuilder::visitNotExpr(TIPParser::NotExprContext *ctx) {
+  visit(ctx->expr());
+  visitedExpr = std::make_shared<ASTNotExpr>(visitedExpr);
+
+  LOG_S(1) << "Built AST node " <<visitedExpr;
+
+  // Set source location
+  visitedExpr->setLocation(ctx->getStart()->getLine(),
+                           ctx->getStart()->getCharPositionInLine());
+  return "";
+} // LCOV_EXCL_LINE
 

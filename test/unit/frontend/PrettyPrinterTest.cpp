@@ -393,7 +393,17 @@ TEST_CASE("PrettyPrinter: Test not expr", "[PrettyPrinter]") {
   var x, y;
   x = not y;
   return 0;
+}
 )";
+
+  std::stringstream pp;
+  auto ast = ASTHelper::build_ast(stream);
+  PrettyPrinter::print(ast.get(), pp, ' ', 2);
+  std::string ppString = GeneralHelper::removeTrailingWhitespace(pp.str());
+  expected = GeneralHelper::removeTrailingWhitespace(expected);
+  REQUIRE(ppString == expected);
+}
+
 
 TEST_CASE("PrettyPrinter: Test neg expr", "[PrettyPrinter]") {
   std::stringstream stream;

@@ -43,7 +43,7 @@ public:
    *  constructs an appropriate AST node for the parse-tree node
   */
   Any visitFunction(TIPParser::FunctionContext *ctx) override;
-  Any visitNegNumber(TIPParser::NegNumberContext *ctx) override;
+  Any visitNegExpr(TIPParser::NegExprContext *ctx) override;
   Any visitAdditiveExpr(TIPParser::AdditiveExprContext *ctx) override;
   Any visitRelationalExpr(TIPParser::RelationalExprContext *ctx) override;
   Any visitMultiplicativeExpr(
@@ -76,5 +76,10 @@ public:
   Any visitIncStmt(TIPParser::IncStmtContext *ctx) override;
   Any visitDecStmt(TIPParser::DecStmtContext *ctx) override;
   Any visitTernaryCondExpr(TIPParser::TernaryCondExprContext *ctx) override;
+  Any visitArrConstructorExpr(TIPParser::ArrConstructorExprContext *ctx) override;
+  Any visitArrLenOpExpr(TIPParser::ArrLenOpExprContext *ctx) override;
+  Any visitArrOrConstructorExpr(TIPParser::ArrOrConstructorExprContext *ctx) override;
+  Any visitArrRefExpr(TIPParser::ArrRefExprContext *ctx) override;
+  Any visitNotExpr(TIPParser::NotExprContext *ctx) override;
 };
 //Visit methods are where parse-tree specific logic is defined, which constructs its corresponding AST Node

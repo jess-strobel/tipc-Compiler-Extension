@@ -360,3 +360,190 @@ TEST_CASE("ASTPrinterTest: boolean printers", "[ASTNodePrint]") {
     REQUIRE(actual == expected.at(i++));
   }
 }
+
+TEST_CASE("ASTPrinterTest: visitArrConstructorExpr", "[ASTPrinter]") {
+  std::stringstream stream;
+  stream << R"(
+    foo() {
+      var x;
+      x = [1, 2, 3];
+      return 0;
+    }
+  )";
+
+  std::vector<std::string> expected{"[1, 2, 3]"};
+
+  auto ast = ASTHelper::build_ast(stream);
+
+  auto f = ast->findFunctionByName("foo");
+
+  int i = 0;
+  int numStmts = f->getStmts().size() - 1; // ignore ret
+  for (auto s : f->getStmts()) {
+    auto assignstmt = dynamic_cast<ASTAssignStmt *>(s);
+    auto arrconstexpr = dynamic_cast<ASTArrConstructorExpr *>(&(*assignstmt->getRHS()));
+    stream = std::stringstream();
+    stream << *arrconstexpr;
+    auto actual = stream.str();
+    REQUIRE(actual == expected.at(i++));
+    if (i == numStmts) {
+      break;
+    }
+  }
+}
+
+TEST_CASE("ASTPrinterTest: visitArrLenOpExpr", "[ASTPrinter]") {
+  std::stringstream stream;
+  stream << R"(
+    foo() {
+      var x, y;
+      x = #y;
+      return 0;
+    }
+  )";
+
+  std::vector<std::string> expected{"#y"};
+
+  auto ast = ASTHelper::build_ast(stream);
+
+  auto f = ast->findFunctionByName("foo");
+
+  int i = 0;
+  int numStmts = f->getStmts().size() - 1; // ignore ret
+  for (auto s : f->getStmts()) {
+    auto assignstmt = dynamic_cast<ASTAssignStmt *>(s);
+    auto arrlenop = dynamic_cast<ASTArrLenOpExpr *>(&(*assignstmt->getRHS()));
+    stream = std::stringstream();
+    stream << *arrlenop;
+    auto actual = stream.str();
+    REQUIRE(actual == expected.at(i++));
+    if (i == numStmts) {
+      break;
+    }
+  }
+}
+
+TEST_CASE("ASTPrinterTest: visitArrOrConstructorExpr", "[ASTPrinter]") {
+  std::stringstream stream;
+  stream << R"(
+    foo() {
+      var x;
+      x = [5 of 7];
+      return 0;
+    }
+  )";
+
+  std::vector<std::string> expected{"[5 of 7]"};
+
+  auto ast = ASTHelper::build_ast(stream);
+
+  auto f = ast->findFunctionByName("foo");
+
+  int i = 0;
+  int numStmts = f->getStmts().size() - 1; // ignore ret
+  for (auto s : f->getStmts()) {
+    auto assignstmt = dynamic_cast<ASTAssignStmt *>(s);
+    auto arrorconstexpr = dynamic_cast<ASTArrOrConstructorExpr *>(&(*assignstmt->getRHS()));
+    stream = std::stringstream();
+    stream << *arrorconstexpr;
+    auto actual = stream.str();
+    REQUIRE(actual == expected.at(i++));
+    if (i == numStmts) {
+      break;
+    }
+  }
+}
+
+TEST_CASE("ASTPrinterTest: visitArrRefExpr", "[ASTPrinter]") {
+  std::stringstream stream;
+  stream << R"(
+    foo() {
+      var x, y;
+      x = y[0];
+      return 0;
+    }
+  )";
+
+  std::vector<std::string> expected{"y[0]"};
+
+  auto ast = ASTHelper::build_ast(stream);
+
+  auto f = ast->findFunctionByName("foo");
+
+  int i = 0;
+  int numStmts = f->getStmts().size() - 1; // ignore ret
+  for (auto s : f->getStmts()) {
+    auto assignstmt = dynamic_cast<ASTAssignStmt *>(s);
+    auto arrrefexpr = dynamic_cast<ASTArrRefExpr *>(&(*assignstmt->getRHS()));
+    stream = std::stringstream();
+    stream << *arrrefexpr;
+    auto actual = stream.str();
+    REQUIRE(actual == expected.at(i++));
+    if (i == numStmts) {
+      break;
+    }
+  }
+}
+
+TEST_CASE("ASTPrinterTest: visitNotExpr", "[ASTPrinter]") {
+  std::stringstream stream;
+  stream << R"(
+    foo() {
+      var x, y;
+      if (not x) x = 0;
+      if (not y) y = 0;
+      return 0;
+    }
+  )";
+
+  std::vector<std::string> expected{"not x", "not y"};
+
+  auto ast = ASTHelper::build_ast(stream);
+
+  auto f = ast->findFunctionByName("foo");
+
+  int i = 0;
+  int numStmts = f->getStmts().size() - 1; // ignore ret
+  for (auto s : f->getStmts()) {
+    auto ifstmt = dynamic_cast<ASTIfStmt *>(s);
+    auto notexpr = dynamic_cast<ASTNotExpr *>(&(*ifstmt->getCondition()));
+    stream = std::stringstream();
+    stream << *notexpr;
+    auto actual = stream.str();
+    REQUIRE(actual == expected.at(i++));
+    if (i == numStmts) {
+      break;
+    }
+  }
+}
+
+TEST_CASE("ASTPrinterTest: visitNegExpr", "[ASTPrinter]") {
+  std::stringstream stream;
+  stream << R"(
+    foo() {
+      var x, y;
+      x = -y;
+      return 0;
+    }
+  )";
+
+  std::vector<std::string> expected{"-y"};
+
+  auto ast = ASTHelper::build_ast(stream);
+
+  auto f = ast->findFunctionByName("foo");
+
+  int i = 0;
+  int numStmts = f->getStmts().size() - 1; // ignore ret
+  for (auto s : f->getStmts()) {
+    auto assignstmt = dynamic_cast<ASTAssignStmt *>(s);
+    auto negexpr = dynamic_cast<ASTNegExpr *>(&(*assignstmt->getRHS()));
+    stream = std::stringstream();
+    stream << *negexpr;
+    auto actual = stream.str();
+    REQUIRE(actual == expected.at(i++));
+    if (i == numStmts) {
+      break;
+    }
+  }
+}
