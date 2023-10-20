@@ -230,3 +230,104 @@ TEST_CASE("ASTPrinterTest: ASTProgram output is the hash of the source.",
   actualOutput << *ast;
   REQUIRE(expectedOutput == actualOutput.str());
 }
+
+TEST_CASE("ASTPrinterTest: ternary conditional expression operator printers", "[ASTNodePrint]") {
+  std::stringstream stream;
+  stream << R"(
+      fun() {
+        var x, y, z;
+        x = ((x > y) ? y : 1);
+        y = (((x != y) ? 0 : 1) <= z) ? 1 : 5;
+        z = (x < y) ? 5 : (x >= 0) ? y : 2;
+        return 0;
+      }
+    )";
+
+  std::vector<std::string> expected{"((x>y) ? y : 1)", "((((x!=y) ? 0 : 1)<=z) ? 1 : 5)", "((x<y) ? 5 : ((x>=0) ? y : 2))"};
+
+  auto ast = ASTHelper::build_ast(stream);
+
+  auto f = ast->findFunctionByName("fun");
+
+  int i = 0;
+  int numStmts = f->getStmts().size() - 1; // skip the return
+  for (auto s : f->getStmts()) {
+    auto a = dynamic_cast<ASTAssignStmt *>(s);
+    stream = std::stringstream();
+    stream << *a->getRHS();
+    auto actual = stream.str();
+    REQUIRE(actual == expected.at(i++));
+    if (i == numStmts)
+      break;
+  }
+}
+
+TEST_CASE("ASTPrinterTest: iterative-style for loop printers", "[ASTNodePrint]") {
+  std::stringstream stream;
+  stream << R"(
+      fun() {
+        var x, y, z;
+        for (x : y) {
+          z++;
+        }
+        for (y : z) { 
+          for (x : z)
+            y = y + 1;
+        }
+        for (z : x) x = x + 1;
+        return 0;
+      }
+    )";
+
+  std::vector<std::string> expected{"for (x : y) { z++; }", "for (y : z) { for (x : z) y = (y+1); }", "for (z : x) x = (x+1);"};
+
+  auto ast = ASTHelper::build_ast(stream);
+
+  auto f = ast->findFunctionByName("fun");
+
+  int i = 0;
+  int numStmts = f->getStmts().size() - 1; // skip the return
+  for (auto s : f->getStmts()) {
+    stream = std::stringstream();
+    stream << *s;
+    auto actual = stream.str();
+    REQUIRE(actual == expected.at(i++));
+    if (i == numStmts)
+      break;
+  }
+}
+
+TEST_CASE("ASTPrinterTest: range-style for loop printers", "[ASTNodePrint]") {
+  std::stringstream stream;
+  stream << R"(
+      fun() {
+        var i, j, x, y, z;
+        for (x : 0 .. 10) {
+          z++;
+        }
+        for (y : i .. j) { 
+          for (x : z .. 2 by y)
+            x = 6 + i;
+        }
+        for (z : x .. 5 by 1) x = 5;
+        return 0;
+      }
+    )";
+
+  std::vector<std::string> expected{"for (x : 0 .. 10 by 1) { z++; }", "for (y : i .. j by 1) { for (x : z .. 2 by y) x = (6+i); }", "for (z : x .. 5 by 1) x = 5;"};
+
+  auto ast = ASTHelper::build_ast(stream);
+
+  auto f = ast->findFunctionByName("fun");
+
+  int i = 0;
+  int numStmts = f->getStmts().size() - 1; // skip the return
+  for (auto s : f->getStmts()) {
+    stream = std::stringstream();
+    stream << *s;
+    auto actual = stream.str();
+    REQUIRE(actual == expected.at(i++));
+    if (i == numStmts)
+      break;
+  }
+}

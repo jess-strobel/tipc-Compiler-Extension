@@ -70,5 +70,10 @@ public:
   Any visitOutputStmt(TIPParser::OutputStmtContext *ctx) override;
   Any visitErrorStmt(TIPParser::ErrorStmtContext *ctx) override;
   Any visitReturnStmt(TIPParser::ReturnStmtContext *ctx) override;
+  Any visitForItrStmt(TIPParser::ForItrStmtContext *ctx) override;
+  Any visitForRangeStmt(TIPParser::ForRangeStmtContext *ctx) override;
+  Any visitIncStmt(TIPParser::IncStmtContext *ctx) override;
+  Any visitDecStmt(TIPParser::DecStmtContext *ctx) override;
+  Any visitTernaryCondExpr(TIPParser::TernaryCondExprContext *ctx) override;
 };
 //Visit methods are where parse-tree specific logic is defined, which constructs its corresponding AST Node

@@ -299,7 +299,7 @@ TEST_CASE("ASTIncStmtTest", "[ASTIncStmt]") {
   // Test Print Method
   std::stringstream nodePrintStream;
   nodePrintStream << *lhs;
-  REQUIRE(nodePrintStream.str() == "42++");
+  REQUIRE(nodePrintStream.str() == "42++;");
 
   // Test getters 
   REQUIRE(lhs->getNum() == num.get());
@@ -325,7 +325,7 @@ TEST_CASE("ASTDecStmtTest", "[ASTDecStmt]") {
   // Test Print Method
   std::stringstream nodePrintStream;
   nodePrintStream << *lhs;
-  REQUIRE(nodePrintStream.str() == "42--");
+  REQUIRE(nodePrintStream.str() == "42--;");
 
   // Test getters 
   REQUIRE(lhs->getNum() == num.get());
@@ -353,7 +353,7 @@ TEST_CASE("ASTTernaryCondExprTest", "[ASTTernaryCondExpr]") {
   // Test Print Method
   std::stringstream nodePrintStream;
   nodePrintStream << *rhs;
-  REQUIRE(nodePrintStream.str() == "(20>10) ? 20 : 10");
+  REQUIRE(nodePrintStream.str() == "((20>10) ? 20 : 10)");
 
   // Test getters 
   REQUIRE(rhs->getCondition() == cond.get());
@@ -386,7 +386,7 @@ TEST_CASE("ASTTForItrStmtTest", "[ASTForItrStmt]") {
   // Test Print Method
   std::stringstream nodePrintStream;
   nodePrintStream << *itr;
-  REQUIRE(nodePrintStream.str() == "for (x : arr) 42++");
+  REQUIRE(nodePrintStream.str() == "for (x : arr) 42++;");
 
   // Test getters 
   REQUIRE(itr->getVar() == var.get());
@@ -419,7 +419,7 @@ TEST_CASE("ASTTForRangeStmtTest", "[ASTForRangeStmt]") {
   // Test Print Method
   std::stringstream nodePrintStream;
   nodePrintStream << *range;
-  REQUIRE(nodePrintStream.str() == "for (x : 42 .. 50 by 42) 42++");
+  REQUIRE(nodePrintStream.str() == "for (x : 42 .. 50 by 42) 42++;");
 
   // Test getters 
   REQUIRE(range->getVar() == var.get());
@@ -440,7 +440,7 @@ TEST_CASE("ASTTForRangeStmtTest", "[ASTForRangeStmt]") {
   // Test accept
   RecordPostPrint visitor;
   range->accept(&visitor);
-  std::string expected[] = { "x", "42", "50", "42", "42", "42++" };
+  std::string expected[] = { "x", "42", "50", "42", "42", "42++;" };
   for (int i=0; i < 6; i++) {
     REQUIRE(visitor.postPrintStrings[i] == expected[i]);
   }

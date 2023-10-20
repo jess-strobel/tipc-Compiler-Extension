@@ -246,6 +246,73 @@ void PrettyPrinter::endVisit(ASTReturnStmt *element) {
   visitResults.push_back(indent() + "return " + argString + ";");
 }
 
+void PrettyPrinter::endVisit(ASTIncStmt *element) {
+  std::string numString = visitResults.back();
+  visitResults.pop_back();
+  visitResults.push_back(indent() + numString + "++;");
+}
+
+void PrettyPrinter::endVisit(ASTDecStmt *element) {
+  std::string numString = visitResults.back();
+  visitResults.pop_back();
+  visitResults.push_back(indent() + numString + "--;");
+}
+
+bool PrettyPrinter::visit(ASTForRangeStmt *element) {
+  indentLevel++;
+  return true;
+}
+
+void PrettyPrinter::endVisit(ASTForRangeStmt *element) {
+  std::string bodyString = visitResults.back();
+  visitResults.pop_back();
+  std::string stepString = visitResults.back();
+  visitResults.pop_back();
+  std::string rboundString = visitResults.back();
+  visitResults.pop_back();
+  std::string lboundString = visitResults.back();
+  visitResults.pop_back();
+  std::string varString = visitResults.back();
+  visitResults.pop_back();
+  indentLevel--;
+
+  std::string forRangeString =
+      indent() + "for (" + varString + " : " + lboundString + " .. " + rboundString + " by " + stepString + ") \n" + bodyString;
+  visitResults.push_back(forRangeString);
+}
+
+bool PrettyPrinter::visit(ASTForItrStmt *element) {
+  indentLevel++;
+  return true;
+}
+
+void PrettyPrinter::endVisit(ASTForItrStmt *element) {
+  std::string bodyString = visitResults.back();
+  visitResults.pop_back();
+  std::string iterableString = visitResults.back();
+  visitResults.pop_back();
+  std::string varString = visitResults.back();
+  visitResults.pop_back();
+  indentLevel--;
+
+  std::string forItrString =
+      indent() + "for (" + varString + " : " + iterableString + ") \n" + bodyString;
+  visitResults.push_back(forItrString);
+}
+
+void PrettyPrinter::endVisit(ASTTernaryCondExpr *element) {
+  std::string rightString = visitResults.back();
+  visitResults.pop_back();
+  std::string leftString = visitResults.back();
+  visitResults.pop_back();
+  std::string condString = visitResults.back();
+  visitResults.pop_back();
+
+  std::string ternaryCondExprString =
+    condString + " ? " + leftString + " : " + rightString;
+  visitResults.push_back(ternaryCondExprString);
+}
+
 std::string PrettyPrinter::indent() const {
   return std::string(indentLevel * indentSize, indentChar);
 }

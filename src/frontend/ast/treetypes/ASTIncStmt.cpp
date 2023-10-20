@@ -9,7 +9,7 @@ void ASTIncStmt::accept(ASTVisitor *visitor) {
 }
 
 std::ostream &ASTIncStmt::print(std::ostream &out) const {
-  out << *getNum() << "++";
+  out << *getNum() << "++" << ";";
   return out;
 }
 
@@ -17,4 +17,4 @@ std::vector<std::shared_ptr<ASTNode>> ASTIncStmt::getChildren() {
   std::vector<std::shared_ptr<ASTNode>> children;
   children.push_back(NUM);
   return children;
-}
+} // LCOV_EXCL_LINE

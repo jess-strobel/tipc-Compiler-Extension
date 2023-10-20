@@ -11,7 +11,7 @@ void ASTTernaryCondExpr::accept(ASTVisitor *visitor) {
 }
 
 std::ostream &ASTTernaryCondExpr::print(std::ostream &out) const {
-  out << *getCondition() << " ? " << *getThen() << " : " << *getElse();
+  out << "(" << *getCondition() << " ? " << *getThen() << " : " << *getElse() << ")";
   return out;
 }
 
@@ -23,4 +23,4 @@ std::vector<std::shared_ptr<ASTNode>> ASTTernaryCondExpr::getChildren() {
   children.push_back(ELSE);
 
   return children;
-}
+} // LCOV_EXCL_LINE

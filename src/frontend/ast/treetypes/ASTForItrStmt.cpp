@@ -24,4 +24,4 @@ std::vector<std::shared_ptr<ASTNode>> ASTForItrStmt::getChildren() {
   children.push_back(STMT);
 
   return children;
-}
+} // LCOV_EXCL_LINE

@@ -520,3 +520,91 @@ std::string ASTBuilder::generateSHA256(std::string tohash) {
   picosha2::hash256(tohash.begin(), tohash.end(), hash.begin(), hash.end());
   return picosha2::bytes_to_hex_string(hash.begin(), hash.end());
 }
+
+Any ASTBuilder::visitForItrStmt(TIPParser::ForItrStmtContext *ctx) {
+  visit(ctx->expr(0));
+  auto var = visitedExpr;
+  visit(ctx->expr(1));
+  auto iterable = visitedExpr;
+  visit(ctx->statement());
+  auto body = visitedStmt;
+  visitedStmt = std::make_shared<ASTForItrStmt>(var, iterable, body);
+
+  LOG_S(1) << "Built AST node " << *visitedStmt;
+
+  // Set source location
+  visitedStmt->setLocation(ctx->getStart()->getLine(),
+                           ctx->getStart()->getCharPositionInLine());
+  return "";
+}
+
+Any ASTBuilder::visitForRangeStmt(TIPParser::ForRangeStmtContext *ctx) {
+  visit(ctx->expr(0));
+  auto var = visitedExpr;
+  visit(ctx->expr(1));
+  auto lbound = visitedExpr;
+  visit(ctx->expr(2));
+  auto rbound = visitedExpr;
+  
+  // step is optional, default to 1 if not provided
+  std::shared_ptr<ASTExpr> step = std::make_shared<ASTNumberExpr>(1);
+  if (ctx->expr().size() == 4) {
+    visit(ctx->expr(3));
+    step = visitedExpr;
+  }
+
+  visit(ctx->statement());
+  auto body = visitedStmt;
+  visitedStmt = std::make_shared<ASTForRangeStmt>(var, lbound, rbound, step, body);
+
+  LOG_S(1) << "Built AST node " << *visitedStmt;
+
+  // Set source location
+  visitedStmt->setLocation(ctx->getStart()->getLine(),
+                           ctx->getStart()->getCharPositionInLine());
+  return "";
+}
+
+Any ASTBuilder::visitIncStmt(TIPParser::IncStmtContext *ctx) {
+  visit(ctx->expr());
+  auto num = visitedExpr;
+  visitedStmt = std::make_shared<ASTIncStmt>(num);
+
+  LOG_S(1) << "Built AST node " << *visitedStmt;
+
+  // Set source location
+  visitedStmt->setLocation(ctx->getStart()->getLine(),
+                           ctx->getStart()->getCharPositionInLine());
+  return "";
+}
+
+Any ASTBuilder::visitDecStmt(TIPParser::DecStmtContext *ctx) {
+  visit(ctx->expr());
+  auto num = visitedExpr;
+  visitedStmt = std::make_shared<ASTDecStmt>(num);
+
+  LOG_S(1) << "Built AST node " << *visitedStmt;
+
+  // Set source location
+  visitedStmt->setLocation(ctx->getStart()->getLine(),
+                           ctx->getStart()->getCharPositionInLine());
+  return "";
+}
+
+Any ASTBuilder::visitTernaryCondExpr(TIPParser::TernaryCondExprContext *ctx) {
+  visit(ctx->expr(0));
+  auto cond = visitedExpr;
+  visit(ctx->expr(1));
+  auto left = visitedExpr;
+  visit(ctx->expr(2));
+  auto right = visitedExpr;
+  visitedExpr = std::make_shared<ASTTernaryCondExpr>(cond, left, right);
+
+  LOG_S(1) << "Built AST node " << *visitedExpr;
+
+  // Set source location
+  visitedStmt->setLocation(ctx->getStart()->getLine(),
+                           ctx->getStart()->getCharPositionInLine());
+  return "";
+}
+

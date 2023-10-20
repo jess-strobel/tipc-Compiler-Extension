@@ -8,7 +8,7 @@
  */
 class ASTForRangeStmt : public ASTStmt {
   std::shared_ptr<ASTExpr> VAR, LBOUND, RBOUND;
-  std::shared_ptr<ASTExpr> STEP = std::make_shared<ASTNumberExpr>(1);
+  std::shared_ptr<ASTExpr> STEP;
   std::shared_ptr<ASTStmt> STMT;
 
 public:

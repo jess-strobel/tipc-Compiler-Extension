@@ -54,6 +54,14 @@ public:
   virtual void endVisit(ASTOutputStmt *element) override;
   virtual void endVisit(ASTReturnStmt *element) override;
   virtual void endVisit(ASTErrorStmt *element) override;
+  virtual void endVisit(ASTIncStmt *element) override;
+  virtual void endVisit(ASTDecStmt *element) override;
+  virtual bool visit(ASTForRangeStmt *element) override;
+  virtual void endVisit(ASTForRangeStmt *element) override;
+  virtual bool visit(ASTForItrStmt *element) override;
+  virtual void endVisit(ASTForItrStmt *element) override;
+  virtual void endVisit(ASTTernaryCondExpr *element) override;
+
 
 private:
   std::string indent() const;
