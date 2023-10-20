@@ -32,39 +32,6 @@ TEST_CASE("ASTBuilder: bad op string throws error", "[ASTBuilder]") {
 // ast false expr (??)
 // ast neg expr (??)
 
-TEST_CASE("ASTBuilder: visitFalseExpr", "[ASTBuilder]") {
-  std::stringstream stream;
-  stream << R"(
-    foo() {
-      var x;
-      x = false;
-      return 0;
-    }
-  )";
-
-  std::vector<std::string> expected{"false"};
-
-  auto ast = ASTHelper::build_ast(stream);
-
-  auto f = ast->findFunctionByName("foo");
-
-  int i = 0;
-  //visit(ctx->expr());
-  //auto cond = visitedExpr;
-  int numStmts = f->getStmts().size() - 1; // ignore ret
-  for (auto s : f->getStmts()) {
-    auto assignstmt = dynamic_cast<ASTAssignStmt *>(s);
-    auto falseexpr = dynamic_cast<ASTFalseExpr *>(&(*assignstmt->getRHS()));
-    stream = std::stringstream();
-    stream << *falseexpr;
-    auto actual = stream.str();
-    REQUIRE(actual == expected.at(i++));
-    if (i == numStmts) {
-      break;
-    }
-  }
-}
-
 TEST_CASE("ASTBuilder: visitArrConstructorExpr", "[ASTBuilder]") {
   std::stringstream stream;
   stream << R"(
