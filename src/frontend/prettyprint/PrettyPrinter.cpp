@@ -152,6 +152,12 @@ void PrettyPrinter::endVisit(ASTNotExpr *element) {
   visitResults.push_back("not " + val);
 }
 
+void PrettyPrinter::endVisit(ASTNegExpr *element) {
+  std::string val = visitResults.back();
+  visitResults.pop_back();
+  visitResults.push_back("-" + val);
+}
+
 void PrettyPrinter::endVisit(ASTArrLenOpExpr *element) {
   std::string var = visitResults.back();
   visitResults.pop_back();

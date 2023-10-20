@@ -162,9 +162,8 @@ Any ASTBuilder::visitFunction(TIPParser::FunctionContext *ctx) {
 }
 
 Any ASTBuilder::visitNegNumber(TIPParser::NegNumberContext *ctx) {
-  int val = std::stoi(ctx->expr()->getText());
-  val = -val;
-  visitedExpr = std::make_shared<ASTNumberExpr>(val);
+  visit(ctx->expr());
+  visitedExpr = std::make_shared<ASTNegExpr>(visitedExpr);
 
   LOG_S(1) << "Built AST node " << *visitedExpr;
 

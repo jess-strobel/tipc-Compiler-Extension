@@ -185,4 +185,33 @@ TEST_CASE("ASTBuilder: visitNotExpr", "[ASTBuilder]") {
   }
 }
 
-// ast true expr (??)
+TEST_CASE("ASTBuilder: visitNegExpr", "[ASTBuilder]") {
+  std::stringstream stream;
+  stream << R"(
+    foo() {
+      var x, y;
+      x = -y;
+      return 0;
+    }
+  )";
+
+  std::vector<std::string> expected{"-y"};
+
+  auto ast = ASTHelper::build_ast(stream);
+
+  auto f = ast->findFunctionByName("foo");
+
+  int i = 0;
+  int numStmts = f->getStmts().size() - 1; // ignore ret
+  for (auto s : f->getStmts()) {
+    auto assignstmt = dynamic_cast<ASTAssignStmt *>(s);
+    auto negexpr = dynamic_cast<ASTNegExpr *>(&(*assignstmt->getRHS()));
+    stream = std::stringstream();
+    stream << *negexpr;
+    auto actual = stream.str();
+    REQUIRE(actual == expected.at(i++));
+    if (i == numStmts) {
+      break;
+    }
+  }
+}
