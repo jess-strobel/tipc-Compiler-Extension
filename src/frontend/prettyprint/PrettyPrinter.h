@@ -42,6 +42,11 @@ public:
   virtual void endVisit(ASTFieldExpr *element) override;
   virtual void endVisit(ASTRecordExpr *element) override;
   virtual void endVisit(ASTAccessExpr *element) override;
+  virtual void endVisit(ASTNotExpr *element) override;
+  virtual void endVisit(ASTArrLenOpExpr *element) override;
+  virtual void endVisit(ASTArrRefExpr *element) override;
+  virtual void endVisit(ASTArrOrConstructorExpr *element) override;
+  virtual void endVisit(ASTArrConstructorExpr *element) override;
   virtual void endVisit(ASTDeclNode *element) override;
   virtual void endVisit(ASTDeclStmt *element) override;
   virtual void endVisit(ASTAssignStmt *element) override;

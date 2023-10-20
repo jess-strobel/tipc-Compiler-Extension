@@ -77,6 +77,13 @@ void PrettyPrinter::endVisit(ASTFunction *element) {
   indentLevel--;
 }
 
+void PrettyPrinter::endVisit(ASTArrConstructorExpr *element) {
+  auto args =
+      joinWithDelim(visitResults, ", ", element->getArgs().size(), 1);
+
+  visitResults.push_back("[" + args + "]");
+}
+
 void PrettyPrinter::endVisit(ASTNumberExpr *element) {
   visitResults.push_back(std::to_string(element->getValue()));
 }
@@ -93,6 +100,22 @@ void PrettyPrinter::endVisit(ASTBinaryExpr *element) {
   //Construct string representation from left operand, space, operator, space, and right operand, all enclosed in parentheses
   visitResults.push_back("(" + leftString + " " + element->getOp() + " " +
                          rightString + ")");
+}
+
+void PrettyPrinter::endVisit(ASTArrRefExpr *element) {
+  std::string index = visitResults.back();
+  visitResults.pop_back();
+  std::string arr = visitResults.back();
+  visitResults.pop_back();
+  visitResults.push_back(arr + "[" + index + "]");
+}
+
+void PrettyPrinter::endVisit(ASTArrOrConstructorExpr *element) {
+  std::string right = visitResults.back();
+  visitResults.pop_back();
+  std::string left = visitResults.back();
+  visitResults.pop_back();
+  visitResults.push_back("[" + left + " of " + right + "]");
 }
 
 void PrettyPrinter::endVisit(ASTInputExpr *element) {
@@ -121,6 +144,18 @@ void PrettyPrinter::endVisit(ASTDeRefExpr *element) {
   std::string base = visitResults.back();
   visitResults.pop_back();
   visitResults.push_back("*" + base);
+}
+
+void PrettyPrinter::endVisit(ASTNotExpr *element) {
+  std::string val = visitResults.back();
+  visitResults.pop_back();
+  visitResults.push_back("not " + val);
+}
+
+void PrettyPrinter::endVisit(ASTArrLenOpExpr *element) {
+  std::string var = visitResults.back();
+  visitResults.pop_back();
+  visitResults.push_back("#" + var);
 }
 
 void PrettyPrinter::endVisit(ASTNullExpr *element) {
