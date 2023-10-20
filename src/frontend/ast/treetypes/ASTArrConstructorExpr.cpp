@@ -2,16 +2,6 @@
 #include "ASTVisitor.h"
 #include "ASTinternal.h"
 
-/*
-ASTArrConstructorExpr::ASTArrConstructorExpr(
-        std::vector<std::shared_ptr<ASTExpr>> ARGS) {
-    for (auto &arg : ARGS) {
-        std::shared_ptr<ASTExpr> a = arg;
-        this->ARGS.push_back(a);
-    }
-}
-*/
-
 std::vector<ASTExpr *> ASTArrConstructorExpr::getArgs() const {
     return rawRefs(ARGS);
 }

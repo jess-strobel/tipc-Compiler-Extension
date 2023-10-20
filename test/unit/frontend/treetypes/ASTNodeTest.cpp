@@ -91,9 +91,7 @@ TEST_CASE("ASTNodeTest: ASTAssign", "[ASTNode]") {
   }
 }
 
-// ---------------- test creation in progress ------------------------ //
-
-TEST_CASE("ASTNodeTest: ASTArrConstructorExpr", "[ASTNode]") {
+TEST_CASE("ASTNodeTest: ASTArrConstructor", "[ASTNode]") {
   auto arg1 = std::make_shared<ASTNumberExpr>(1);
   auto arg2 = std::make_shared<ASTNumberExpr>(2);
   auto arg3 = std::make_shared<ASTNumberExpr>(3);
@@ -179,7 +177,7 @@ TEST_CASE("ASTNodeTest: ASTArrOrConstructor", "[ASTNode]") {
   }
 }
 
-TEST_CASE("ASTNodeTest: ASTArrRefExpr", "[ASTNode]") {
+TEST_CASE("ASTNodeTest: ASTArrRef", "[ASTNode]") {
   auto lhs = std::make_shared<ASTVariableExpr>("x");
   auto rhs = std::make_shared<ASTNumberExpr>(6);
   auto arrrefexpr = std::make_shared<ASTArrRefExpr>(lhs, rhs);
@@ -293,8 +291,6 @@ TEST_CASE("ASTNodeTest: ASTTrue", "[ASTNode]") {
     REQUIRE(visitor.postPrintStrings[i] == expected[i]);
   }
 }
-
-// ---------------- test creation in progress ------------------------ //
 
 TEST_CASE("ASTIncStmtTest", "[ASTIncStmt]") {
   auto num = std::make_shared<ASTNumberExpr>(42);
