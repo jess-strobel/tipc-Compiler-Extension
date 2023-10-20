@@ -8,6 +8,41 @@
 
 #include <iostream>
 
+
+TEST_CASE("ASTBuilder: visitNotExpr", "[ASTBuilder]") {
+  std::stringstream stream;
+  stream << R"(
+    foo() {
+      var x, y;
+      if (not x) x = 0;
+      if (not y) y = 0;
+      return 0;
+    }
+  )";
+
+  std::vector<std::string> expected{"not x", "not y"};
+
+  auto ast = ASTHelper::build_ast(stream);
+
+  auto f = ast->findFunctionByName("foo");
+
+  int i = 0;
+  //visit(ctx->expr());
+  //auto cond = visitedExpr;
+  int numStmts = f->getStmts().size() - 1; // ignore ret
+  for (auto s : f->getStmts()) {
+    auto ifstmt = dynamic_cast<ASTIfStmt *>(s);
+    auto notexpr = dynamic_cast<ASTNotExpr *>(&(*ifstmt->getCondition()));
+    stream = std::stringstream();
+    stream << *notexpr;
+    auto actual = stream.str();
+    REQUIRE(actual == expected.at(i++));
+    if (i == numStmts) {
+      break;
+    }
+  }
+}
+
 TEST_CASE("ASTBuilder: bad op string throws error", "[ASTBuilder]") {
   // Boilerplate just to setup a legitimate builder.
   std::stringstream stream;

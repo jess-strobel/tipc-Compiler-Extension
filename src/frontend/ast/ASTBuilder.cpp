@@ -325,6 +325,126 @@ Any ASTBuilder::visitDeRefExpr(TIPParser::DeRefExprContext *ctx) {
   return "";
 } // LCOV_EXCL_LINE
 
+// ------------------------ visit method creation in progress ------------------------- //
+
+// ast arr constructor expr
+Any ASTBuilder::visitArrConstructorExpr(TIPParser::ArrConstructorExprContext *ctx) {
+  std::vector<std::shared_ptr<ASTExpr>> args;
+  for (auto a : ctx->expr()) {
+    visit(fn);
+    args.push_back(visitedExpr);
+  }
+
+  visitedExpr = std::make_shared<ASTExpr>(args);
+
+  LOG_S(1) << "Built AST node " << *visitedExpr;
+
+  // Set source location
+  visitedExpr->setLocation(ctx->getStart()->getLine(),
+                           ctx->getStart()->getCharPositionInLine());
+  return "";
+}
+
+// arr len op expr
+Any ASTBuilder::visitArrLenOpExpr(TIPParser::ArrLenOpExprContext *ctx) {
+  visit(ctx->expr());
+  visitedExpr = std::make_shared<ASTArrLenOpExpr>(visitedExpr);
+
+  LOG_S(1) << "Built AST node " << *visitedExpr;
+
+  // Set source location
+  visitedExpr->setLocation(ctx->getStart()->getLine(),
+                           ctx->getStart()->getCharPositionInLine());
+  return "";
+} // LCOV_EXCL_LINE
+
+// arr or constructor expr
+void ASTBuilder::visitArrOrConstructorExpr(T *ctx) {
+  visit(ctx->expr(0));  
+  auto lhs = visitedExpr;
+
+  visit(ctx->expr(1));  
+  auto rhs = visitedExpr;
+
+  visitedExpr = std::make_shared<ASTArrOrConstructorExpr>(lhs, rhs);
+
+  LOG_S(1) << "Built AST node " << *visitedExpr;
+
+  // Set source location
+  visitedExpr->setLocation(ctx->getStart()->getLine(),
+                           ctx->getStart()->getCharPositionInLine());
+}
+
+// arr ref expr
+void ASTBuilder::visitArrRefExpr(T *ctx) {
+  visit(ctx->expr(0));  
+  auto lhs = visitedExpr;
+
+  visit(ctx->expr(1));  
+  auto rhs = visitedExpr;
+
+  visitedExpr = std::make_shared<ASTArrRefExpr>(lhs, rhs);
+
+  LOG_S(1) << "Built AST node " << *visitedExpr;
+
+  // Set source location
+  visitedExpr->setLocation(ctx->getStart()->getLine(),
+                           ctx->getStart()->getCharPositionInLine());
+}
+
+// not sure how correct this one is
+Any ASTBuilder::visitFalseExpr(TIPParser::FalseExprContext *ctx) {
+  visit(ctx->expr());
+  visitedExpr = std::make_shared<ASTFalseExpr>();
+
+  LOG_S(1) << "Built AST node " << *visitedExpr;
+
+  // Set source location
+  visitedExpr->setLocation(ctx->getStart()->getLine(),
+                           ctx->getStart()->getCharPositionInLine());
+  return "";
+} // LCOV_EXCL_LINE
+
+// check this w one above
+Any ASTBuilder::visitNegExpr(TIPParser::NegExprContext *ctx) {
+  visit(ctx->expr());
+  visitedExpr = std::make_shared<ASTNegExpr>(visitedExpr);
+
+  LOG_S(1) << "Built AST node " << *visitedExpr;
+
+  // Set source location
+  visitedExpr->setLocation(ctx->getStart()->getLine(),
+                           ctx->getStart()->getCharPositionInLine());
+  return "";
+} // LCOV_EXCL_LINE
+
+Any ASTBuilder::visitNotExpr(TIPParser::NotExprContext *ctx) {
+  visit(ctx->expr());
+  visitedExpr = std::make_shared<ASTNotExpr>(visitedExpr);
+
+  LOG_S(1) << "Built AST node " << *visitedExpr;
+
+  // Set source location
+  visitedExpr->setLocation(ctx->getStart()->getLine(),
+                           ctx->getStart()->getCharPositionInLine());
+  return "";
+} // LCOV_EXCL_LINE
+
+// not sure how correct this one is
+Any ASTBuilder::visitTrueExpr(TIPParser::TrueExprContext *ctx) {
+  visit(ctx->expr());
+  visitedExpr = std::make_shared<ASTTrueExpr>();
+
+  LOG_S(1) << "Built AST node " << *visitedExpr;
+
+  // Set source location
+  visitedExpr->setLocation(ctx->getStart()->getLine(),
+                           ctx->getStart()->getCharPositionInLine());
+  return "";
+} // LCOV_EXCL_LINE
+
+// ------------------------ visit method creation in progress ------------------------- //
+
 Any ASTBuilder::visitNullExpr(TIPParser::NullExprContext *ctx) {
   visitedExpr = std::make_shared<ASTNullExpr>();
 
