@@ -74,9 +74,9 @@ public:
   Any visitArrLenOpExpr(TIPParser::ArrLenOpExprContext *ctx) override;
   Any visitArrOrConstructorExpr(TIPParser::ArrOrConstructorExprContext *ctx) override;
   Any visitArrRefExpr(TIPParser::ArrRefExprContext *ctx) override;
-  Any visitFalseExpr(TIPParser::FalseExprContext *ctx) override;
+  // Any visitFalseExpr(TIPParser::FalseExprContext *ctx) override;
   //Any visitNegExpr(TIPParser::NegExprContext *ctx) override;
   Any visitNotExpr(TIPParser::NotExprContext *ctx) override;
-  Any visitTrueExpr(TIPParser::TrueExprContext *ctx) override;
+  // Any visitTrueExpr(TIPParser::TrueExprContext *ctx) override;
 };
 //Visit methods are where parse-tree specific logic is defined, which constructs its corresponding AST Node
