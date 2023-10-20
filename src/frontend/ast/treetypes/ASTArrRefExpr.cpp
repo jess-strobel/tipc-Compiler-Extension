@@ -19,4 +19,4 @@ std::vector<std::shared_ptr<ASTNode>> ASTArrRefExpr::getChildren() {
     children.push_back(ARR);
     children.push_back(INDEX);
     return children;
-}
+} // LCOV_EXCL_LINE

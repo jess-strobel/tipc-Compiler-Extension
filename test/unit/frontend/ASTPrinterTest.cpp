@@ -345,8 +345,8 @@ TEST_CASE("ASTPrinterTest: boolean printers", "[ASTNodePrint]") {
       }
     )";
 
-  std::vector<std::string> expected{"x = true;", "if (true) y = false;",
-                                    "y = true;", "return false;"};
+  std::vector<std::string> expected{"x = (true);", "if ((true)) y = (false);",
+                                    "y = (true);", "return (false);"};
 
   auto ast = ASTHelper::build_ast(stream);
 
@@ -545,5 +545,39 @@ TEST_CASE("ASTPrinterTest: visitNegExpr", "[ASTPrinter]") {
     if (i == numStmts) {
       break;
     }
+  }
+}
+
+TEST_CASE("ASTPrinterTest: binary expression printers", "[ASTNodePrint]") {
+  std::stringstream stream;
+  stream << R"(
+      foo(a) { return a;}
+      fun() {
+        var x, y, z;
+        if ((5 % 3) == 2) {}
+        if ((true) and (false)) {}
+        if ((false) or (true)) {}
+        return 0;
+      }
+    )";
+
+  std::vector<std::string> expected{"((5%3)==2)",
+                                    "(false)",
+                                    "(true)"};
+
+  auto ast = ASTHelper::build_ast(stream);
+
+  auto f = ast->findFunctionByName("fun");
+
+  int i = 0;
+  int numStmts = f->getStmts().size() - 1; // skip the return
+  for (auto s : f->getStmts()) {
+    auto ifstmt = dynamic_cast<ASTIfStmt *>(s);
+    stream = std::stringstream();
+    stream << *ifstmt->getCondition();
+    auto actual = stream.str();
+    REQUIRE(actual == expected.at(i++));
+    if (i == numStmts)
+      break;
   }
 }

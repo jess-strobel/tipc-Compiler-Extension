@@ -212,16 +212,16 @@ TEST_CASE("ASTNodeTest: ASTBool", "[ASTNode]") {
   // test print method
   std::stringstream nodePrintStream;
   nodePrintStream << *trueBoolExpr;
-  REQUIRE(nodePrintStream.str() == "true");
+  REQUIRE(nodePrintStream.str() == "(true)");
 
   std::stringstream node2PrintStream;
   node2PrintStream << *falseBoolExpr;
-  REQUIRE(node2PrintStream.str() == "false");
+  REQUIRE(node2PrintStream.str() == "(false)");
 
   // test accept
   RecordPostPrint visitor;
   trueBoolExpr->accept(&visitor);
-  std::string expected[] = { "true" };
+  std::string expected[] = { "(true)" };
   for (int i=0; i < 1; i++) {
     REQUIRE(visitor.postPrintStrings[i] == expected[i]);
   }
@@ -433,12 +433,16 @@ TEST_CASE("ASTTForRangeStmtTest", "[ASTForRangeStmt]") {
   }
 }
 
-TEST_CASE("ASTRelationalOperatorsTest", "[ASTBinaryExpr]") {
+TEST_CASE("ASTBinaryOperatorsTest", "[ASTBinaryExpr]") {
+  auto falseBool = std::make_shared<ASTBoolExpr>(false);
   auto left = std::make_shared<ASTNumberExpr>(20);
   auto right = std::make_shared<ASTNumberExpr>(10);
   auto cond = std::make_shared<ASTBinaryExpr>(">=", left, right);
   auto cond2 = std::make_shared<ASTBinaryExpr>("<", left, right);
   auto cond3 = std::make_shared<ASTBinaryExpr>("<=", left, right);
+  auto mod = std::make_shared<ASTBinaryExpr>("%", left, right);
+  auto cond4 = std::make_shared<ASTBinaryExpr>("and", cond, cond2);
+  auto cond5 = std::make_shared<ASTBinaryExpr>("or", cond, falseBool);
 
   // Test Print Method
   std::stringstream nodePrintStream;
@@ -453,12 +457,27 @@ TEST_CASE("ASTRelationalOperatorsTest", "[ASTBinaryExpr]") {
   node3PrintStream << *cond3;
   REQUIRE(node3PrintStream.str() == "(20<=10)");
 
+  std::stringstream node4PrintStream;
+  node4PrintStream << *mod;
+  REQUIRE(node4PrintStream.str() == "(20%10)");
+
+  std::stringstream node5PrintStream;
+  node5PrintStream << *cond4;
+  REQUIRE(node5PrintStream.str() == "((20>=10)and(20<10))");
+
+  std::stringstream node6PrintStream;
+  node6PrintStream << *cond5;
+  REQUIRE(node6PrintStream.str() == "((20>=10)or(false))");
+
   // Test getters 
   REQUIRE(cond->getOp() == ">=");
   REQUIRE(cond->getLeft() == left.get());
   REQUIRE(cond->getRight() == right.get());
   REQUIRE(cond2->getOp() == "<");
   REQUIRE(cond3->getOp() == "<=");
+  REQUIRE(mod->getOp() == "%");
+  REQUIRE(cond4->getOp() == "and");
+  REQUIRE(cond5->getOp() == "or");
 
   // Test getChildren
   auto children = cond->getChildren();

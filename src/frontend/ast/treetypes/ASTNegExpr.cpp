@@ -17,4 +17,4 @@ std::vector<std::shared_ptr<ASTNode>> ASTNegExpr::getChildren() {
     std::vector<std::shared_ptr<ASTNode>> children;
     children.push_back(RIGHT);
     return children;
-}
+} // LCOV_EXCL_LINE

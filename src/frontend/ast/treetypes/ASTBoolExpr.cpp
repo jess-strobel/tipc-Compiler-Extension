@@ -7,6 +7,6 @@ void ASTBoolExpr::accept(ASTVisitor *visitor) {
 }
 
 std::ostream &ASTBoolExpr::print(std::ostream &out) const {
-  out << getBool();
+  out << "(" << getBool() << ")";
   return out;
 } // LCOV_EXCL_LINE

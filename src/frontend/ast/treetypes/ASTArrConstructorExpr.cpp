@@ -36,4 +36,4 @@ std::vector<std::shared_ptr<ASTNode>> ASTArrConstructorExpr::getChildren() {
         children.push_back(arg);
     }
     return children;
-}
+} // LCOV_EXCL_LINE

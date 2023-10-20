@@ -687,6 +687,8 @@ Any ASTBuilder::visitArrRefExpr(TIPParser::ArrRefExprContext *ctx) {
 }
 
 Any ASTBuilder::visitNotExpr(TIPParser::NotExprContext *ctx) {
+  std::string op = ctx->op->getText();
+  
   visit(ctx->expr());
   visitedExpr = std::make_shared<ASTNotExpr>(visitedExpr);
 
