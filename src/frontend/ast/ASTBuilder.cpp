@@ -331,7 +331,7 @@ Any ASTBuilder::visitDeRefExpr(TIPParser::DeRefExprContext *ctx) {
 Any ASTBuilder::visitArrConstructorExpr(TIPParser::ArrConstructorExprContext *ctx) {
   std::vector<std::shared_ptr<ASTExpr>> args;
   for (auto a : ctx->expr()) {
-    visit(fn);
+    visit(a);
     args.push_back(visitedExpr);
   }
 
