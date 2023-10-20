@@ -359,7 +359,7 @@ Any ASTBuilder::visitArrLenOpExpr(TIPParser::ArrLenOpExprContext *ctx) {
 } // LCOV_EXCL_LINE
 
 // arr or constructor expr
-void ASTBuilder::visitArrOrConstructorExpr(T *ctx) {
+Any ASTBuilder::visitArrOrConstructorExpr(TIPParser::ArrOrConstructorExprContext *ctx) {
   visit(ctx->expr(0));  
   auto lhs = visitedExpr;
 
@@ -376,7 +376,7 @@ void ASTBuilder::visitArrOrConstructorExpr(T *ctx) {
 }
 
 // arr ref expr
-void ASTBuilder::visitArrRefExpr(T *ctx) {
+Any ASTBuilder::visitArrRefExpr(TIPParser::ArrRefExprContext *ctx) {
   visit(ctx->expr(0));  
   auto lhs = visitedExpr;
 
@@ -392,18 +392,19 @@ void ASTBuilder::visitArrRefExpr(T *ctx) {
                            ctx->getStart()->getCharPositionInLine());
 }
 
-// not sure how correct this one is
-Any ASTBuilder::visitFalseExpr(TIPParser::FalseExprContext *ctx) {
-  visit(ctx->expr());
-  visitedExpr = std::make_shared<ASTFalseExpr>();
+// // unneccessary i think
+// // not sure how correct this one is
+// Any ASTBuilder::visitFalseExpr(TIPParser::FalseExprContext *ctx) {
+//   visit(ctx->expr());
+//   visitedExpr = std::make_shared<ASTFalseExpr>();
 
-  LOG_S(1) << "Built AST node " << *visitedExpr;
+//   LOG_S(1) << "Built AST node " << *visitedExpr;
 
-  // Set source location
-  visitedExpr->setLocation(ctx->getStart()->getLine(),
-                           ctx->getStart()->getCharPositionInLine());
-  return "";
-} // LCOV_EXCL_LINE
+//   // Set source location
+//   visitedExpr->setLocation(ctx->getStart()->getLine(),
+//                            ctx->getStart()->getCharPositionInLine());
+//   return "";
+// } // LCOV_EXCL_LINE
 
 // // check this w one above
 // Any ASTBuilder::visitNegExpr(TIPParser::NegExprContext *ctx) {
@@ -430,18 +431,19 @@ Any ASTBuilder::visitNotExpr(TIPParser::NotExprContext *ctx) {
   return "";
 } // LCOV_EXCL_LINE
 
-// not sure how correct this one is
-Any ASTBuilder::visitTrueExpr(TIPParser::TrueExprContext *ctx) {
-  visit(ctx->expr());
-  visitedExpr = std::make_shared<ASTTrueExpr>();
+// // unneccessary i think
+// // not sure how correct this one is
+// Any ASTBuilder::visitTrueExpr(TIPParser::TrueExprContext *ctx) {
+//   visit(ctx->expr());
+//   visitedExpr = std::make_shared<ASTTrueExpr>();
 
-  LOG_S(1) << "Built AST node " << *visitedExpr;
+//   LOG_S(1) << "Built AST node " << *visitedExpr;
 
-  // Set source location
-  visitedExpr->setLocation(ctx->getStart()->getLine(),
-                           ctx->getStart()->getCharPositionInLine());
-  return "";
-} // LCOV_EXCL_LINE
+//   // Set source location
+//   visitedExpr->setLocation(ctx->getStart()->getLine(),
+//                            ctx->getStart()->getCharPositionInLine());
+//   return "";
+// } // LCOV_EXCL_LINE
 
 // ------------------------ visit method creation in progress ------------------------- //
 
