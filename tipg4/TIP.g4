@@ -64,8 +64,8 @@ expr : expr '(' (expr (',' expr)*)? ')' 	#funAppExpr
      | '(' expr ')'				#parenExpr
 ;
 
-arrListConstructorExpr : '[' (expr (',' expr)*)? ']' ;
-arrBinaryConstructorExpr : '[' (expr ' of ' expr) ']' ;
+arrConstructorExpr : '[' (expr (',' expr)*)? ']' ;
+arrOrConstructorExpr : '[' (expr ' of ' expr) ']' ;
 
 recordExpr : '{' (fieldExpr (',' fieldExpr)*)? '}' ;
 
