@@ -50,8 +50,8 @@ expr : expr '(' (expr (',' expr)*)? ')' 	#funAppExpr
      | expr op=AND expr         #andOpExpr
      | expr op=OR expr          #orOpExpr
      | <assoc=right> expr '?' expr ':' expr   #ternaryCondExpr 
-     | arrConstructorExpr       #arrConstructorExpr
-     | arrOrConstructorExpr     #arrOrConstructorExpr
+     | arrListConstructorExpr       #arrConstructorExpr
+     | arrBinaryConstructorExpr     #arrOrConstructorExpr
      | '#' expr                 #arrLenOpExpr
      | IDENTIFIER				#varExpr
      | NUMBER					#numExpr
@@ -64,8 +64,8 @@ expr : expr '(' (expr (',' expr)*)? ')' 	#funAppExpr
      | '(' expr ')'				#parenExpr
 ;
 
-arrConstructorExpr : '[' (expr (',' expr)*)? ']' ;
-arrOrConstructorExpr : '[' (expr ' of ' expr) ']' ;
+arrListConstructorExpr : '[' (expr (',' expr)*)? ']' ;
+arrBinaryConstructorExpr : '[' (expr ' of ' expr) ']' ;
 
 recordExpr : '{' (fieldExpr (',' fieldExpr)*)? '}' ;
 
