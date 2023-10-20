@@ -34,7 +34,7 @@ std::ostream &ASTArrConstructorExpr::print(std::ostream &out) const {
             out << *a;
             continue;
         }
-        out << "," << *a;
+        out << ", " << *a;
     }
     out << "]";
     return out;

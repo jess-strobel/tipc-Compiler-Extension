@@ -10,7 +10,7 @@ void ASTArrOrConstructorExpr::accept(ASTVisitor *visitor) {
 }
 
 std::ostream &ASTArrOrConstructorExpr::print(std::ostream &out) const {
-    out << "[" << *getLeft() << "of" << *getRight() << "]";
+    out << "[" << *getLeft() << " of " << *getRight() << "]";
     return out;
 }
 

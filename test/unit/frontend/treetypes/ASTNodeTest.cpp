@@ -40,7 +40,14 @@ public:
     void endVisit(ASTBlockStmt * element) { record(element); }
     void endVisit(ASTDecStmt * element) { record(element); }
     void endVisit(ASTIncStmt * element) { record(element); }
+    void endVisit(ASTArrConstructorExpr * element) { record(element); }
+    void endVisit(ASTArrLenOpExpr * element) { record(element); }
+    void endVisit(ASTArrOrConstructorExpr * element) { record(element); }
+    void endVisit(ASTArrRefExpr * element) { record(element); }
+    void endVisit(ASTFalseExpr * element) { record(element); }
+    void endVisit(ASTNegExpr * element) { record(element); }
     void endVisit(ASTNotExpr * element) { record(element); }
+    void endVisit(ASTTrueExpr * element) { record(element); }
 };
 
 // Helper function that checks for raw node pointer in list
@@ -175,26 +182,26 @@ TEST_CASE("ASTNodeTest: ASTArrOrConstructor", "[ASTNode]") {
 TEST_CASE("ASTNodeTest: ASTArrRefExpr", "[ASTNode]") {
   auto lhs = std::make_shared<ASTVariableExpr>("x");
   auto rhs = std::make_shared<ASTNumberExpr>(6);
-  auto refexpr = std::make_shared<ASTArrRefExpr>(lhs, rhs);
+  auto arrrefexpr = std::make_shared<ASTArrRefExpr>(lhs, rhs);
 
   // test print method
   std::stringstream nodePrintStream;
-  nodePrintStream << *refexpr;
+  nodePrintStream << *arrrefexpr;
   REQUIRE(nodePrintStream.str() == "x[6]");
 
   // test getters
-  REQUIRE(lhs.get() == refexpr->getArr());
-  REQUIRE(rhs.get() == refexpr->getIndex());
+  REQUIRE(lhs.get() == arrrefexpr->getArr());
+  REQUIRE(rhs.get() == arrrefexpr->getIndex());
 
   // test getchildren
-  auto children = refexpr->getChildren();
+  auto children = arrrefexpr->getChildren();
   REQUIRE(children.size() == 2);
   REQUIRE(contains(children, rhs.get()));
   REQUIRE(contains(children, lhs.get()));
 
   // test accept
   RecordPostPrint visitor;
-  refexpr->accept(&visitor);
+  arrrefexpr->accept(&visitor);
   std::string expected[] = { "x", "6", "x[6]" };
   for (int i=0; i < 3; i++) {
     REQUIRE(visitor.postPrintStrings[i] == expected[i]);
