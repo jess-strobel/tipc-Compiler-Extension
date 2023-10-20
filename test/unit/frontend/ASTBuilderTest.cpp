@@ -29,9 +29,6 @@ TEST_CASE("ASTBuilder: bad op string throws error", "[ASTBuilder]") {
   REQUIRE_THROWS_AS(tb.visitAdditiveExpr(&context), std::runtime_error);
 }
 
-// ast false expr (??)
-// ast neg expr (??)
-
 TEST_CASE("ASTBuilder: visitArrConstructorExpr", "[ASTBuilder]") {
   std::stringstream stream;
   stream << R"(
@@ -49,8 +46,6 @@ TEST_CASE("ASTBuilder: visitArrConstructorExpr", "[ASTBuilder]") {
   auto f = ast->findFunctionByName("foo");
 
   int i = 0;
-  //visit(ctx->expr());
-  //auto cond = visitedExpr;
   int numStmts = f->getStmts().size() - 1; // ignore ret
   for (auto s : f->getStmts()) {
     auto assignstmt = dynamic_cast<ASTAssignStmt *>(s);
@@ -82,8 +77,6 @@ TEST_CASE("ASTBuilder: visitArrLenOpExpr", "[ASTBuilder]") {
   auto f = ast->findFunctionByName("foo");
 
   int i = 0;
-  //visit(ctx->expr());
-  //auto cond = visitedExpr;
   int numStmts = f->getStmts().size() - 1; // ignore ret
   for (auto s : f->getStmts()) {
     auto assignstmt = dynamic_cast<ASTAssignStmt *>(s);
@@ -115,8 +108,6 @@ TEST_CASE("ASTBuilder: visitArrOrConstructorExpr", "[ASTBuilder]") {
   auto f = ast->findFunctionByName("foo");
 
   int i = 0;
-  //visit(ctx->expr());
-  //auto cond = visitedExpr;
   int numStmts = f->getStmts().size() - 1; // ignore ret
   for (auto s : f->getStmts()) {
     auto assignstmt = dynamic_cast<ASTAssignStmt *>(s);
@@ -180,8 +171,6 @@ TEST_CASE("ASTBuilder: visitNotExpr", "[ASTBuilder]") {
   auto f = ast->findFunctionByName("foo");
 
   int i = 0;
-  //visit(ctx->expr());
-  //auto cond = visitedExpr;
   int numStmts = f->getStmts().size() - 1; // ignore ret
   for (auto s : f->getStmts()) {
     auto ifstmt = dynamic_cast<ASTIfStmt *>(s);
