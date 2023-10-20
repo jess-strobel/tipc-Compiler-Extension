@@ -335,7 +335,7 @@ Any ASTBuilder::visitArrConstructorExpr(TIPParser::ArrConstructorExprContext *ct
     args.push_back(visitedExpr);
   }
 
-  visitedExpr = std::make_shared<ASTExpr>(args);
+  visitedExpr = std::make_shared<ASTArrConstructorExpr>(args);
 
   LOG_S(1) << "Built AST node " << *visitedExpr;
 
