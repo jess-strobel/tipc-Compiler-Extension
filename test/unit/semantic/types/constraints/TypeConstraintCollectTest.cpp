@@ -60,7 +60,7 @@ TEST_CASE("TypeConstraintVisitor: const, input, alloc, assign through ptr",
    */
   std::vector<std::string> expected{
       "\u27E6input@3:5\u27E7 = int",
-      "\u27E6x@2:5\u27E7 = \u27E6input@3:5\u27E7",
+      "\u27E6x@2:5\u27E7 = \u27E6input@3:5\u27E7",   //type of lhs = type of rhs
       "\u27E6alloc x@4:5\u27E7 = \u2B61\u27E6x@2:5\u27E7",
       "\u27E6y@2:7\u27E7 = \u27E6alloc x@4:5\u27E7",
       "\u27E6y@2:7\u27E7 = \u2B61\u27E6(*y)@5:1\u27E7",
