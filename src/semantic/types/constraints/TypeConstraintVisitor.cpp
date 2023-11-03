@@ -124,7 +124,6 @@ void TypeConstraintVisitor::endVisit(ASTArrLenOpExpr *element) {
  *
  * Type rules for "X[X1]":
  *   [[X1]] = int
- *   [[X]] = [] \alpha
  *   [[X]] = [] [[X[X1]]]
  */
 void TypeConstraintVisitor::endVisit(ASTArrRefExpr *element) {
