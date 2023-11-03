@@ -591,3 +591,52 @@ TEST_CASE("TypeConstraintVisitor: not", "[TypeConstraintVisitor]") {
 
   runtest(program, expected);
 }
+
+// // JESS - arr ref
+// TEST_CASE("TypeConstraintVisitor: array reference", "[TypeConstraintVisitor]") {
+//   std::stringstream program;
+//   program << R"(
+//       foo() {
+//         var x, y;
+//         x = [1];
+//         y = x[0];
+//         return x;
+//       }
+//     )";
+
+//   std::vector<std::string> expected{
+//       "\u27E61@4:13\u27E7 = int",
+//       "\u27E6x@3:12\u27E7 = [] \u03B1",
+//       "\u27E6x@3:12\u27E7 = \u27E6[1]@4:12\u27E7",
+
+//       "\u27E60@5:14\u27E7 = int",
+//       "\u27E6x@3:12\u27E7 = [] \u03B1",
+//       "\u27E6y@3:15\u27E7 = \u27E6x[0]@5:12\u27E7",
+
+//       "\u27E6foo@2:6\u27E7 = () -> \u27E6x@3:12\u27E7"
+//   };
+
+//   runtest(program, expected);
+// }
+
+// JESS - arr constructor
+TEST_CASE("TypeConstraintVisitor: array constructor", "[TypeConstraintVisitor]") {
+  std::stringstream program;
+  program << R"(
+      foo() {
+        var x;
+        x = [4 of 5];
+        return x;
+      }
+    )";
+
+  std::vector<std::string> expected{
+      "\u27E64@4:13\u27E7 = int",
+      "\u27E65@4:18\u27E7 = int",
+      "\u27E6x@3:12\u27E7 = \u27E6[4 of 5]@4:12\u27E7",
+
+      "\u27E6foo@2:6\u27E7 = () -> \u27E6x@3:12\u27E7"
+  };
+
+  runtest(program, expected);
+}
