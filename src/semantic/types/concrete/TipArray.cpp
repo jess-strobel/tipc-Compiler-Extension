@@ -23,17 +23,14 @@ bool TipArray::operator==(const TipType &other) const {
     return false;
   }
 
-  if (arguments.size() == 0 && otherTipArray->arguments.size() == 0) {
+  if (arguments.size() == 0 && otherTipArray->arguments.size() == 0)
     return true;
-  } else if (arguments.size() == 0 && otherTipArray->arguments.size() != 0) {
+  else if (arguments.size() == 0 && otherTipArray->arguments.size() != 0)
     return false;
-  } else if (arguments.size() != 0 && otherTipArray->arguments.size() == 0) {
+  else if (arguments.size() != 0 && otherTipArray->arguments.size() == 0)
     return false;
-  } else {
-    return *arguments.at(0) == *(otherTipArray->arguments.at(0));
-  }
 
-  return true;
+  return *arguments.at(0) == *(otherTipArray->arguments.at(0));
 }
 
 bool TipArray::operator!=(const TipType &other) const {

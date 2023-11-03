@@ -306,13 +306,9 @@ void TypeConstraintVisitor::endVisit(ASTWhileStmt *element) {
 /*! \brief Type constraints for iterator-style for loop.
  *
  * Type rules for "for (E1 : E2) S":
- *   [[E2]] = array
  *   [] [[E1]] = [[E2]]
  */
 void TypeConstraintVisitor::endVisit(ASTForItrStmt *element) {
-  constraintHandler->handle(astToVar(element->getIterable()),
-                        std::make_shared<TipArray>());
-
   std::vector<std::shared_ptr<TipType>> args;
   args.push_back(astToVar(element->getVar()));
 
