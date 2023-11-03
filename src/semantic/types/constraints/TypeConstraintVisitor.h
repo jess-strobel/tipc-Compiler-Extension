@@ -49,12 +49,24 @@ public:
   void endVisit(ASTFunction *element) override;
   void endVisit(ASTIfStmt *element) override;
   void endVisit(ASTInputExpr *element) override;
+  void endVisit(ASTNegExpr *element) override;
+  void endVisit(ASTNotExpr *element) override;
   void endVisit(ASTNullExpr *element) override;
   void endVisit(ASTNumberExpr *element) override;
   void endVisit(ASTOutputStmt *element) override;
   void endVisit(ASTRecordExpr *element) override;
   void endVisit(ASTRefExpr *element) override;
   void endVisit(ASTWhileStmt *element) override;
+  void endVisit(ASTBoolExpr *element) override;
+  void endVisit(ASTTernaryCondExpr *element) override;
+  void endVisit(ASTArrConstructorExpr *element) override;
+  void endVisit(ASTArrOfConstructorExpr *element) override;
+  void endVisit(ASTArrRefExpr *element) override;
+  void endVisit(ASTArrLenOpExpr *element) override;
+  void endVisit(ASTIncStmt *element) override;
+  void endVisit(ASTDecStmt *element) override;
+  void endVisit(ASTForItrStmt *element) override;
+  void endVisit(ASTForRangeStmt *element) override;
 
 protected:
   std::shared_ptr<ConstraintHandler> constraintHandler;

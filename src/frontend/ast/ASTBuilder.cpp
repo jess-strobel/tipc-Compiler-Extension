@@ -657,7 +657,7 @@ Any ASTBuilder::visitArrOrConstructorExpr(TIPParser::ArrOrConstructorExprContext
   visit(ctx->expr(1));
   auto rhs = visitedExpr;
 
-  visitedExpr = std::make_shared<ASTArrOrConstructorExpr>(lhs, rhs);
+  visitedExpr = std::make_shared<ASTArrOfConstructorExpr>(lhs, rhs);
 
   LOG_S(1) << "Built AST node " <<visitedExpr;
 

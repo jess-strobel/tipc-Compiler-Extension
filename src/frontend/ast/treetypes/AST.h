@@ -41,7 +41,7 @@
 #include "ASTTernaryCondExpr.h"
 #include "ASTArrConstructorExpr.h"
 #include "ASTArrLenOpExpr.h"
-#include "ASTArrOrConstructorExpr.h"
+#include "ASTArrOfConstructorExpr.h"
 #include "ASTArrRefExpr.h"
 #include "ASTNegExpr.h"
 #include "ASTNotExpr.h"
