@@ -125,11 +125,12 @@ void TypeConstraintVisitor::endVisit(ASTArrLenOpExpr *element) {
  * Type rules for "X[X1]":
  *   [[X1]] = int
  *   [[X]] = [] \alpha
+ *   [[X]] = [] [[X[X1]]]
  */
 void TypeConstraintVisitor::endVisit(ASTArrRefExpr *element) {
   constraintHandler->handle(astToVar(element->getIndex()), std::make_shared<TipInt>());
   
-  std::vector<std::shared_ptr<TipType>> args;
+  std::vector<std::shared_ptr<TipType>> args{astToVar(element)};
   constraintHandler->handle(astToVar(element->getArr()), std::make_shared<TipArray>(args));
 }
 

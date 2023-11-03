@@ -13,7 +13,6 @@
  */
 class TipArray : public TipCons {
 public:
-  TipArray();
   TipArray(std::vector<std::shared_ptr<TipType>> args);
 
   bool operator==(const TipType &other) const override;

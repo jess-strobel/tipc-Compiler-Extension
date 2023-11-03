@@ -3,8 +3,6 @@
 
 #include <sstream>
 
-TipArray::TipArray() {}
-
 TipArray::TipArray(std::vector<std::shared_ptr<TipType>> args)
     : TipCons(args) {}
 
