@@ -60,7 +60,7 @@ TEST_CASE("TypeConstraintVisitor: const, input, alloc, assign through ptr",
    */
   std::vector<std::string> expected{
       "\u27E6input@3:5\u27E7 = int",
-      "\u27E6x@2:5\u27E7 = \u27E6input@3:5\u27E7",
+      "\u27E6x@2:5\u27E7 = \u27E6input@3:5\u27E7",   //type of lhs = type of rhs
       "\u27E6alloc x@4:5\u27E7 = \u2B61\u27E6x@2:5\u27E7",
       "\u27E6y@2:7\u27E7 = \u27E6alloc x@4:5\u27E7",
       "\u27E6y@2:7\u27E7 = \u2B61\u27E6(*y)@5:1\u27E7",
@@ -115,7 +115,7 @@ TEST_CASE("TypeConstraintVisitor: if ", "[TypeConstraintVisitor]") {
    */
   std::vector<std::string> expected{
       "\u27E60@4:16\u27E7 = int",                    // const is int
-      "\u27E6(x>0)@4:12\u27E7 = int",                // binexpr is int
+      "\u27E6(x>0)@4:12\u27E7 = bool",               // binexpr is bool
       "\u27E6x@3:12\u27E7 = int",                    // operand is int
       "\u27E60@4:16\u27E7 = int",                    // operand is int
       "\u27E61@5:18\u27E7 = int",                    // const is int
@@ -124,7 +124,7 @@ TEST_CASE("TypeConstraintVisitor: if ", "[TypeConstraintVisitor]") {
       "\u27E61@5:18\u27E7 = int",                    // operands is int
       "\u27E6x@3:12\u27E7 = \u27E6(x+1)@5:14\u27E7", // sides of assignment have
                                                      // same type
-      "\u27E6(x>0)@4:12\u27E7 = int",                // if condition is int
+      "\u27E6(x>0)@4:12\u27E7 = bool",               // if condition is bool
       "\u27E6foo@2:6\u27E7 = () -> \u27E6x@3:12\u27E7" // function type
   };
 
@@ -145,7 +145,7 @@ TEST_CASE("TypeConstraintVisitor: while ", "[TypeConstraintVisitor]") {
 
   std::vector<std::string> expected{
       "\u27E60@4:19\u27E7 = int",                    // const is int
-      "\u27E6(x>0)@4:15\u27E7 = int",                // binexpr is int
+      "\u27E6(x>0)@4:15\u27E7 = bool",               // binexpr is bool
       "\u27E6x@3:12\u27E7 = int",                    // operand is int
       "\u27E60@4:19\u27E7 = int",                    // operand is int
       "\u27E61@5:18\u27E7 = int",                    // const is int
@@ -154,7 +154,7 @@ TEST_CASE("TypeConstraintVisitor: while ", "[TypeConstraintVisitor]") {
       "\u27E61@5:18\u27E7 = int",                    // operands is int
       "\u27E6x@3:12\u27E7 = \u27E6(x-1)@5:14\u27E7", // sides of assignment have
                                                      // same type
-      "\u27E6(x>0)@4:15\u27E7 = int",                // while condition is int
+      "\u27E6(x>0)@4:15\u27E7 = bool",                // while condition is bool
       "\u27E6foo@2:6\u27E7 = () -> \u27E6x@3:12\u27E7" // function type
   };
 
@@ -412,6 +412,181 @@ main() {
       "\u27E60@8:11\u27E7 = int",                       // main return int
       "\u27E60@8:11\u27E7 = int",                       // int constant
       "\u27E6main@2:0\u27E7 = () -> \u27E60@8:11\u27E7" // fun declaration
+  };
+
+  runtest(program, expected);
+}
+
+TEST_CASE("TypeConstraintVisitor: and", "[TypeConstraintVisitor]") {
+  std::stringstream program;
+  program << R"(
+      foo() {
+        var x, y, z;
+        x = true;
+        y = false;
+        z = (x and y);
+        return z;
+      }
+    )";
+
+  std::vector<std::string> expected{
+      "\u27E6(true)@4:12\u27E7 = bool", 
+      "\u27E6x@3:12\u27E7 = \u27E6(true)@4:12\u27E7",
+
+      "\u27E6(false)@5:12\u27E7 = bool", 
+      "\u27E6y@3:15\u27E7 = \u27E6(false)@5:12\u27E7", 
+
+      "\u27E6z@3:18\u27E7 = \u27E6y@3:15\u27E7", 
+      "\u27E6foo@2:6\u27E7 = () -> \u27E6z@3:18\u27E7" 
+  };
+
+  runtest(program, expected);
+}
+
+TEST_CASE("TypeConstraintVisitor: #", "[TypeConstraintVisitor]") {
+  std::stringstream program;
+  program << R"(
+      foo() {
+        var x, y;
+        x = [1];
+        y = #x;
+        return x;
+      }
+    )";
+
+  std::vector<std::string> expected{
+      "\u27E61@4:13\u27E7 = int",
+      "\u27E6x@3:12\u27E7 = [] \u03B1",
+      "\u27E6x@3:12\u27E7 = \u27E6[1]@4:12\u27E7",
+
+      "\u27E6x@3:12\u27E7 = [] \u03B1",
+      "\u27E6#x@5:12\u27E7 = int",
+      "\u27E6y@3:15\u27E7 = \u27E6#x@5:12\u27E7",
+
+      "\u27E6foo@2:6\u27E7 = () -> \u27E6x@3:12\u27E7"
+  };
+
+  runtest(program, expected);
+}
+
+// JESS - INCDEC
+TEST_CASE("TypeConstraintVisitor: inc, dec", "[TypeConstraintVisitor]") {
+  std::stringstream program;
+  program << R"(
+      foo() {
+        var x;
+        x = 5;
+        x++;
+        x--;
+        return x;
+      }
+    )";
+
+  std::vector<std::string> expected{
+      "\u27E65@4:12\u27E7 = int", // const is int
+      "\u27E6x@3:12\u27E7 = \u27E65@4:12\u27E7", // lhs = rhs
+      "\u27E6x@3:12\u27E7 = int", // inc arg is int
+      "\u27E6x@3:12\u27E7 = int", // dec arg is int
+      "\u27E6foo@2:6\u27E7 = () -> \u27E6x@3:12\u27E7" // function type
+  };
+
+  runtest(program, expected);
+}
+
+// JESS - MOD
+TEST_CASE("TypeConstraintVisitor: mod", "[TypeConstraintVisitor]") {
+  std::stringstream program;
+  program << R"(
+      foo() {
+        var x, y, z;
+        z = x % y;
+        return x;
+      }
+    )";
+
+  std::vector<std::string> expected{
+      "\u27E6(x%y)@4:12\u27E7 = int", // binexpr is int
+      "\u27E6x@3:12\u27E7 = int", // operand is int
+      "\u27E6y@3:15\u27E7 = int", // operand is int
+      "\u27E6z@3:18\u27E7 = \u27E6(x%y)@4:12\u27E7", // lhs = rhs
+      "\u27E6foo@2:6\u27E7 = () -> \u27E6x@3:12\u27E7" // function type
+  };
+
+  runtest(program, expected);
+}
+
+// JESS - BOOL
+TEST_CASE("TypeConstraintVisitor: bool", "[TypeConstraintVisitor]") {
+  std::stringstream program;
+  program << R"(
+      foo() {
+        var x, y;
+        x = true;
+        y = false;
+        return x;
+      }
+    )";
+
+  std::vector<std::string> expected{
+      "\u27E6(false)@5:12\u27E7 = bool", 
+      "\u27E6y@3:15\u27E7 = \u27E6(false)@5:12\u27E7",
+
+      "\u27E6(true)@4:12\u27E7 = bool", 
+      "\u27E6x@3:12\u27E7 = \u27E6(true)@4:12\u27E7",  
+
+      "\u27E6foo@2:6\u27E7 = () -> \u27E6x@3:12\u27E7"       
+  };
+
+  runtest(program, expected);
+}
+
+// JESS - NEGATION
+TEST_CASE("TypeConstraintVisitor: negation", "[TypeConstraintVisitor]") {
+  std::stringstream program;
+  program << R"(
+      foo() {
+        var x, y;
+        x = 5;
+        y = -x;
+        return x;
+      }
+    )";
+
+  std::vector<std::string> expected{
+      "\u27E65@4:12\u27E7 = int",
+      "\u27E6x@3:12\u27E7 = int",
+      "\u27E6x@3:12\u27E7 = \u27E65@4:12\u27E7",
+
+      "\u27E6-x@5:12\u27E7 = int",
+      "\u27E6y@3:15\u27E7 = \u27E6-x@5:12\u27E7",
+
+      "\u27E6foo@2:6\u27E7 = () -> \u27E6x@3:12\u27E7"       
+  };
+
+  runtest(program, expected);
+}
+
+// JESS - NOT
+TEST_CASE("TypeConstraintVisitor: not", "[TypeConstraintVisitor]") {
+  std::stringstream program;
+  program << R"(
+      foo() {
+        var x, y;
+        x = false;
+        y = not x;
+        return y;
+      }
+    )";
+
+  std::vector<std::string> expected{
+      "\u27E6(false)@4:12\u27E7 = bool",
+      "\u27E6x@3:12\u27E7 = bool",
+      "\u27E6x@3:12\u27E7 = \u27E6(false)@4:12\u27E7",
+
+      "\u27E6not x@5:12\u27E7 = bool",
+      "\u27E6y@3:15\u27E7 = \u27E6not x@5:12\u27E7",
+
+      "\u27E6foo@2:6\u27E7 = () -> \u27E6y@3:15\u27E7"       
   };
 
   runtest(program, expected);

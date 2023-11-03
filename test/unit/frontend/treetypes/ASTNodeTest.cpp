@@ -43,7 +43,7 @@ public:
     void endVisit(ASTIncStmt * element) { record(element); }
     void endVisit(ASTArrConstructorExpr * element) { record(element); }
     void endVisit(ASTArrLenOpExpr * element) { record(element); }
-    void endVisit(ASTArrOrConstructorExpr * element) { record(element); }
+    void endVisit(ASTArrOfConstructorExpr * element) { record(element); }
     void endVisit(ASTArrRefExpr * element) { record(element); }
     void endVisit(ASTNegExpr * element) { record(element); }
     void endVisit(ASTNotExpr * element) { record(element); }
@@ -147,10 +147,10 @@ TEST_CASE("ASTNodeTest: ASTArrLenOp", "[ASTNode]") {
   }
 }
 
-TEST_CASE("ASTNodeTest: ASTArrOrConstructor", "[ASTNode]") {
+TEST_CASE("ASTNodeTest: ASTArrOfConstructor", "[ASTNode]") {
   auto lhs = std::make_shared<ASTNumberExpr>(2);
   auto rhs = std::make_shared<ASTNumberExpr>(6);
-  auto arrorconst = std::make_shared<ASTArrOrConstructorExpr>(lhs, rhs);
+  auto arrorconst = std::make_shared<ASTArrOfConstructorExpr>(lhs, rhs);
 
   // test print method
   std::stringstream nodePrintStream;

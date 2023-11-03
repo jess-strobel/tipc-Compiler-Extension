@@ -8,3 +8,4 @@ target_include_directories(
           ${CMAKE_SOURCE_DIR}/src/frontend/prettyprint
           ${CMAKE_SOURCE_DIR}/src/error)
 target_link_libraries(weeding PRIVATE coverage_config)
+target_link_libraries(weeding PRIVATE ast coverage_config)

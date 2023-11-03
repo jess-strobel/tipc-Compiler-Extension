@@ -12,6 +12,8 @@ namespace {
 bool isAssignable(ASTExpr *e) {
   if (dynamic_cast<ASTVariableExpr *>(e))
     return true;
+  if (dynamic_cast<ASTArrRefExpr *>(e))
+    return true;
   if (dynamic_cast<ASTAccessExpr *>(e)) {
     ASTAccessExpr *access = dynamic_cast<ASTAccessExpr *>(e);
     if (dynamic_cast<ASTVariableExpr *>(access->getRecord())) {

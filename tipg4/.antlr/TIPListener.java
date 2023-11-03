@@ -59,30 +59,6 @@ public interface TIPListener extends ParseTreeListener {
 	 */
 	void exitArrLenOpExpr(TIPParser.ArrLenOpExprContext ctx);
 	/**
-	 * Enter a parse tree produced by the {@code recordRule}
-	 * labeled alternative in {@link TIPParser#expr}.
-	 * @param ctx the parse tree
-	 */
-	void enterRecordRule(TIPParser.RecordRuleContext ctx);
-	/**
-	 * Exit a parse tree produced by the {@code recordRule}
-	 * labeled alternative in {@link TIPParser#expr}.
-	 * @param ctx the parse tree
-	 */
-	void exitRecordRule(TIPParser.RecordRuleContext ctx);
-	/**
-	 * Enter a parse tree produced by the {@code arrBinRefOpExpr}
-	 * labeled alternative in {@link TIPParser#expr}.
-	 * @param ctx the parse tree
-	 */
-	void enterArrBinRefOpExpr(TIPParser.ArrBinRefOpExprContext ctx);
-	/**
-	 * Exit a parse tree produced by the {@code arrBinRefOpExpr}
-	 * labeled alternative in {@link TIPParser#expr}.
-	 * @param ctx the parse tree
-	 */
-	void exitArrBinRefOpExpr(TIPParser.ArrBinRefOpExprContext ctx);
-	/**
 	 * Enter a parse tree produced by the {@code nullExpr}
 	 * labeled alternative in {@link TIPParser#expr}.
 	 * @param ctx the parse tree
@@ -94,6 +70,18 @@ public interface TIPListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitNullExpr(TIPParser.NullExprContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code arrOrConstructorExpr}
+	 * labeled alternative in {@link TIPParser#expr}.
+	 * @param ctx the parse tree
+	 */
+	void enterArrOrConstructorExpr(TIPParser.ArrOrConstructorExprContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code arrOrConstructorExpr}
+	 * labeled alternative in {@link TIPParser#expr}.
+	 * @param ctx the parse tree
+	 */
+	void exitArrOrConstructorExpr(TIPParser.ArrOrConstructorExprContext ctx);
 	/**
 	 * Enter a parse tree produced by the {@code allocExpr}
 	 * labeled alternative in {@link TIPParser#expr}.
@@ -107,18 +95,6 @@ public interface TIPListener extends ParseTreeListener {
 	 */
 	void exitAllocExpr(TIPParser.AllocExprContext ctx);
 	/**
-	 * Enter a parse tree produced by the {@code negNumber}
-	 * labeled alternative in {@link TIPParser#expr}.
-	 * @param ctx the parse tree
-	 */
-	void enterNegNumber(TIPParser.NegNumberContext ctx);
-	/**
-	 * Exit a parse tree produced by the {@code negNumber}
-	 * labeled alternative in {@link TIPParser#expr}.
-	 * @param ctx the parse tree
-	 */
-	void exitNegNumber(TIPParser.NegNumberContext ctx);
-	/**
 	 * Enter a parse tree produced by the {@code arrConstructorExpr}
 	 * labeled alternative in {@link TIPParser#expr}.
 	 * @param ctx the parse tree
@@ -130,18 +106,6 @@ public interface TIPListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitArrConstructorExpr(TIPParser.ArrConstructorExprContext ctx);
-	/**
-	 * Enter a parse tree produced by the {@code inputExpr}
-	 * labeled alternative in {@link TIPParser#expr}.
-	 * @param ctx the parse tree
-	 */
-	void enterInputExpr(TIPParser.InputExprContext ctx);
-	/**
-	 * Exit a parse tree produced by the {@code inputExpr}
-	 * labeled alternative in {@link TIPParser#expr}.
-	 * @param ctx the parse tree
-	 */
-	void exitInputExpr(TIPParser.InputExprContext ctx);
 	/**
 	 * Enter a parse tree produced by the {@code additiveExpr}
 	 * labeled alternative in {@link TIPParser#expr}.
@@ -155,18 +119,6 @@ public interface TIPListener extends ParseTreeListener {
 	 */
 	void exitAdditiveExpr(TIPParser.AdditiveExprContext ctx);
 	/**
-	 * Enter a parse tree produced by the {@code relationalExpr}
-	 * labeled alternative in {@link TIPParser#expr}.
-	 * @param ctx the parse tree
-	 */
-	void enterRelationalExpr(TIPParser.RelationalExprContext ctx);
-	/**
-	 * Exit a parse tree produced by the {@code relationalExpr}
-	 * labeled alternative in {@link TIPParser#expr}.
-	 * @param ctx the parse tree
-	 */
-	void exitRelationalExpr(TIPParser.RelationalExprContext ctx);
-	/**
 	 * Enter a parse tree produced by the {@code deRefExpr}
 	 * labeled alternative in {@link TIPParser#expr}.
 	 * @param ctx the parse tree
@@ -179,18 +131,6 @@ public interface TIPListener extends ParseTreeListener {
 	 */
 	void exitDeRefExpr(TIPParser.DeRefExprContext ctx);
 	/**
-	 * Enter a parse tree produced by the {@code numExpr}
-	 * labeled alternative in {@link TIPParser#expr}.
-	 * @param ctx the parse tree
-	 */
-	void enterNumExpr(TIPParser.NumExprContext ctx);
-	/**
-	 * Exit a parse tree produced by the {@code numExpr}
-	 * labeled alternative in {@link TIPParser#expr}.
-	 * @param ctx the parse tree
-	 */
-	void exitNumExpr(TIPParser.NumExprContext ctx);
-	/**
 	 * Enter a parse tree produced by the {@code parenExpr}
 	 * labeled alternative in {@link TIPParser#expr}.
 	 * @param ctx the parse tree
@@ -202,6 +142,114 @@ public interface TIPListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitParenExpr(TIPParser.ParenExprContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code andOpExpr}
+	 * labeled alternative in {@link TIPParser#expr}.
+	 * @param ctx the parse tree
+	 */
+	void enterAndOpExpr(TIPParser.AndOpExprContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code andOpExpr}
+	 * labeled alternative in {@link TIPParser#expr}.
+	 * @param ctx the parse tree
+	 */
+	void exitAndOpExpr(TIPParser.AndOpExprContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code ternaryCondExpr}
+	 * labeled alternative in {@link TIPParser#expr}.
+	 * @param ctx the parse tree
+	 */
+	void enterTernaryCondExpr(TIPParser.TernaryCondExprContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code ternaryCondExpr}
+	 * labeled alternative in {@link TIPParser#expr}.
+	 * @param ctx the parse tree
+	 */
+	void exitTernaryCondExpr(TIPParser.TernaryCondExprContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code funAppExpr}
+	 * labeled alternative in {@link TIPParser#expr}.
+	 * @param ctx the parse tree
+	 */
+	void enterFunAppExpr(TIPParser.FunAppExprContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code funAppExpr}
+	 * labeled alternative in {@link TIPParser#expr}.
+	 * @param ctx the parse tree
+	 */
+	void exitFunAppExpr(TIPParser.FunAppExprContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code accessExpr}
+	 * labeled alternative in {@link TIPParser#expr}.
+	 * @param ctx the parse tree
+	 */
+	void enterAccessExpr(TIPParser.AccessExprContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code accessExpr}
+	 * labeled alternative in {@link TIPParser#expr}.
+	 * @param ctx the parse tree
+	 */
+	void exitAccessExpr(TIPParser.AccessExprContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code recordRule}
+	 * labeled alternative in {@link TIPParser#expr}.
+	 * @param ctx the parse tree
+	 */
+	void enterRecordRule(TIPParser.RecordRuleContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code recordRule}
+	 * labeled alternative in {@link TIPParser#expr}.
+	 * @param ctx the parse tree
+	 */
+	void exitRecordRule(TIPParser.RecordRuleContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code inputExpr}
+	 * labeled alternative in {@link TIPParser#expr}.
+	 * @param ctx the parse tree
+	 */
+	void enterInputExpr(TIPParser.InputExprContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code inputExpr}
+	 * labeled alternative in {@link TIPParser#expr}.
+	 * @param ctx the parse tree
+	 */
+	void exitInputExpr(TIPParser.InputExprContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code relationalExpr}
+	 * labeled alternative in {@link TIPParser#expr}.
+	 * @param ctx the parse tree
+	 */
+	void enterRelationalExpr(TIPParser.RelationalExprContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code relationalExpr}
+	 * labeled alternative in {@link TIPParser#expr}.
+	 * @param ctx the parse tree
+	 */
+	void exitRelationalExpr(TIPParser.RelationalExprContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code arrRefExpr}
+	 * labeled alternative in {@link TIPParser#expr}.
+	 * @param ctx the parse tree
+	 */
+	void enterArrRefExpr(TIPParser.ArrRefExprContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code arrRefExpr}
+	 * labeled alternative in {@link TIPParser#expr}.
+	 * @param ctx the parse tree
+	 */
+	void exitArrRefExpr(TIPParser.ArrRefExprContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code numExpr}
+	 * labeled alternative in {@link TIPParser#expr}.
+	 * @param ctx the parse tree
+	 */
+	void enterNumExpr(TIPParser.NumExprContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code numExpr}
+	 * labeled alternative in {@link TIPParser#expr}.
+	 * @param ctx the parse tree
+	 */
+	void exitNumExpr(TIPParser.NumExprContext ctx);
 	/**
 	 * Enter a parse tree produced by the {@code varExpr}
 	 * labeled alternative in {@link TIPParser#expr}.
@@ -227,17 +275,17 @@ public interface TIPListener extends ParseTreeListener {
 	 */
 	void exitNotExpr(TIPParser.NotExprContext ctx);
 	/**
-	 * Enter a parse tree produced by the {@code andOpExpr}
+	 * Enter a parse tree produced by the {@code negExpr}
 	 * labeled alternative in {@link TIPParser#expr}.
 	 * @param ctx the parse tree
 	 */
-	void enterAndOpExpr(TIPParser.AndOpExprContext ctx);
+	void enterNegExpr(TIPParser.NegExprContext ctx);
 	/**
-	 * Exit a parse tree produced by the {@code andOpExpr}
+	 * Exit a parse tree produced by the {@code negExpr}
 	 * labeled alternative in {@link TIPParser#expr}.
 	 * @param ctx the parse tree
 	 */
-	void exitAndOpExpr(TIPParser.AndOpExprContext ctx);
+	void exitNegExpr(TIPParser.NegExprContext ctx);
 	/**
 	 * Enter a parse tree produced by the {@code refExpr}
 	 * labeled alternative in {@link TIPParser#expr}.
@@ -263,18 +311,6 @@ public interface TIPListener extends ParseTreeListener {
 	 */
 	void exitOrOpExpr(TIPParser.OrOpExprContext ctx);
 	/**
-	 * Enter a parse tree produced by the {@code ternaryCondExpr}
-	 * labeled alternative in {@link TIPParser#expr}.
-	 * @param ctx the parse tree
-	 */
-	void enterTernaryCondExpr(TIPParser.TernaryCondExprContext ctx);
-	/**
-	 * Exit a parse tree produced by the {@code ternaryCondExpr}
-	 * labeled alternative in {@link TIPParser#expr}.
-	 * @param ctx the parse tree
-	 */
-	void exitTernaryCondExpr(TIPParser.TernaryCondExprContext ctx);
-	/**
 	 * Enter a parse tree produced by the {@code boolExpr}
 	 * labeled alternative in {@link TIPParser#expr}.
 	 * @param ctx the parse tree
@@ -299,18 +335,6 @@ public interface TIPListener extends ParseTreeListener {
 	 */
 	void exitMultiplicativeExpr(TIPParser.MultiplicativeExprContext ctx);
 	/**
-	 * Enter a parse tree produced by the {@code funAppExpr}
-	 * labeled alternative in {@link TIPParser#expr}.
-	 * @param ctx the parse tree
-	 */
-	void enterFunAppExpr(TIPParser.FunAppExprContext ctx);
-	/**
-	 * Exit a parse tree produced by the {@code funAppExpr}
-	 * labeled alternative in {@link TIPParser#expr}.
-	 * @param ctx the parse tree
-	 */
-	void exitFunAppExpr(TIPParser.FunAppExprContext ctx);
-	/**
 	 * Enter a parse tree produced by the {@code equalityExpr}
 	 * labeled alternative in {@link TIPParser#expr}.
 	 * @param ctx the parse tree
@@ -322,28 +346,6 @@ public interface TIPListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitEqualityExpr(TIPParser.EqualityExprContext ctx);
-	/**
-	 * Enter a parse tree produced by the {@code accessExpr}
-	 * labeled alternative in {@link TIPParser#expr}.
-	 * @param ctx the parse tree
-	 */
-	void enterAccessExpr(TIPParser.AccessExprContext ctx);
-	/**
-	 * Exit a parse tree produced by the {@code accessExpr}
-	 * labeled alternative in {@link TIPParser#expr}.
-	 * @param ctx the parse tree
-	 */
-	void exitAccessExpr(TIPParser.AccessExprContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link TIPParser#arrayConstructorExpr}.
-	 * @param ctx the parse tree
-	 */
-	void enterArrayConstructorExpr(TIPParser.ArrayConstructorExprContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link TIPParser#arrayConstructorExpr}.
-	 * @param ctx the parse tree
-	 */
-	void exitArrayConstructorExpr(TIPParser.ArrayConstructorExprContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link TIPParser#recordExpr}.
 	 * @param ctx the parse tree

@@ -443,7 +443,7 @@ TEST_CASE("ASTPrinterTest: visitArrOrConstructorExpr", "[ASTPrinter]") {
   int numStmts = f->getStmts().size() - 1; // ignore ret
   for (auto s : f->getStmts()) {
     auto assignstmt = dynamic_cast<ASTAssignStmt *>(s);
-    auto arrorconstexpr = dynamic_cast<ASTArrOrConstructorExpr *>(&(*assignstmt->getRHS()));
+    auto arrorconstexpr = dynamic_cast<ASTArrOfConstructorExpr *>(&(*assignstmt->getRHS()));
     stream = std::stringstream();
     stream << *arrorconstexpr;
     auto actual = stream.str();

@@ -65,7 +65,7 @@ public:
   virtual void endVisit(ASTNotExpr *element) override;
   virtual void endVisit(ASTArrLenOpExpr *element) override;
   virtual void endVisit(ASTArrRefExpr *element) override;
-  virtual void endVisit(ASTArrOrConstructorExpr *element) override;
+  virtual void endVisit(ASTArrOfConstructorExpr *element) override;
   virtual void endVisit(ASTArrConstructorExpr *element) override;
   virtual void endVisit(ASTNegExpr *element) override;
 

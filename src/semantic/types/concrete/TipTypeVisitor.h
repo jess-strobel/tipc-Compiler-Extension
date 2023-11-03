@@ -25,6 +25,10 @@ class TipTypeVisitor {
 public:
   virtual bool visit(TipAlpha *element) { return true; }
   virtual void endVisit(TipAlpha *element) {}
+  virtual bool visit(TipArray *element) { return true; }
+  virtual void endVisit(TipArray *element) {}
+  virtual bool visit(TipBool *element) { return true; }
+  virtual void endVisit(TipBool *element) {}  
   virtual bool visit(TipFunction *element) { return true; }
   virtual void endVisit(TipFunction *element) {}
   virtual bool visit(TipInt *element) { return true; }

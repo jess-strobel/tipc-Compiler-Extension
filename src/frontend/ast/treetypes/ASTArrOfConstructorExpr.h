@@ -4,12 +4,12 @@
 
 /*! \brief Class for array constructor type [E1 of E2]
 */
-class ASTArrOrConstructorExpr : public ASTExpr {
+class ASTArrOfConstructorExpr : public ASTExpr {
     std::shared_ptr<ASTExpr> LEFT, RIGHT;
 
 public:
     std::vector<std::shared_ptr<ASTNode>> getChildren() override;
-    ASTArrOrConstructorExpr(std::shared_ptr<ASTExpr> LEFT, std::shared_ptr<ASTExpr> RIGHT)
+    ASTArrOfConstructorExpr(std::shared_ptr<ASTExpr> LEFT, std::shared_ptr<ASTExpr> RIGHT)
             : LEFT(LEFT), RIGHT(RIGHT) {}
     ASTExpr *getLeft() const { return LEFT.get(); }
     ASTExpr *getRight() const { return RIGHT.get(); }

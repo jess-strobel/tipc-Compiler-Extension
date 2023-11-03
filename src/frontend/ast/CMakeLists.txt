@@ -15,8 +15,8 @@ target_sources(
           ${CMAKE_CURRENT_SOURCE_DIR}/treetypes/ASTArrConstructorExpr.h
           ${CMAKE_CURRENT_SOURCE_DIR}/treetypes/ASTArrLenOpExpr.cpp
           ${CMAKE_CURRENT_SOURCE_DIR}/treetypes/ASTArrLenOpExpr.h
-          ${CMAKE_CURRENT_SOURCE_DIR}/treetypes/ASTArrOrConstructorExpr.cpp
-          ${CMAKE_CURRENT_SOURCE_DIR}/treetypes/ASTArrOrConstructorExpr.h
+          ${CMAKE_CURRENT_SOURCE_DIR}/treetypes/ASTArrOfConstructorExpr.cpp
+          ${CMAKE_CURRENT_SOURCE_DIR}/treetypes/ASTArrOfConstructorExpr.h
           ${CMAKE_CURRENT_SOURCE_DIR}/treetypes/ASTArrRefExpr.cpp
           ${CMAKE_CURRENT_SOURCE_DIR}/treetypes/ASTArrRefExpr.h
           ${CMAKE_CURRENT_SOURCE_DIR}/treetypes/ASTAssignStmt.cpp

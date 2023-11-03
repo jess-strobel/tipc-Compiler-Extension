@@ -331,7 +331,7 @@ void PrettyPrinter::endVisit(ASTArrRefExpr *element) {
   visitResults.push_back(arr + "[" + index + "]");
 }
 
-void PrettyPrinter::endVisit(ASTArrOrConstructorExpr *element) {
+void PrettyPrinter::endVisit(ASTArrOfConstructorExpr *element) {
   std::string right = visitResults.back();
   visitResults.pop_back();
   std::string left = visitResults.back();
