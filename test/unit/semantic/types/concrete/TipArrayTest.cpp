@@ -38,10 +38,10 @@ TEST_CASE("TipArray: Test equality"
     REQUIRE(TipArrayC == TipArrayB);
   }
 
-  SECTION("Equal even when arguments differ by length") {
+  SECTION("Not equal when arguments differ by length") {
     std::vector<std::shared_ptr<TipType>> paramsB{std::make_shared<TipInt>()};
     TipArray TipArrayB(paramsB);
-    REQUIRE(TipArrayA == TipArrayB);
+    REQUIRE(TipArrayA != TipArrayB);
   }
 
   SECTION("Not equal when arguments differ by type") {
@@ -54,12 +54,6 @@ TEST_CASE("TipArray: Test equality"
     std::vector<std::shared_ptr<TipType>> paramsB{
         std::make_shared<TipRef>(std::make_shared<TipInt>()),
         std::make_shared<TipInt>()};
-    TipArray TipArrayB(paramsB);
-    REQUIRE(TipArrayA != TipArrayB);
-  }
-
-  SECTION("Not equal when arguments differ by type") {
-    std::vector<std::shared_ptr<TipType>> paramsB{};
     TipArray TipArrayB(paramsB);
     REQUIRE(TipArrayA != TipArrayB);
   }

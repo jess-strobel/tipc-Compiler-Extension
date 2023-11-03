@@ -23,14 +23,14 @@ bool TipArray::operator==(const TipType &other) const {
     return false;
   }
 
+  if (otherTipArray->arguments.size() != arguments.size()) {
+    return false;
+  }
+
   if (arguments.size() == 0 && otherTipArray->arguments.size() == 0)
     return true;
-  else if (arguments.size() == 0 && otherTipArray->arguments.size() != 0)
-    return false;
-  else if (arguments.size() != 0 && otherTipArray->arguments.size() == 0)
-    return false;
-
-  return *arguments.at(0) == *(otherTipArray->arguments.at(0));
+  else 
+    return *arguments.at(0) == *(otherTipArray->arguments.at(0));
 }
 
 bool TipArray::operator!=(const TipType &other) const {
