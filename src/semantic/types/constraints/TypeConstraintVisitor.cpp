@@ -174,32 +174,52 @@ void TypeConstraintVisitor::endVisit(ASTNotExpr *element) {
 /*! \brief Type constraints for binary operator.
  *
  * Type rules for "E1 op E2":
- * if "op" is not relational comparison operator (i.e. ==, !=, >, etc.)
+ * if "op" is an arithmetic operator (i.e. +, -, *, etc.)
  *   [[E1 op E2]] = int 
  *   [[E1]] = [[E2]] = int
- * otherwise
+ * otherwise if "op" is equality or disequality
  *   [[E1 op E2]] = bool
  *   [[E1]] = [[E2]]
+ * otherwise if "op" is AND or OR
+ *   [[E1 op E2]] = bool
+ *   [[E1]] = [[E2]] = bool
+ * otherwise
+ *   [[E1 op E2]] = bool
+ *   [[E1]] = [[E2]] = int
  */
 void TypeConstraintVisitor::endVisit(ASTBinaryExpr *element) {
   auto op = element->getOp();
   auto intType = std::make_shared<TipInt>();
   auto boolType = std::make_shared<TipBool>();
 
-  if (op != "==" && op != "!=" && op != ">" && op != ">=" && op != "<=" && op != "<" ) {
+  if (op == "+" || op == "-" || op == "*" || op == "/" || op == "%") {
     // result type is integer
     constraintHandler->handle(astToVar(element), intType);
 
     // operands are integer
     constraintHandler->handle(astToVar(element->getLeft()), intType);
     constraintHandler->handle(astToVar(element->getRight()), intType);
-  } else {
+  } else if (op == "==" || op == "!=") {
     // result type is boolean
     constraintHandler->handle(astToVar(element), boolType);
 
     // operands have the same type
     constraintHandler->handle(astToVar(element->getLeft()),
                               astToVar(element->getRight()));
+  } else if (op == "and" || op == "or") {
+    // result type is boolean
+    constraintHandler->handle(astToVar(element), boolType);
+
+    // operands are booleans
+    constraintHandler->handle(astToVar(element->getLeft()), boolType);
+    constraintHandler->handle(astToVar(element->getRight()), boolType);
+  } else {
+    // result type is boolean
+    constraintHandler->handle(astToVar(element), boolType);
+
+    // operands are integer
+    constraintHandler->handle(astToVar(element->getLeft()), intType);
+    constraintHandler->handle(astToVar(element->getRight()), intType);
   }
 }
 
