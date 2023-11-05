@@ -116,8 +116,9 @@ void TypeConstraintVisitor::endVisit(ASTArrOfConstructorExpr *element) {
 void TypeConstraintVisitor::endVisit(ASTArrLenOpExpr *element) {
   constraintHandler->handle(astToVar(element), std::make_shared<TipInt>());
 
-  std::vector<std::shared_ptr<TipType>> args;
-  constraintHandler->handle(astToVar(element->getRight()), std::make_shared<TipArray>(args));
+  std::shared_ptr<TipType> of = std::make_shared<TipAlpha>(element);
+
+  constraintHandler->handle(astToVar(element->getRight()), std::make_shared<TipArray>(of));
 }
 
 /*! \brief Type constraints for array dereference operator.
@@ -129,8 +130,8 @@ void TypeConstraintVisitor::endVisit(ASTArrLenOpExpr *element) {
 void TypeConstraintVisitor::endVisit(ASTArrRefExpr *element) {
   constraintHandler->handle(astToVar(element->getIndex()), std::make_shared<TipInt>());
   
-  std::vector<std::shared_ptr<TipType>> args{astToVar(element)};
-  constraintHandler->handle(astToVar(element->getArr()), std::make_shared<TipArray>(args));
+  std::shared_ptr<TipType> of = astToVar(element);
+  constraintHandler->handle(astToVar(element->getArr()), std::make_shared<TipArray>(of));
 }
 
 /*! \brief Type constraints for numeric literal.
@@ -329,11 +330,10 @@ void TypeConstraintVisitor::endVisit(ASTWhileStmt *element) {
  *   [] [[E1]] = [[E2]]
  */
 void TypeConstraintVisitor::endVisit(ASTForItrStmt *element) {
-  std::vector<std::shared_ptr<TipType>> args;
-  args.push_back(astToVar(element->getVar()));
+  std::shared_ptr<TipType> of = astToVar(element->getVar());
 
   constraintHandler->handle(astToVar(element->getIterable()),
-                            std::make_shared<TipArray>(args));            
+                            std::make_shared<TipArray>(of));            
 }
 
 /*! \brief Type constraints for range-style for loop.

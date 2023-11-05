@@ -32,17 +32,10 @@ void Substituter::endVisit(TipFunction *element) {
 }
 
 void Substituter::endVisit(TipArray *element) {
-  std::vector<std::shared_ptr<TipType>> argTypes;
-  for (auto &arg : element->getArguments()) {
-    argTypes.push_back(std::move(visitedTypes.back()));
-    visitedTypes.pop_back();
-  }
-
-  // the post-order visit will reverse the arguments in visitedTypes
-  // so we set them right here
-  std::reverse(argTypes.begin(), argTypes.end());
-
-  visitedTypes.push_back(std::make_shared<TipArray>(argTypes));
+  // One element in visitedTypes (a special case of Cons)
+  auto pointedToType = visitedTypes.back();
+  visitedTypes.pop_back();
+  visitedTypes.push_back(std::make_shared<TipArray>(pointedToType));
 }
 
 void Substituter::endVisit(TipInt *element) {
