@@ -100,13 +100,13 @@ TEST_CASE("Unifier: Collect and then unify constraints", "[Unifier, Collect]") {
     REQUIRE(*unifier.inferred(fType) == *funRetBool);
 
     auto xType = std::make_shared<TipVar>(symbols->getLocal("x", fDecl));
-    REQUIRE(*unifier.inferred(xType) != *intArrayType);
+    REQUIRE(*unifier.inferred(xType) == *intArrayType);
 
     auto yType = std::make_shared<TipVar>(symbols->getLocal("y", fDecl));
     REQUIRE(*unifier.inferred(yType) == *boolType);
 
     auto zType = std::make_shared<TipVar>(symbols->getLocal("z", fDecl));
-    REQUIRE(*unifier.inferred(zType) != *alphaArrayType);
+    REQUIRE(*unifier.inferred(zType) == *alphaArrayType);
   }
 
   SECTION("Test type-safe program 3") {

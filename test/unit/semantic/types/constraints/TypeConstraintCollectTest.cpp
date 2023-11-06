@@ -456,13 +456,11 @@ TEST_CASE("TypeConstraintVisitor: #", "[TypeConstraintVisitor]") {
 
   std::vector<std::string> expected{
       "\u27E61@4:13\u27E7 = int",
-      "\u27E6x@3:12\u27E7 = [] \u03B1",
+      "\u27E6[1]@4:12\u27E7 = [] \u27E61@4:13\u27E7",
       "\u27E6x@3:12\u27E7 = \u27E6[1]@4:12\u27E7",
-
-      "\u27E6x@3:12\u27E7 = [] \u03B1",
       "\u27E6#x@5:12\u27E7 = int",
+      "\u27E6x@3:12\u27E7 = [] \u03B1<x@5:13>",
       "\u27E6y@3:15\u27E7 = \u27E6#x@5:12\u27E7",
-
       "\u27E6foo@2:6\u27E7 = () -> \u27E6x@3:12\u27E7"
   };
 
@@ -606,8 +604,8 @@ TEST_CASE("TypeConstraintVisitor: array reference", "[TypeConstraintVisitor]") {
 
   std::vector<std::string> expected{
       "\u27E61@4:13\u27E7 = int",
+      "\u27E6[1]@4:12\u27E7 = [] \u27E61@4:13\u27E7",
       "\u27E6x@3:12\u27E7 = \u27E6[1]@4:12\u27E7",
-
       "\u27E60@5:14\u27E7 = int",
       "\u27E6x@3:12\u27E7 = [] \u27E6x[0]@5:12\u27E7",
       "\u27E6y@3:15\u27E7 = \u27E6x[0]@5:12\u27E7",
@@ -618,13 +616,14 @@ TEST_CASE("TypeConstraintVisitor: array reference", "[TypeConstraintVisitor]") {
   runtest(program, expected);
 }
 
-// JESS - arr constructor
-TEST_CASE("TypeConstraintVisitor: array constructor", "[TypeConstraintVisitor]") {
+// JESS - arr of constructor
+TEST_CASE("TypeConstraintVisitor: array of constructor", "[TypeConstraintVisitor]") {
   std::stringstream program;
   program << R"(
       foo() {
-        var x;
+        var x, y;
         x = [4 of 5];
+        y = [2 of true];
         return x;
       }
     )";
@@ -632,8 +631,12 @@ TEST_CASE("TypeConstraintVisitor: array constructor", "[TypeConstraintVisitor]")
   std::vector<std::string> expected{
       "\u27E64@4:13\u27E7 = int",
       "\u27E65@4:18\u27E7 = int",
+      "\u27E6[4 of 5]@4:12\u27E7 = [] \u27E65@4:18\u27E7",
       "\u27E6x@3:12\u27E7 = \u27E6[4 of 5]@4:12\u27E7",
-
+      "\u27E62@5:13\u27E7 = int",
+      "\u27E6(true)@5:18\u27E7 = bool",
+      "\u27E6[2 of (true)]@5:12\u27E7 = [] \u27E6(true)@5:18\u27E7",
+      "\u27E6y@3:15\u27E7 = \u27E6[2 of (true)]@5:12\u27E7",
       "\u27E6foo@2:6\u27E7 = () -> \u27E6x@3:12\u27E7"
   };
 

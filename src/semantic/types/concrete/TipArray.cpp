@@ -7,7 +7,12 @@ TipArray::TipArray(std::shared_ptr<TipType> of)
     : TipCons(std::move(std::vector<std::shared_ptr<TipType>>{of})) {}
 
 std::ostream &TipArray::print(std::ostream &out) const {
-  out << "[] " << *arguments.at(0);
+  if (arguments.at(0)) {
+    out << "[] " << *arguments.at(0);
+  } else {
+    out << "[]" << " null";
+  }
+
   return out;
 }
 
@@ -17,14 +22,7 @@ bool TipArray::operator==(const TipType &other) const {
     return false;
   }
 
-  if (otherTipArray->arguments.size() != arguments.size()) {
-    return false;
-  }
-
-  if (arguments.size() == 0 && otherTipArray->arguments.size() == 0)
-    return true;
-  else 
-    return *arguments.at(0) == *(otherTipArray->arguments.at(0));
+  return *arguments.at(0) == *(otherTipArray->arguments.at(0));
 }
 
 bool TipArray::operator!=(const TipType &other) const {
