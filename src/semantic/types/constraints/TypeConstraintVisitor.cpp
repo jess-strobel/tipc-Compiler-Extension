@@ -84,7 +84,10 @@ void TypeConstraintVisitor::endVisit(ASTFunction *element) {
  *
  * Type rules for "[X1, ..., Xn]":
  *   [[X1]] = ... = [[Xn]]
+ * if array is not empty
  *   [[[X1, ..., Xn]]] = [] [[Xn]]
+ * else
+ *   [[[]]] = [] \alpha
  */
 void TypeConstraintVisitor::endVisit(ASTArrConstructorExpr *element) {
   std::vector<std::shared_ptr<TipType>> args;
@@ -100,8 +103,7 @@ void TypeConstraintVisitor::endVisit(ASTArrConstructorExpr *element) {
   if (args.size() > 0) 
     constraintHandler->handle(astToVar(element), std::make_shared<TipArray>(args[0]));
   else
-    constraintHandler->handle(astToVar(element), std::make_shared<TipArray>(nullptr));
-
+    constraintHandler->handle(astToVar(element), std::make_shared<TipArray>(std::make_shared<TipAlpha>(element)));
 }
 
 /*! \brief Type constraints for array of constructor.

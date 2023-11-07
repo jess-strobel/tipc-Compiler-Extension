@@ -7,11 +7,7 @@ TipArray::TipArray(std::shared_ptr<TipType> of)
     : TipCons(std::move(std::vector<std::shared_ptr<TipType>>{of})) {}
 
 std::ostream &TipArray::print(std::ostream &out) const {
-  if (arguments.at(0)) {
-    out << "[] " << *arguments.at(0);
-  } else {
-    out << "[]" << " null";
-  }
+  out << "[] " << *arguments.at(0);
 
   return out;
 }

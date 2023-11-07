@@ -1,9 +1,8 @@
     
-            foo() {
-              var z;
-              //var x, y;
-              //x = [1];
-              //y = ((#x) > x[0]);
+            short() {
+              var x, y, z;
+              x = [1];	
+              y = ((#x) >= x[0]);
               z = [];
-              return 0;
+              return true;
             }

@@ -70,7 +70,7 @@ TEST_CASE("Unifier: Collect and then unify constraints", "[Unifier, Collect]") {
             short() {
               var x, y, z;
               x = [1];	
-              y = (#x >= x[0]);
+              y = ((#x) >= x[0]);
               z = [];
               return true;
             }
@@ -85,17 +85,19 @@ TEST_CASE("Unifier: Collect and then unify constraints", "[Unifier, Collect]") {
     Unifier unifier(visitor.getCollectedConstraints());
     REQUIRE_NOTHROW(unifier.solve());
 
+    auto fDecl = symbols->getFunction("short");
+    auto fType = std::make_shared<TipVar>(fDecl);
+
+    //auto zInferred = unifier.inferred(std::make_shared<TipVar>(symbols->getLocal("z", fDecl)));
+    // auto zFun = std::dynamic_pointer_cast<TipArray>(zInferred);
+
     // Expected types
-    ASTNumberExpr number(1);
     std::vector<std::shared_ptr<TipType>> emptyParams;
-    std::shared_ptr<TipType> alphaParam = std::make_shared<TipAlpha>(&number);
+    std::shared_ptr<TipType> alphaParam = std::make_shared<TipAlpha>(symbols->getLocal("z", fDecl));
     auto intArrayType = std::make_shared<TipArray>(std::make_shared<TipInt>());
     auto boolType = std::make_shared<TipBool>();
     auto alphaArrayType = std::make_shared<TipArray>(alphaParam);
     auto funRetBool = std::make_shared<TipFunction>(emptyParams, std::make_shared<TipBool>());
-
-    auto fDecl = symbols->getFunction("short");
-    auto fType = std::make_shared<TipVar>(fDecl);
 
     REQUIRE(*unifier.inferred(fType) == *funRetBool);
 
