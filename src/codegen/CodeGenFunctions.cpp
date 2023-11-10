@@ -492,10 +492,24 @@ llvm::Value *ASTBinaryExpr::codegen() {
     return Builder.CreateMul(L, R, "multmp");
   } else if (getOp() == "/") {
     return Builder.CreateSDiv(L, R, "divtmp");
+  } else if (getOp() == "%") {
+    return Builder.CreateSRem(L, R, "modtmp");
   } else if (getOp() == ">") {
     auto *cmp = Builder.CreateICmpSGT(L, R, "_gttmp");
     return Builder.CreateIntCast(cmp, IntegerType::getInt64Ty(TheContext),
                                  false, "gttmp");
+  } else if (getOp() == "<") {
+    auto *cmp = Builder.CreateICmpSLT(L, R, "_lttmp");
+    return Builder.CreateIntCast(cmp, IntegerType::getInt64Ty(TheContext),
+                                 false, "lttmp");
+  } else if (getOp() == ">=") {
+    auto *cmp = Builder.CreateICmpSGE(L, R, "_getmp");
+    return Builder.CreateIntCast(cmp, IntegerType::getInt64Ty(TheContext),
+                                 false, "getmp");
+  } else if (getOp() == "<=") {
+    auto *cmp = Builder.CreateICmpSGT(L, R, "_letmp");
+    return Builder.CreateIntCast(cmp, IntegerType::getInt64Ty(TheContext),
+                                 false, "letmp");
   } else if (getOp() == "==") {
     auto *cmp = Builder.CreateICmpEQ(L, R, "_eqtmp");
     return Builder.CreateIntCast(cmp, IntegerType::getInt64Ty(TheContext),

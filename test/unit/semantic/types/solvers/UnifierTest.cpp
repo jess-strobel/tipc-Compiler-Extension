@@ -555,6 +555,25 @@ deref(p){
     TypeConstraintUnifyVisitor visitor(symbols.get());
     REQUIRE_THROWS_AS(ast->accept(&visitor), UnificationError);
   }
+
+  SECTION("Test unification error 5") {
+    std::stringstream program;
+    program << R"(
+        foo() {
+            var r, q;
+            r = true;
+            q = false;
+            r++;
+            q--;
+            return 0;
+        }
+        )";
+    auto ast = ASTHelper::build_ast(program);
+    auto symbols = SymbolTable::build(ast.get());
+
+    TypeConstraintUnifyVisitor visitor(symbols.get());
+    REQUIRE_THROWS_AS(ast->accept(&visitor), UnificationError);
+  }
 }
 
 TEST_CASE("Unifier: Test unifying TipCons with different arities",
