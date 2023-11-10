@@ -71,7 +71,7 @@ TEST_CASE("Unifier: Collect and then unify constraints", "[Unifier, Collect]") {
               var x, y, z;
               x = [1];	
               y = ((#x) >= x[0]);
-              //z = [];
+              z = [];
               return true;
             }
          )";
@@ -87,16 +87,12 @@ TEST_CASE("Unifier: Collect and then unify constraints", "[Unifier, Collect]") {
 
     auto fDecl = symbols->getFunction("short");
     auto fType = std::make_shared<TipVar>(fDecl);
-    // auto f = ast->findFunctionByName("short");
-    // auto stmts = f->getStmts();
-    // auto zInit = stmts.at(3);
-    // ASTArrConstructorExpr arr = zInit->getRHS();
 
     // Expected types
     std::vector<std::shared_ptr<TipType>> emptyParams;
-    //ASTArrConstructorExpr arr(std::vector<std::shared_ptr<ASTExpr>>{});
-    // std::shared_ptr<TipType> alphaParam = std::make_shared<TipAlpha>(&arr);
-    // auto alphaArrayType = std::make_shared<TipArray>(alphaParam);
+    ASTArrConstructorExpr arr(std::vector<std::shared_ptr<ASTExpr>>{});
+    std::shared_ptr<TipType> alphaParam = std::make_shared<TipAlpha>(&arr);
+    auto alphaArrayType = std::make_shared<TipArray>(alphaParam);
 
     auto intArrayType = std::make_shared<TipArray>(std::make_shared<TipInt>());
     auto boolType = std::make_shared<TipBool>();
@@ -111,8 +107,13 @@ TEST_CASE("Unifier: Collect and then unify constraints", "[Unifier, Collect]") {
     auto yType = std::make_shared<TipVar>(symbols->getLocal("y", fDecl));
     REQUIRE(*unifier.inferred(yType) == *boolType);
 
-    // auto zType = std::make_shared<TipVar>(symbols->getLocal("z", fDecl));
-    // REQUIRE(*unifier.inferred(zType) == *alphaArrayType);
+    auto zType = std::make_shared<TipVar>(symbols->getLocal("z", fDecl));
+    auto zInf = unifier.inferred(zType);
+    REQUIRE(std::dynamic_pointer_cast<TipArray>(zInf) != nullptr);
+
+    auto zArr = std::dynamic_pointer_cast<TipArray>(zInf);
+    auto zArrType = zArr->getElementType();
+    REQUIRE(std::dynamic_pointer_cast<TipAlpha>(zArrType) != nullptr);
   }
 
   SECTION("Test type-safe program 3") {

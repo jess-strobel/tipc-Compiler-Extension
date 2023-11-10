@@ -33,3 +33,7 @@ void TipArray::accept(TipTypeVisitor *visitor) {
   }
   visitor->endVisit(this);
 }
+
+std::shared_ptr<TipType> TipArray::getElementType() const {
+  return arguments.at(0);
+}

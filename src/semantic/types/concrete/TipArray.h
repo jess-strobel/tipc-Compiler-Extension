@@ -14,7 +14,8 @@
 class TipArray : public TipCons {
 public:
   TipArray(std::shared_ptr<TipType> of);
-
+  
+  std::shared_ptr<TipType> getElementType() const;
   bool operator==(const TipType &other) const override;
   bool operator!=(const TipType &other) const override;
 
