@@ -518,6 +518,14 @@ llvm::Value *ASTBinaryExpr::codegen() {
     auto *cmp = Builder.CreateICmpNE(L, R, "_neqtmp");
     return Builder.CreateIntCast(cmp, IntegerType::getInt64Ty(TheContext),
                                  false, "neqtmp");
+  } else if (getOp() == "and") {
+    auto *cmp = Builder.CreateAnd(L, R, "_andtmp");
+    return Builder.CreateIntCast(cmp, IntegerType::getInt64Ty(TheContext),
+                                  false, "_andtmp");
+  } else if (getOp() == "or") {
+    auto *cmp = Builder.CreateOr(L, R, "_ortmp");
+    return Builder.CreateIntCast(cmp, IntegerType::getInt64Ty(TheContext),
+                                  false, "_ortmp");
   } else {
     throw InternalError("Invalid binary operator: " + OP);
   }
@@ -1140,7 +1148,28 @@ llvm::Value *ASTForItrStmt::codegen() {
 }
 
 llvm::Value *ASTTernaryCondExpr::codegen() { 
-  return 0; 
+  LOG_S(1) << "Generating code for " << *this;
+
+  Value *CondV = getCondition()->codegen();
+  if (CondV == nullptr) {
+    throw InternalError(
+        "failed to generate bitcode for the condition of ternary expression");
+  }
+
+  Value *ThenV = getThen()->codegen();
+  if (ThenV == nullptr) {
+    throw InternalError(                                                            // LCOV_EXCL_LINE
+        "failed to generate bitcode for the then statement of ternary expression"); // LCOV_EXCL_LINE
+  }
+
+  Value *ElseV = getElse()->codegen();
+  if (ElseV == nullptr) {
+    throw InternalError(                                                            // LCOV_EXCL_LINE
+        "failed to generate bitcode for the else statement of ternary expression"); // LCOV_EXCL_LINE
+  }
+
+  return Builder.CreateSelect(CondV, ThenV, ElseV, 
+                              "ternexpr");
 }
 
 llvm::Value *ASTArrConstructorExpr::codegen() { 
