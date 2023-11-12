@@ -1132,12 +1132,57 @@ llvm::Value *ASTReturnStmt::codegen() {
 } // LCOV_EXCL_LINE
 
 llvm::Value *ASTIncStmt::codegen() { 
-  return 0; 
-}
+  LOG_S(1) << "Generating code for " << *this;
 
+  // trigger code generation for l-value expressions
+  lValueGen = true;
+  Value *lValue = getNum()->codegen();
+  lValueGen = false;
+
+  if (lValue == nullptr) {
+    throw InternalError(
+        "failed to generate bitcode for increment statement");
+  }
+
+  /*
+  i can't tell if i'm missing something here (loading lValue ?)
+
+  i'm thrown off by this piazza answer:
+  It might be helpful to think of an expanded version of inc/dec. 
+  That is, x++ as x = x + 1. This should make it clear that you 
+  need to treat the operand, x, as both an lvalue (which you need 
+  to store) and an rvalue (which you need to load and increment).
+
+  ///////////////////////////////////////////////////////////////////
+  is storing lValue just referring to CreateStore at the end? or does
+  it need to be done twice?
+  */
+
+  Value *loadL = Builder.CreateLoad(IntegerType::getInt64Ty(TheContext), lValue, "loadL");
+  Value *rValue = Builder.CreateAdd(loadL, ConstantInt::get(IntegerType::getInt64Ty(TheContext), 1), "increment");
+
+  return Builder.CreateStore(rValue, lValue);
+} // LCOV_EXCL_LINE
+
+// This function is exactly the same as IncStmt codegen (except createsub instead of createadd) -- if IncStmt codegen changed, then this one must be as well
 llvm::Value *ASTDecStmt::codegen() { 
-  return 0; 
-}
+  LOG_S(1) << "Generating code for " << *this;
+
+  // trigger code generation for l-value expressions
+  lValueGen = true;
+  Value *lValue = getNum()->codegen();
+  lValueGen = false;
+
+  if (lValue == nullptr) {
+    throw InternalError(
+        "failed to generate bitcode for decrement statement");
+  }
+
+  Value *loadL = Builder.CreateLoad(IntegerType::getInt64Ty(TheContext), lValue, "loadL");
+  Value *rValue = Builder.CreateSub(loadL, ConstantInt::get(IntegerType::getInt64Ty(TheContext), 1), "decrement");
+
+  return Builder.CreateStore(rValue, lValue);
+} // LCOV_EXCL_LINE
 
 llvm::Value *ASTForRangeStmt::codegen() { 
   return 0; 
