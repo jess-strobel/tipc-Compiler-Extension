@@ -1233,8 +1233,17 @@ llvm::Value *ASTArrRefExpr::codegen() {
   return 0; 
 }
 
-llvm::Value *ASTBoolExpr::codegen() { 
-  return 0; 
+llvm::Value *ASTBoolExpr::codegen() {
+  LOG_S(1) << "Generating code for " << *this;
+
+  std::string boolV = getBool();
+
+  if (boolV == "true") {
+    return ConstantInt::getTrue(TheContext);
+  } else {
+    return ConstantInt::getFalse(TheContext);
+  }
+
 }
 
 llvm::Value *ASTNegExpr::codegen() { 
