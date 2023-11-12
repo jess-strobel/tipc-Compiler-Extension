@@ -1242,5 +1242,13 @@ llvm::Value *ASTNegExpr::codegen() {
 }
 
 llvm::Value *ASTNotExpr::codegen() { 
-  return 0; 
+  LOG_S(1) << "Generating code for " << *this;
+
+  Value *R = getRight()->codegen();
+
+  if (R == nullptr) {
+    throw InternalError("null value for not expression");
+  }
+
+  return Builder.CreateNot(R, "nottmp");
 }
