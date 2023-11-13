@@ -1159,7 +1159,7 @@ llvm::Value *ASTIncStmt::codegen() {
   */
 
   Value *loadL = Builder.CreateLoad(IntegerType::getInt64Ty(TheContext), lValue, "loadL");
-  Value *rValue = Builder.CreateAdd(loadL, ConstantInt::get(IntegerType::getInt64Ty(TheContext), 1), "increment");
+  Value *rValue = Builder.CreateAdd(loadL, oneV, "increment");
 
   return Builder.CreateStore(rValue, lValue);
 } // LCOV_EXCL_LINE
@@ -1179,7 +1179,7 @@ llvm::Value *ASTDecStmt::codegen() {
   }
 
   Value *loadL = Builder.CreateLoad(IntegerType::getInt64Ty(TheContext), lValue, "loadL");
-  Value *rValue = Builder.CreateSub(loadL, ConstantInt::get(IntegerType::getInt64Ty(TheContext), 1), "decrement");
+  Value *rValue = Builder.CreateSub(loadL, oneV, "decrement");
 
   return Builder.CreateStore(rValue, lValue);
 } // LCOV_EXCL_LINE
@@ -1247,7 +1247,15 @@ llvm::Value *ASTBoolExpr::codegen() {
 }
 
 llvm::Value *ASTNegExpr::codegen() { 
-  return 0; 
+  LOG_S(1) << "Generating code for " << *this;
+
+  Value *rightVal = getRight()->codegen();
+
+  if (rightVal == nullptr) {
+    throw InternalError("null value for neg expression");
+  }
+
+  return Builder.CreateSub(zeroV, rightVal, "negation");
 }
 
 llvm::Value *ASTNotExpr::codegen() { 
