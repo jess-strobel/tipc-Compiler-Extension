@@ -1210,15 +1210,15 @@ llvm::Value *ASTForRangeStmt::codegen() {
   Value *rbound = getRBound()->codegen();
   
   lValueGen = true;
-  Value *iterator = getVar()->codegen();
+  Value *iteratorL = getVar()->codegen();
   lValueGen = false;
 
-  if (iterator == nullptr) {
+  if (iteratorL == nullptr) {
     throw InternalError(
-      "failed to generate bitcode for iterator");
+      "failed to generate bitcode for iteratorL");
   }
 
-  Builder.CreateStore(lbound, iterator);
+  Builder.CreateStore(lbound, iteratorL);
 
   // Add an explicit branch from the current BB to the header
   Builder.CreateBr(HeaderBB);
@@ -1227,18 +1227,7 @@ llvm::Value *ASTForRangeStmt::codegen() {
   {
     Builder.SetInsertPoint(HeaderBB);
 
-    // Update value of iterator (e.g. x = x + step)
-    Value *loadL = Builder.CreateLoad(IntegerType::getInt64Ty(TheContext), iterator, "iterator");
-    // Get step value
-    Value *step = getStep()->codegen();
-    Value *newValue = zeroV; //Filler value before newValue is reassigned
-    if (step == nullptr) {
-      newValue = Builder.CreateAdd(loadL, oneV, "increment by one");
-    } else {
-      newValue = Builder.CreateAdd(loadL, step, "increment by step");
-    }
-    
-    Builder.CreateStore(newValue, iterator);
+    Value *iterator = getVar()->codegen();
     // Create condition
     Value *CondV = Builder.CreateICmpSLT(iterator, rbound, "loopcond");
 
@@ -1255,6 +1244,19 @@ llvm::Value *ASTForRangeStmt::codegen() {
       throw InternalError(                                 // LCOV_EXCL_LINE
           "failed to generate bitcode for the loop body"); // LCOV_EXCL_LINE
     }
+
+    // Update value of iterator (e.g. x = x + step)
+    Value *loadL = Builder.CreateLoad(IntegerType::getInt64Ty(TheContext), iteratorL, "iterator");
+    // Get step value
+    Value *step = getStep()->codegen();
+    Value *newValue = zeroV; //Filler value before newValue is reassigned
+    if (step == nullptr) {
+      newValue = Builder.CreateAdd(loadL, oneV, "increment by one");
+    } else {
+      newValue = Builder.CreateAdd(loadL, step, "increment by step");
+    }
+    
+    Builder.CreateStore(newValue, iteratorL);
 
     Builder.CreateBr(HeaderBB);
   }
