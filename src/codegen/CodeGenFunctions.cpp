@@ -1185,7 +1185,84 @@ llvm::Value *ASTDecStmt::codegen() {
 } // LCOV_EXCL_LINE
 
 llvm::Value *ASTForRangeStmt::codegen() { 
-  return 0; 
+  LOG_S(1) << "Generating code for " << *this;
+
+  llvm::Function *TheFunction = Builder.GetInsertBlock()->getParent();
+
+  /*
+   * Create blocks for the loop header, body, and exit; HeaderBB is first
+   * so it is added to the function in the constructor.
+   *
+   * Blocks don't need to be contiguous or ordered in
+   * any particular way because we will explicitly branch between them.
+   * This can be optimized by later passes.
+   */
+  labelNum++; // create shared labels for these BBs
+
+  BasicBlock *HeaderBB = BasicBlock::Create(
+      TheContext, "header" + std::to_string(labelNum), TheFunction);
+  BasicBlock *BodyBB =
+      BasicBlock::Create(TheContext, "body" + std::to_string(labelNum));
+  BasicBlock *ExitBB =
+      BasicBlock::Create(TheContext, "exit" + std::to_string(labelNum));
+
+  Value *lbound = getLBound()->codegen();
+  Value *rbound = getRBound()->codegen();
+  
+  lValueGen = true;
+  Value *iterator = getVar()->codegen();
+  lValueGen = false;
+
+  if (iterator == nullptr) {
+    throw InternalError(
+      "failed to generate bitcode for iterator");
+  }
+
+  Builder.CreateStore(lbound, iterator);
+
+  // Add an explicit branch from the current BB to the header
+  Builder.CreateBr(HeaderBB);
+
+  // Emit loop header
+  {
+    Builder.SetInsertPoint(HeaderBB);
+
+    // Update value of iterator (e.g. x = x + step)
+    Value *loadL = Builder.CreateLoad(IntegerType::getInt64Ty(TheContext), iterator, "iterator");
+    // Get step value
+    Value *step = getStep()->codegen();
+    Value *newValue = zeroV; //Filler value before newValue is reassigned
+    if (step == nullptr) {
+      newValue = Builder.CreateAdd(loadL, oneV, "increment by one");
+    } else {
+      newValue = Builder.CreateAdd(loadL, step, "increment by step");
+    }
+    
+    Builder.CreateStore(newValue, iterator);
+    // Create condition
+    Value *CondV = Builder.CreateICmpSLT(iterator, rbound, "loopcond");
+
+    Builder.CreateCondBr(CondV, BodyBB, ExitBB);
+  }
+
+  // Emit loop body
+  {
+    TheFunction->getBasicBlockList().push_back(BodyBB);
+    Builder.SetInsertPoint(BodyBB);
+
+    Value *BodyV = getStmt()->codegen();
+    if (BodyV == nullptr) {
+      throw InternalError(                                 // LCOV_EXCL_LINE
+          "failed to generate bitcode for the loop body"); // LCOV_EXCL_LINE
+    }
+
+    Builder.CreateBr(HeaderBB);
+  }
+
+  // Emit loop exit block.
+  TheFunction->getBasicBlockList().push_back(ExitBB);
+  Builder.SetInsertPoint(ExitBB);
+  return Builder.CreateCall(nop);
 }
 
 llvm::Value *ASTForItrStmt::codegen() { 
