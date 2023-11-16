@@ -2,7 +2,7 @@
             main() {
               var x, y;
               y = 0;
-              for (x : 0 .. 3 by 2) {
+              for (x : 0 .. 3) {
                 output x;
                 y++;
               }
