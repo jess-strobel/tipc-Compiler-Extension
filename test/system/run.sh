@@ -72,7 +72,7 @@ do
   # test optimized program
   initialize_test
   ${TIPC} $i
-  ${TIPCLANG} -w $i.bc ${RTLIB}/tip_rtlib.bc -o $base
+  ${TIPCLANG} -w $i.bc ${RTLIB}/sip_rtlib.bc -o $base
 
   ./${base} &>/dev/null
   exit_code=${?}
@@ -89,7 +89,7 @@ do
   # test unoptimized program
   initialize_test
   ${TIPC} -do $i
-  ${TIPCLANG} -w $i.bc ${RTLIB}/tip_rtlib.bc -o $base
+  ${TIPCLANG} -w $i.bc ${RTLIB}/sip_rtlib.bc -o $base
 
   ./${base} &>/dev/null
   exit_code=${?}
