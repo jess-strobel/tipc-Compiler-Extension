@@ -1409,8 +1409,8 @@ llvm::Value *ASTArrConstructorExpr::codegen() {
   twoArg.push_back(size);
   twoArg.push_back(ConstantInt::get(Type::getInt64Ty(TheContext), 8));
   auto *allocInst = Builder.CreateCall(callocFun, twoArg, "arrPtr");
-  auto *castPtr = Builder.CreatePointerCast(
-      allocInst, Type::getInt64PtrTy(TheContext), "castPtr");
+  // auto *castPtr = Builder.CreatePointerCast(
+  //     allocInst, Type::getInt64PtrTy(TheContext), "castPtr");
   // // Initialize with argument
   // auto *initializingStore = Builder.CreateStore(argVal, castPtr);
   
@@ -1471,8 +1471,10 @@ llvm::Value *ASTArrConstructorExpr::codegen() {
   TheFunction->getBasicBlockList().push_back(ExitBB);
   Builder.SetInsertPoint(ExitBB);
   
-  return Builder.CreatePtrToInt(castPtr, Type::getInt64Ty(TheContext),
-                                "allocArrVal");
+  // return Builder.CreatePtrToInt(castPtr, Type::getInt64Ty(TheContext),
+  //                               "allocArrVal");
+  return Builder.CreatePtrToInt(allocInst, Type::getInt64Ty(TheContext),
+                              "allocArrVal");
 }
 
 llvm::Value *ASTArrLenOpExpr::codegen() { 
@@ -1546,8 +1548,12 @@ llvm::Value *ASTArrOfConstructorExpr::codegen() {
   twoArg.push_back(size);
   twoArg.push_back(ConstantInt::get(Type::getInt64Ty(TheContext), 8));
   auto *allocInst = Builder.CreateCall(callocFun, twoArg, "arrPtr");
-  auto *castPtr = Builder.CreatePointerCast(
-      allocInst, Type::getInt64PtrTy(TheContext), "castPtr");
+  // auto *castPtr = Builder.CreatePointerCast(
+  //     allocInst, Type::getInt64PtrTy(TheContext), "castPtr");
+
+  // auto *alloca = Builder.CreateAlloca(element->getType(), size);
+  // auto *castPtr = Builder.CreatePointerCast(
+  //     alloca, Type::getInt64PtrTy(TheContext), "castPtr");
 
   // // Initialize with argument
   // auto *initializingStore = Builder.CreateStore(argVal, castPtr);
@@ -1585,12 +1591,13 @@ llvm::Value *ASTArrOfConstructorExpr::codegen() {
     Builder.SetInsertPoint(BodyBB);
 
     Value *idx = Builder.CreateLoad(IntegerType::getInt64Ty(TheContext), iteratorL, "iterator");
+    // auto *gep = Builder.CreateGEP(alloca->getAllocatedType(), alloca, idx, "inputidx");
     //Access array element using reference operator
     std::vector<Value *> indices;
     indices.push_back(idx);
     auto *gep = Builder.CreateGEP(allocInst->getType()->getPointerElementType(), allocInst, indices, "inputidx");
 
-    //auto *inVal = Builder.CreateLoad(gep->getType()->getPointerElementType(), gep, "arrRef");
+    // //auto *inVal = Builder.CreateLoad(gep->getType()->getPointerElementType(), gep, "arrRef");
     Builder.CreateStore(element, gep);
 
     Value *loadL = Builder.CreateLoad(IntegerType::getInt64Ty(TheContext), iteratorL, "iterator");
@@ -1604,8 +1611,10 @@ llvm::Value *ASTArrOfConstructorExpr::codegen() {
   TheFunction->getBasicBlockList().push_back(ExitBB);
   Builder.SetInsertPoint(ExitBB);
   
-  return Builder.CreatePtrToInt(castPtr, Type::getInt64Ty(TheContext),
-                                "allocArrVal");
+  // return Builder.CreatePtrToInt(castPtr, Type::getInt64Ty(TheContext),
+  //                               "allocArrVal");
+  return Builder.CreatePtrToInt(allocInst, Type::getInt64Ty(TheContext),
+                              "allocArrVal");
 }
 
 /*
@@ -1705,7 +1714,6 @@ llvm::Value *ASTArrRefExpr::codegen() {
   auto *gep = Builder.CreateGEP(arr->getType()->getPointerElementType(), arr, indices, "inputidx");
 
   auto *inVal = Builder.CreateLoad(gep->getType()->getPointerElementType(), gep, "tipArrRef");
-  //return ConstantInt::get(Type::getInt64Ty(TheContext), 0); 
   //return Builder.CreatePtrToInt(inVal, Type::getInt64Ty(TheContext), "arrRef");
   return Builder.CreateLoad(gep->getType()->getPointerElementType(), gep, "tipArrRef");
 }

@@ -1,18 +1,16 @@
     
             main() {
               var x, y, z;
-              x = not false;
-              y = false;
+              x = [1 of 2];
               //y = [1 of 3];
-              //z = y[0];
+              z = x[0];
               //x = not true;
-              z = 0;
               //for (x : 0 .. 3) {
               //  output x;
               //  y++;
               //}
-              if (x) {
-                z = 4;
-              }
+              //if (x) {
+              //  z = 4;
+              //}
               return z;
             }
