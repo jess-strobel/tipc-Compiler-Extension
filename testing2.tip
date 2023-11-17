@@ -1,8 +1,16 @@
     
-      foo() {
-        var x, y, z;
-        x = true;
-        y = false;
-        z = (x and y);
-        return z;
-      }
+            main() {
+              var x, y, z;
+              x = [1 of 2];
+              //y = [1 of 3];
+              z = x[0];
+              //x = not true;
+              //for (x : 0 .. 3) {
+              //  output x;
+              //  y++;
+              //}
+              //if (x) {
+              //  z = 4;
+              //}
+              return z;
+            }

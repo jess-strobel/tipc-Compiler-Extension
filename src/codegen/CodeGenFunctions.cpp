@@ -492,10 +492,24 @@ llvm::Value *ASTBinaryExpr::codegen() {
     return Builder.CreateMul(L, R, "multmp");
   } else if (getOp() == "/") {
     return Builder.CreateSDiv(L, R, "divtmp");
+  } else if (getOp() == "%") {
+    return Builder.CreateSRem(L, R, "modtmp");
   } else if (getOp() == ">") {
     auto *cmp = Builder.CreateICmpSGT(L, R, "_gttmp");
     return Builder.CreateIntCast(cmp, IntegerType::getInt64Ty(TheContext),
                                  false, "gttmp");
+  } else if (getOp() == "<") {
+    auto *cmp = Builder.CreateICmpSLT(L, R, "_lttmp");
+    return Builder.CreateIntCast(cmp, IntegerType::getInt64Ty(TheContext),
+                                 false, "lttmp");
+  } else if (getOp() == ">=") {
+    auto *cmp = Builder.CreateICmpSGE(L, R, "_getmp");
+    return Builder.CreateIntCast(cmp, IntegerType::getInt64Ty(TheContext),
+                                 false, "getmp");
+  } else if (getOp() == "<=") {
+    auto *cmp = Builder.CreateICmpSGT(L, R, "_letmp");
+    return Builder.CreateIntCast(cmp, IntegerType::getInt64Ty(TheContext),
+                                 false, "letmp");
   } else if (getOp() == "==") {
     auto *cmp = Builder.CreateICmpEQ(L, R, "_eqtmp");
     return Builder.CreateIntCast(cmp, IntegerType::getInt64Ty(TheContext),
@@ -504,6 +518,18 @@ llvm::Value *ASTBinaryExpr::codegen() {
     auto *cmp = Builder.CreateICmpNE(L, R, "_neqtmp");
     return Builder.CreateIntCast(cmp, IntegerType::getInt64Ty(TheContext),
                                  false, "neqtmp");
+  } else if (getOp() == "and") {
+    // auto *sum = Builder.CreateAdd(L, R, "_addtmp");
+    // auto *cmp = Builder.CreateICmpSGT(sum, ConstantInt::get(IntegerType::getInt64Ty(TheContext), 1), "_andtmp");
+    auto *cmp = Builder.CreateAnd(L, R, "_andtmp");
+    return Builder.CreateIntCast(cmp, IntegerType::getInt64Ty(TheContext),
+                                  false, "_andtmp");
+  } else if (getOp() == "or") {
+    // auto *sum = Builder.CreateAdd(L, R, "_addtmp");
+    // auto *cmp = Builder.CreateICmpSGT(sum, zeroV, "_ortmp");
+    auto *cmp = Builder.CreateOr(L, R, "_ortmp");
+    return Builder.CreateIntCast(cmp, IntegerType::getInt64Ty(TheContext),
+                                  false, "_ortmp");
   } else {
     throw InternalError("Invalid binary operator: " + OP);
   }
@@ -1110,49 +1136,622 @@ llvm::Value *ASTReturnStmt::codegen() {
 } // LCOV_EXCL_LINE
 
 llvm::Value *ASTIncStmt::codegen() { 
-  return 0; 
-}
+  LOG_S(1) << "Generating code for " << *this;
 
+  // trigger code generation for l-value expressions
+  lValueGen = true;
+  Value *lValue = getNum()->codegen();
+  lValueGen = false;
+
+  if (lValue == nullptr) {
+    throw InternalError(
+        "failed to generate bitcode for increment statement");
+  }
+
+  /*
+  i can't tell if i'm missing something here (loading lValue ?)
+
+  i'm thrown off by this piazza answer:
+  It might be helpful to think of an expanded version of inc/dec. 
+  That is, x++ as x = x + 1. This should make it clear that you 
+  need to treat the operand, x, as both an lvalue (which you need 
+  to store) and an rvalue (which you need to load and increment).
+
+  ///////////////////////////////////////////////////////////////////
+  is storing lValue just referring to CreateStore at the end? or does
+  it need to be done twice?
+  */
+
+  Value *loadL = Builder.CreateLoad(IntegerType::getInt64Ty(TheContext), lValue, "loadL");
+  Value *rValue = Builder.CreateAdd(loadL, oneV, "increment");
+
+  return Builder.CreateStore(rValue, lValue);
+} // LCOV_EXCL_LINE
+
+// This function is exactly the same as IncStmt codegen (except createsub instead of createadd) -- if IncStmt codegen changed, then this one must be as well
 llvm::Value *ASTDecStmt::codegen() { 
-  return 0; 
-}
+  LOG_S(1) << "Generating code for " << *this;
+
+  // trigger code generation for l-value expressions
+  lValueGen = true;
+  Value *lValue = getNum()->codegen();
+  lValueGen = false;
+
+  if (lValue == nullptr) {
+    throw InternalError(
+        "failed to generate bitcode for decrement statement");
+  }
+
+  Value *loadL = Builder.CreateLoad(IntegerType::getInt64Ty(TheContext), lValue, "loadL");
+  Value *rValue = Builder.CreateSub(loadL, oneV, "decrement");
+
+  return Builder.CreateStore(rValue, lValue);
+} // LCOV_EXCL_LINE
 
 llvm::Value *ASTForRangeStmt::codegen() { 
-  return 0; 
+  LOG_S(1) << "Generating code for " << *this;
+
+  llvm::Function *TheFunction = Builder.GetInsertBlock()->getParent();
+
+  /*
+   * Create blocks for the loop header, body, and exit; HeaderBB is first
+   * so it is added to the function in the constructor.
+   *
+   * Blocks don't need to be contiguous or ordered in
+   * any particular way because we will explicitly branch between them.
+   * This can be optimized by later passes.
+   */
+  labelNum++; // create shared labels for these BBs
+
+  BasicBlock *HeaderBB = BasicBlock::Create(
+      TheContext, "header" + std::to_string(labelNum), TheFunction);
+  BasicBlock *BodyBB =
+      BasicBlock::Create(TheContext, "body" + std::to_string(labelNum));
+  BasicBlock *ExitBB =
+      BasicBlock::Create(TheContext, "exit" + std::to_string(labelNum));
+
+  Value *lbound = getLBound()->codegen();
+  Value *rbound = getRBound()->codegen();
+  
+  lValueGen = true;
+  Value *iteratorL = getVar()->codegen();
+  lValueGen = false;
+
+  if (iteratorL == nullptr) {
+    throw InternalError(
+      "failed to generate bitcode for iteratorL");
+  }
+
+  Builder.CreateStore(lbound, iteratorL);
+
+  // Add an explicit branch from the current BB to the header
+  Builder.CreateBr(HeaderBB);
+
+  // Emit loop header
+  {
+    Builder.SetInsertPoint(HeaderBB);
+
+    Value *iterator = getVar()->codegen();
+    // Create condition
+    Value *CondV = Builder.CreateICmpSLT(iterator, rbound, "loopcond");
+
+    Builder.CreateCondBr(CondV, BodyBB, ExitBB);
+  }
+
+  // Emit loop body
+  {
+    TheFunction->getBasicBlockList().push_back(BodyBB);
+    Builder.SetInsertPoint(BodyBB);
+
+    Value *BodyV = getStmt()->codegen();
+    if (BodyV == nullptr) {
+      throw InternalError(                                 // LCOV_EXCL_LINE
+          "failed to generate bitcode for the loop body"); // LCOV_EXCL_LINE
+    }
+
+    // Update value of iterator (e.g. x = x + step)
+    Value *loadL = Builder.CreateLoad(IntegerType::getInt64Ty(TheContext), iteratorL, "iterator");
+    // Get step value
+    Value *step = getStep()->codegen();
+    Value *newValue = zeroV; //Filler value before newValue is reassigned
+    if (step == nullptr) {
+      newValue = Builder.CreateAdd(loadL, oneV, "increment by one");
+    } else {
+      newValue = Builder.CreateAdd(loadL, step, "increment by step");
+    }
+    
+    Builder.CreateStore(newValue, iteratorL);
+
+    Builder.CreateBr(HeaderBB);
+  }
+
+  // Emit loop exit block.
+  TheFunction->getBasicBlockList().push_back(ExitBB);
+  Builder.SetInsertPoint(ExitBB);
+  return Builder.CreateCall(nop);
 }
 
 llvm::Value *ASTForItrStmt::codegen() { 
-  return 0; 
+    LOG_S(1) << "Generating code for " << *this;
+
+  llvm::Function *TheFunction = Builder.GetInsertBlock()->getParent();
+
+  /*
+   * Create blocks for the loop header, body, and exit; HeaderBB is first
+   * so it is added to the function in the constructor.
+   *
+   * Blocks don't need to be contiguous or ordered in
+   * any particular way because we will explicitly branch between them.
+   * This can be optimized by later passes.
+   */
+  labelNum++; // create shared labels for these BBs
+
+  BasicBlock *HeaderBB = BasicBlock::Create(
+      TheContext, "header" + std::to_string(labelNum), TheFunction);
+  BasicBlock *BodyBB =
+      BasicBlock::Create(TheContext, "body" + std::to_string(labelNum));
+  BasicBlock *ExitBB =
+      BasicBlock::Create(TheContext, "exit" + std::to_string(labelNum));
+
+  lValueGen = true;
+  Value *iterable = getIterable()->codegen();
+  lValueGen = false;
+  
+  lValueGen = true;
+  Value *iteratorL = getVar()->codegen();
+  lValueGen = false;
+
+  //Initialize localAlloca to use as iterator for loop
+  AllocaInst *indexL = CreateEntryBlockAlloca(TheFunction, "i");
+  Builder.CreateStore(zeroV, indexL);
+  Value *index = Builder.CreateLoad(IntegerType::getInt64Ty(TheContext), indexL, "index");
+  Value *size = zeroV; //UPDATE SIZE
+
+  if (iteratorL == nullptr) {
+    throw InternalError(
+      "failed to generate bitcode for iteratorL");
+  } else if (iterable == nullptr) {
+    throw InternalError(
+      "failed to generate bitcode for iterable");
+  }
+
+  std::vector<Value *> indices;
+  indices.push_back(index);
+  auto *gep = Builder.CreateGEP(iterable->getType()->getPointerElementType(), iterable, indices, "inputidx");
+  auto *inVal = Builder.CreateLoad(gep->getType()->getPointerElementType(), gep, "tipArrRef");
+
+  Builder.CreateStore(inVal, iteratorL);
+
+  // Add an explicit branch from the current BB to the header
+  Builder.CreateBr(HeaderBB);
+
+  // Emit loop header
+  {
+    Builder.SetInsertPoint(HeaderBB);
+
+    index = Builder.CreateLoad(IntegerType::getInt64Ty(TheContext), indexL, "index");
+    // Create condition
+    Value *CondV = Builder.CreateICmpSLT(index, size, "loopcond"); //ADD IN ACTUAL SIZE
+
+    Builder.CreateCondBr(CondV, BodyBB, ExitBB);
+  }
+
+  // Emit loop body
+  {
+    TheFunction->getBasicBlockList().push_back(BodyBB);
+    Builder.SetInsertPoint(BodyBB);
+
+    Value *BodyV = getStmt()->codegen();
+    if (BodyV == nullptr) {
+      throw InternalError(                                 // LCOV_EXCL_LINE
+          "failed to generate bitcode for the loop body"); // LCOV_EXCL_LINE
+    }
+
+    std::vector<Value *> indices;
+    indices.push_back(Builder.CreateLoad(IntegerType::getInt64Ty(TheContext), indexL, "index"));
+    auto *gep = Builder.CreateGEP(iterable->getType()->getPointerElementType(), iterable, indices, "inputidx");
+    auto *inVal = Builder.CreateLoad(gep->getType()->getPointerElementType(), gep, "tipArrRef");
+
+    Builder.CreateStore(inVal, iteratorL);
+
+    // Update value of index (e.g. i = i + 1)
+    Value *loadL = Builder.CreateLoad(IntegerType::getInt64Ty(TheContext), indexL, "index");
+    Value *newValue = Builder.CreateAdd(loadL, oneV, "increment by one"); 
+    
+    Builder.CreateStore(newValue, indexL);
+    Builder.CreateBr(HeaderBB);
+  }
+
+  // Emit loop exit block.
+  TheFunction->getBasicBlockList().push_back(ExitBB);
+  Builder.SetInsertPoint(ExitBB);
+  return Builder.CreateCall(nop);
 }
 
 llvm::Value *ASTTernaryCondExpr::codegen() { 
-  return 0; 
-}
+  LOG_S(1) << "Generating code for " << *this;
 
+  Value *CondV = getCondition()->codegen();
+  if (CondV == nullptr) {
+    throw InternalError(
+        "failed to generate bitcode for the condition of ternary expression");
+  }
+
+  Value *ThenV = getThen()->codegen();
+  if (ThenV == nullptr) {
+    throw InternalError(                                                            // LCOV_EXCL_LINE
+        "failed to generate bitcode for the then statement of ternary expression"); // LCOV_EXCL_LINE
+  }
+
+  Value *ElseV = getElse()->codegen();
+  if (ElseV == nullptr) {
+    throw InternalError(                                                            // LCOV_EXCL_LINE
+        "failed to generate bitcode for the else statement of ternary expression"); // LCOV_EXCL_LINE
+  }
+
+  return Builder.CreateSelect(CondV, ThenV, ElseV, 
+                              "ternexpr");
+}
+/*
+1) allocate space (heap), get length from ASTArrConstructor node (getArgs.size())
+2) initialize every element to
+*/
 llvm::Value *ASTArrConstructorExpr::codegen() { 
-  return 0; 
+  LOG_S(1) << "Generating code for " << *this;
+
+  int i = 0;
+  std::vector<ASTExpr *> args = getArgs();
+  Value *size = ConstantInt::get(Type::getInt64Ty(TheContext), args.size());
+  //Value *element = getRight()->codegen();
+
+  // Allocate space in heap
+  std::vector<Value *> twoArg;
+  twoArg.push_back(size);
+  twoArg.push_back(ConstantInt::get(Type::getInt64Ty(TheContext), 8));
+  auto *allocInst = Builder.CreateCall(callocFun, twoArg, "arrPtr");
+  // auto *castPtr = Builder.CreatePointerCast(
+  //     allocInst, Type::getInt64PtrTy(TheContext), "castPtr");
+  // // Initialize with argument
+  // auto *initializingStore = Builder.CreateStore(argVal, castPtr);
+  
+  // Initialize every element to E2
+  llvm::Function *TheFunction = Builder.GetInsertBlock()->getParent();
+  labelNum++; // create shared labels for these BBs
+
+  BasicBlock *HeaderBB = BasicBlock::Create(
+      TheContext, "header" + std::to_string(labelNum), TheFunction);
+  BasicBlock *BodyBB =
+      BasicBlock::Create(TheContext, "body" + std::to_string(labelNum));
+  BasicBlock *ExitBB =
+      BasicBlock::Create(TheContext, "exit" + std::to_string(labelNum));
+
+  //Initialize localAlloca to use as iterator for loop
+  AllocaInst *iteratorL = nullptr;
+  iteratorL = CreateEntryBlockAlloca(TheFunction, "i");
+  Builder.CreateStore(zeroV, iteratorL);
+
+  // Add an explicit branch from the current BB to the header
+  Builder.CreateBr(HeaderBB);
+
+  // Emit loop header
+  {
+    Builder.SetInsertPoint(HeaderBB);
+    // Create condition
+    Value *iterator = Builder.CreateLoad(IntegerType::getInt64Ty(TheContext), iteratorL, "iterator");
+    Value *CondV = Builder.CreateICmpSLT(iterator, size, "loopcond");
+    Builder.CreateCondBr(CondV, BodyBB, ExitBB);
+  }
+
+  // Emit loop body
+  {
+    TheFunction->getBasicBlockList().push_back(BodyBB);
+    Builder.SetInsertPoint(BodyBB);
+
+
+    Value *idx = Builder.CreateLoad(IntegerType::getInt64Ty(TheContext), iteratorL, "iterator");
+    Value *element = args[i]->codegen();
+
+    // //Access array element using reference operator
+    std::vector<Value *> indices;
+    indices.push_back(idx);
+    auto *gep = Builder.CreateGEP(allocInst->getType()->getPointerElementType(), allocInst, indices, "inputidx");
+
+    //auto *inVal = Builder.CreateLoad(gep->getType()->getPointerElementType(), gep, "arrRef");
+    Builder.CreateStore(element, gep);
+
+    Value *loadL = Builder.CreateLoad(IntegerType::getInt64Ty(TheContext), iteratorL, "iterator");
+    Value *newValue = Builder.CreateAdd(loadL, oneV, "increment by one");
+    i++;
+    
+    Builder.CreateStore(newValue, iteratorL);
+    Builder.CreateBr(HeaderBB);
+  }
+
+  // Emit loop exit block.
+  TheFunction->getBasicBlockList().push_back(ExitBB);
+  Builder.SetInsertPoint(ExitBB);
+  
+  // return Builder.CreatePtrToInt(castPtr, Type::getInt64Ty(TheContext),
+  //                               "allocArrVal");
+  return Builder.CreatePtrToInt(allocInst, Type::getInt64Ty(TheContext),
+                              "allocArrVal");
 }
 
 llvm::Value *ASTArrLenOpExpr::codegen() { 
+  // LOG_S(1) << "Generating code for " << *this;
+
+  // lValueGen = true;
+  // Value *arr = getRight()->codegen();
+  // lValueGen = false;
+
+  //   // //Access array element using reference operator
+  // std::vector<Value *> indices;
+  // indices.push_back(zeroV);
+  // auto *gep = Builder.CreateGEP(allocInst->getType()->getPointerElementType(), arr, indices, "inputidx");
+
   return 0; 
 }
 
+/*
+1) allocate space (heap)
+2) initialize every element to E2
+     for (i = 0; i < E1; i++)
+         a[i] = E2;
+3) size of array must be stored somewhere in array
+*/
 llvm::Value *ASTArrOfConstructorExpr::codegen() { 
-  return 0; 
+  LOG_S(1) << "Generating code for " << *this;
+
+  Value *size = getLeft()->codegen();
+  Value *element = getRight()->codegen();
+
+  if (size == nullptr) {
+    throw InternalError(                                                            // LCOV_EXCL_LINE
+      "failed to generate bitcode for the size expr of array of constructor");
+  } else if (element == nullptr) {
+    throw InternalError(                                                            // LCOV_EXCL_LINE
+      "failed to generate bitcode for the element expr of array of constructor");
+  }
+
+  llvm::Function *TheFunction = Builder.GetInsertBlock()->getParent();
+  // Check if E1 < 0
+  labelNum++; // create shared labels for these BBs
+  BasicBlock *Then0BB = BasicBlock::Create(
+      TheContext, "then" + std::to_string(labelNum), TheFunction);
+  BasicBlock *Merge0BB =
+      BasicBlock::Create(TheContext, "ifmerge" + std::to_string(labelNum));
+  Value *CondV = Builder.CreateICmpSLT(size, zeroV, "errorCheck");
+
+  Builder.CreateCondBr(CondV, Then0BB, Merge0BB);
+
+  {
+    Builder.SetInsertPoint(Then0BB);
+    
+    // if (errorIntrinsic == nullptr) {
+    //   std::vector<Type *> oneInt(1, Type::getInt64Ty(TheContext));
+    //   auto *FT = FunctionType::get(Type::getInt64Ty(TheContext), oneInt, false);
+    //   errorIntrinsic = llvm::Function::Create(FT, llvm::Function::ExternalLinkage,
+    //                                           "_tip_error", CurrentModule.get());
+    // }
+
+    // std::vector<Value *> ArgsV(1, size);
+    // return Builder.CreateCall(errorIntrinsic, ArgsV);
+
+    Builder.CreateBr(Merge0BB);
+  }
+
+  TheFunction->getBasicBlockList().push_back(Merge0BB);
+  Builder.SetInsertPoint(Merge0BB);
+
+  // Allocate space in heap
+  std::vector<Value *> twoArg;
+  twoArg.push_back(size);
+  twoArg.push_back(ConstantInt::get(Type::getInt64Ty(TheContext), 8));
+  auto *allocInst = Builder.CreateCall(callocFun, twoArg, "arrPtr");
+  // auto *castPtr = Builder.CreatePointerCast(
+  //     allocInst, Type::getInt64PtrTy(TheContext), "castPtr");
+
+  // auto *alloca = Builder.CreateAlloca(element->getType(), size);
+  // auto *castPtr = Builder.CreatePointerCast(
+  //     alloca, Type::getInt64PtrTy(TheContext), "castPtr");
+
+  // // Initialize with argument
+  // auto *initializingStore = Builder.CreateStore(argVal, castPtr);
+  
+  // Initialize every element to E2
+  labelNum++; // create shared labels for these BBs
+
+  BasicBlock *HeaderBB = BasicBlock::Create(
+      TheContext, "header" + std::to_string(labelNum), TheFunction);
+  BasicBlock *BodyBB =
+      BasicBlock::Create(TheContext, "body" + std::to_string(labelNum));
+  BasicBlock *ExitBB =
+      BasicBlock::Create(TheContext, "exit" + std::to_string(labelNum));
+
+  //Initialize localAlloca to use as iterator for loop
+  AllocaInst *iteratorL = nullptr;
+  iteratorL = CreateEntryBlockAlloca(TheFunction, "i");
+  Builder.CreateStore(zeroV, iteratorL);
+
+  // Add an explicit branch from the current BB to the header
+  Builder.CreateBr(HeaderBB);
+
+  // Emit loop header
+  {
+    Builder.SetInsertPoint(HeaderBB);
+    // Create condition
+    Value *iterator = Builder.CreateLoad(IntegerType::getInt64Ty(TheContext), iteratorL, "iterator");
+    Value *CondV = Builder.CreateICmpSLT(iterator, size, "loopcond");
+    Builder.CreateCondBr(CondV, BodyBB, ExitBB);
+  }
+
+  // Emit loop body
+  {
+    TheFunction->getBasicBlockList().push_back(BodyBB);
+    Builder.SetInsertPoint(BodyBB);
+
+    Value *idx = Builder.CreateLoad(IntegerType::getInt64Ty(TheContext), iteratorL, "iterator");
+    // auto *gep = Builder.CreateGEP(alloca->getAllocatedType(), alloca, idx, "inputidx");
+    //Access array element using reference operator
+    std::vector<Value *> indices;
+    indices.push_back(idx);
+    auto *gep = Builder.CreateGEP(allocInst->getType()->getPointerElementType(), allocInst, indices, "inputidx");
+
+    // //auto *inVal = Builder.CreateLoad(gep->getType()->getPointerElementType(), gep, "arrRef");
+    Builder.CreateStore(element, gep);
+
+    Value *loadL = Builder.CreateLoad(IntegerType::getInt64Ty(TheContext), iteratorL, "iterator");
+    Value *newValue = Builder.CreateAdd(loadL, oneV, "increment by one");
+    
+    Builder.CreateStore(newValue, iteratorL);
+    Builder.CreateBr(HeaderBB);
+  }
+
+  // Emit loop exit block.
+  TheFunction->getBasicBlockList().push_back(ExitBB);
+  Builder.SetInsertPoint(ExitBB);
+  
+  // return Builder.CreatePtrToInt(castPtr, Type::getInt64Ty(TheContext),
+  //                               "allocArrVal");
+  return Builder.CreatePtrToInt(allocInst, Type::getInt64Ty(TheContext),
+                              "allocArrVal");
 }
 
+/*
+E1[E2]
+E1% = codegen[E1]  //codegen for array and for index
+E2% = codegen[E2]
+
+if (i% < 0) error c%
+if (i% >= #a%) error c%     (must use GEP for #a%)
+e% = a% + (i% * sizeof(...))  (GEP)
+v% = load l% (load value stored at that address)
+*/
 llvm::Value *ASTArrRefExpr::codegen() { 
-  return 0; 
+  LOG_S(1) << "Generating code for " << *this;
+  lValueGen = true;
+  Value *arr = getArr()->codegen();
+  lValueGen = false;
+  Value *idx = getIndex()->codegen();
+
+  if (arr == nullptr) {
+    throw InternalError(
+      "failed to generate bitcode for array");
+  } else if (idx == nullptr) {
+    throw InternalError(
+      "failed to generate bitcode for index");
+  }
+
+  Value *CondV = Builder.CreateICmpSLT(idx, zeroV, "ifcond");
+
+  llvm::Function *TheFunction = Builder.GetInsertBlock()->getParent();
+
+  // // Bounds checking for i < 0
+  // labelNum++; // create shared labels for these BBs
+  // BasicBlock *ThenBB = BasicBlock::Create(
+  //     TheContext, "then" + std::to_string(labelNum), TheFunction);
+  // BasicBlock *MergeBB =
+  //     BasicBlock::Create(TheContext, "ifmerge" + std::to_string(labelNum));
+
+  // Builder.CreateCondBr(CondV, ThenBB, MergeBB);
+
+  // {
+  //   Builder.SetInsertPoint(ThenBB);
+    
+  //   if (errorIntrinsic == nullptr) {
+  //     std::vector<Type *> oneInt(1, Type::getInt64Ty(TheContext));
+  //     auto *FT = FunctionType::get(Type::getInt64Ty(TheContext), oneInt, false);
+  //     errorIntrinsic = llvm::Function::Create(FT, llvm::Function::ExternalLinkage,
+  //                                             "_tip_error", CurrentModule.get());
+  //   }
+
+  //   std::vector<Value *> ArgsV(1, idx);
+  //   return Builder.CreateCall(errorIntrinsic, ArgsV);
+
+  //   Builder.CreateBr(MergeBB);
+  // }
+
+  // TheFunction->getBasicBlockList().push_back(MergeBB);
+  // Builder.SetInsertPoint(MergeBB);
+
+  // // Bounds checking for i > #a%
+  // auto *arrSize = Builder.CreateGEP(arr->getType(), arr, );
+
+  // Value *Cond2V = Builder.CreateICmpSGE(idx, , "ifcond");
+
+  // labelNum++; // create shared labels for these BBs
+  // BasicBlock *Then2BB = BasicBlock::Create(
+  //     TheContext, "then" + std::to_string(labelNum), TheFunction);
+  // BasicBlock *Merge2BB =
+  //     BasicBlock::Create(TheContext, "ifmerge" + std::to_string(labelNum));
+
+  // Builder.CreateCondBr(Cond2V, Then2BB, Merge2BB);
+
+  // // Emit then block.
+  // {
+  //   Builder.SetInsertPoint(Then2BB);
+    
+  //   if (errorIntrinsic == nullptr) {
+  //     std::vector<Type *> oneInt(1, Type::getInt64Ty(TheContext));
+  //     auto *FT = FunctionType::get(Type::getInt64Ty(TheContext), oneInt, false);
+  //     errorIntrinsic = llvm::Function::Create(FT, llvm::Function::ExternalLinkage,
+  //                                             "_tip_error", CurrentModule.get());
+  //   }
+
+  //   std::vector<Value *> ArgsV(1, idx);
+  //   return Builder.CreateCall(errorIntrinsic, ArgsV);
+
+  //   Builder.CreateBr(Merge2BB);
+  // }
+
+  // // Emit merge block.
+  // TheFunction->getBasicBlockList().push_back(Merge2BB);
+  // Builder.SetInsertPoint(Merge2BB);
+
+  // Emit the GEP instruction to index into input array
+  std::vector<Value *> indices;
+  indices.push_back(idx);
+  auto *gep = Builder.CreateGEP(arr->getType()->getPointerElementType(), arr, indices, "inputidx");
+
+  auto *inVal = Builder.CreateLoad(gep->getType()->getPointerElementType(), gep, "tipArrRef");
+  //return Builder.CreatePtrToInt(inVal, Type::getInt64Ty(TheContext), "arrRef");
+  return Builder.CreateLoad(gep->getType()->getPointerElementType(), gep, "tipArrRef");
 }
 
-llvm::Value *ASTBoolExpr::codegen() { 
-  return 0; 
+llvm::Value *ASTBoolExpr::codegen() {
+  LOG_S(1) << "Generating code for " << *this;
+
+  std::string boolV = getBool();
+
+  if (boolV == "true") {
+    return oneV;
+  } else {
+    return zeroV;
+  }
+
 }
 
 llvm::Value *ASTNegExpr::codegen() { 
-  return 0; 
+  LOG_S(1) << "Generating code for " << *this;
+
+  Value *rightVal = getRight()->codegen();
+
+  if (rightVal == nullptr) {
+    throw InternalError("null value for neg expression");
+  }
+
+  return Builder.CreateSub(zeroV, rightVal, "negation");
 }
 
 llvm::Value *ASTNotExpr::codegen() { 
-  return 0; 
+  LOG_S(1) << "Generating code for " << *this;
+
+  Value *R = getRight()->codegen();
+
+  if (R == nullptr) {
+    throw InternalError("null value for not expression");
+  }
+
+  //return Builder.CreateNot(R, "nottmp");
+  return Builder.CreateSub(oneV, R, "nottmp");
 }

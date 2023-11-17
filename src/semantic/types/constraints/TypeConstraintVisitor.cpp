@@ -84,6 +84,10 @@ void TypeConstraintVisitor::endVisit(ASTFunction *element) {
  *
  * Type rules for "[X1, ..., Xn]":
  *   [[X1]] = ... = [[Xn]]
+ * if array is not empty
+ *   [[[X1, ..., Xn]]] = [] [[Xn]]
+ * else
+ *   [[[]]] = [] \alpha
  */
 void TypeConstraintVisitor::endVisit(ASTArrConstructorExpr *element) {
   std::vector<std::shared_ptr<TipType>> args;
@@ -95,16 +99,22 @@ void TypeConstraintVisitor::endVisit(ASTArrConstructorExpr *element) {
       }
     }
   }
+
+  if (args.size() > 0) 
+    constraintHandler->handle(astToVar(element), std::make_shared<TipArray>(args[0]));
+  else
+    constraintHandler->handle(astToVar(element), std::make_shared<TipArray>(std::make_shared<TipAlpha>(element)));
 }
 
 /*! \brief Type constraints for array of constructor.
  *
  * Type rules for "[X1 of Xn]":
- *   [[X1]] = [[Xn]] = int
+ *   [[X1]] = int
+ *   [[[X1 of Xn]]] = [] [[Xn]]
  */
 void TypeConstraintVisitor::endVisit(ASTArrOfConstructorExpr *element) {
   constraintHandler->handle(astToVar(element->getLeft()), std::make_shared<TipInt>());
-  constraintHandler->handle(astToVar(element->getRight()), std::make_shared<TipInt>());
+  constraintHandler->handle(astToVar(element), std::make_shared<TipArray>(astToVar(element->getRight())));
 }
 
 /*! \brief Type constraints for array len operator.
@@ -116,8 +126,9 @@ void TypeConstraintVisitor::endVisit(ASTArrOfConstructorExpr *element) {
 void TypeConstraintVisitor::endVisit(ASTArrLenOpExpr *element) {
   constraintHandler->handle(astToVar(element), std::make_shared<TipInt>());
 
-  std::vector<std::shared_ptr<TipType>> args;
-  constraintHandler->handle(astToVar(element->getRight()), std::make_shared<TipArray>(args));
+  std::shared_ptr<TipType> of = std::make_shared<TipAlpha>(element->getRight());
+
+  constraintHandler->handle(astToVar(element->getRight()), std::make_shared<TipArray>(of));
 }
 
 /*! \brief Type constraints for array dereference operator.
@@ -129,8 +140,8 @@ void TypeConstraintVisitor::endVisit(ASTArrLenOpExpr *element) {
 void TypeConstraintVisitor::endVisit(ASTArrRefExpr *element) {
   constraintHandler->handle(astToVar(element->getIndex()), std::make_shared<TipInt>());
   
-  std::vector<std::shared_ptr<TipType>> args{astToVar(element)};
-  constraintHandler->handle(astToVar(element->getArr()), std::make_shared<TipArray>(args));
+  std::shared_ptr<TipType> of = astToVar(element);
+  constraintHandler->handle(astToVar(element->getArr()), std::make_shared<TipArray>(of));
 }
 
 /*! \brief Type constraints for numeric literal.
@@ -329,17 +340,18 @@ void TypeConstraintVisitor::endVisit(ASTWhileStmt *element) {
  *   [] [[E1]] = [[E2]]
  */
 void TypeConstraintVisitor::endVisit(ASTForItrStmt *element) {
-  std::vector<std::shared_ptr<TipType>> args;
-  args.push_back(astToVar(element->getVar()));
+  std::shared_ptr<TipType> of = astToVar(element->getVar());
 
   constraintHandler->handle(astToVar(element->getIterable()),
-                            std::make_shared<TipArray>(args));            
+                            std::make_shared<TipArray>(of));            
 }
 
 /*! \brief Type constraints for range-style for loop.
  *
  * Type rules for "for (E1 : E2 .. E3 by E4) S":
- *   [[E1]] = [[E2]] = [[E3]] = [[E4]] = int
+ *   [[E1]] = [[E2]] = [[E3]] = int
+ * if step is specified: 
+ *   [[E4]] = int
  */
 void TypeConstraintVisitor::endVisit(ASTForRangeStmt *element) {
   constraintHandler->handle(astToVar(element->getVar()),
@@ -348,8 +360,10 @@ void TypeConstraintVisitor::endVisit(ASTForRangeStmt *element) {
                         std::make_shared<TipInt>());     
   constraintHandler->handle(astToVar(element->getRBound()),
                         std::make_shared<TipInt>());   
-  constraintHandler->handle(astToVar(element->getStep()),
-                      std::make_shared<TipInt>());                                                 
+  if (element->getStep() != nullptr) {
+    constraintHandler->handle(astToVar(element->getStep()),
+                        std::make_shared<TipInt>());     
+  }                  
 }
 
 /*! \brief Type constraints for if statement.

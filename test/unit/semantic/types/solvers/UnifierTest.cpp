@@ -69,8 +69,8 @@ TEST_CASE("Unifier: Collect and then unify constraints", "[Unifier, Collect]") {
             // x is [] int, y is bool, z is [] \alpha, short is () -> int]
             short() {
               var x, y, z;
-              //x = [1];	
-              //y = (#x >= x[0]);
+              x = [1];	
+              y = ((#x) >= x[0]);
               z = [];
               return true;
             }
@@ -85,27 +85,35 @@ TEST_CASE("Unifier: Collect and then unify constraints", "[Unifier, Collect]") {
     Unifier unifier(visitor.getCollectedConstraints());
     REQUIRE_NOTHROW(unifier.solve());
 
-    // Expected types
-    std::vector<std::shared_ptr<TipType>> emptyParams;
-    std::vector<std::shared_ptr<TipType>> intParam{std::make_shared<TipInt>()};
-    auto intArrayType = std::make_shared<TipArray>(intParam);
-    auto boolType = std::make_shared<TipBool>();
-    auto alphaArrayType = std::make_shared<TipArray>(emptyParams);
-    auto funRetBool = std::make_shared<TipFunction>(emptyParams, std::make_shared<TipBool>());
-
     auto fDecl = symbols->getFunction("short");
     auto fType = std::make_shared<TipVar>(fDecl);
 
+    // Expected types
+    std::vector<std::shared_ptr<TipType>> emptyParams;
+    ASTArrConstructorExpr arr(std::vector<std::shared_ptr<ASTExpr>>{});
+    std::shared_ptr<TipType> alphaParam = std::make_shared<TipAlpha>(&arr);
+    auto alphaArrayType = std::make_shared<TipArray>(alphaParam);
+
+    auto intArrayType = std::make_shared<TipArray>(std::make_shared<TipInt>());
+    auto boolType = std::make_shared<TipBool>();
+    
+    auto funRetBool = std::make_shared<TipFunction>(emptyParams, std::make_shared<TipBool>());
+
     REQUIRE(*unifier.inferred(fType) == *funRetBool);
 
-    // auto xType = std::make_shared<TipVar>(symbols->getLocal("x", fDecl));
-    // REQUIRE(*unifier.inferred(xType) != *intArrayType);
+    auto xType = std::make_shared<TipVar>(symbols->getLocal("x", fDecl));
+    REQUIRE(*unifier.inferred(xType) == *intArrayType);
 
-    // auto yType = std::make_shared<TipVar>(symbols->getLocal("y", fDecl));
-    // REQUIRE(*unifier.inferred(yType) == *boolType);
+    auto yType = std::make_shared<TipVar>(symbols->getLocal("y", fDecl));
+    REQUIRE(*unifier.inferred(yType) == *boolType);
 
     auto zType = std::make_shared<TipVar>(symbols->getLocal("z", fDecl));
-    REQUIRE(*unifier.inferred(zType) != *alphaArrayType);
+    auto zInf = unifier.inferred(zType);
+    REQUIRE(std::dynamic_pointer_cast<TipArray>(zInf) != nullptr);
+
+    auto zArr = std::dynamic_pointer_cast<TipArray>(zInf);
+    auto zArrType = zArr->getElementType();
+    REQUIRE(std::dynamic_pointer_cast<TipAlpha>(zArrType) != nullptr);
   }
 
   SECTION("Test type-safe program 3") {
@@ -539,6 +547,25 @@ deref(p){
             r = {f: 4, g: 13};
             r.h = q.h;
             return r.g;
+        }
+        )";
+    auto ast = ASTHelper::build_ast(program);
+    auto symbols = SymbolTable::build(ast.get());
+
+    TypeConstraintUnifyVisitor visitor(symbols.get());
+    REQUIRE_THROWS_AS(ast->accept(&visitor), UnificationError);
+  }
+
+  SECTION("Test unification error 5") {
+    std::stringstream program;
+    program << R"(
+        foo() {
+            var r, q;
+            r = true;
+            q = false;
+            r++;
+            q--;
+            return 0;
         }
         )";
     auto ast = ASTHelper::build_ast(program);

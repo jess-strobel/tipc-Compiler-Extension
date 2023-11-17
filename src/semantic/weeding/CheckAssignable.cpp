@@ -63,6 +63,62 @@ void CheckAssignable::endVisit(ASTRefExpr *element) {
   throw SemanticError(oss.str());
 }
 
+void CheckAssignable::endVisit(ASTIncStmt *element) {
+  LOG_S(1) << "Checking assignability of " << *element;
+
+  if (isAssignable(element->getNum()))
+    return;
+
+  // Incrementing through a pointer dereference is also permitted
+  if (dynamic_cast<ASTDeRefExpr *>(element->getNum()))
+    return;
+
+  std::ostringstream oss;
+  oss << "Address of error on line " << element->getLine() << ": ";
+  oss << *element->getNum() << " not an l-value\n";
+  throw SemanticError(oss.str());
+}
+
+void CheckAssignable::endVisit(ASTDecStmt *element) {
+  LOG_S(1) << "Checking assignability of " << *element;
+
+  if (isAssignable(element->getNum()))
+    return;
+
+  // Incrementing through a pointer dereference is also permitted
+  if (dynamic_cast<ASTDeRefExpr *>(element->getNum()))
+    return;
+
+  std::ostringstream oss;
+  oss << "Address of error on line " << element->getLine() << ": ";
+  oss << *element->getNum() << " not an l-value\n";
+  throw SemanticError(oss.str());
+}
+
+void CheckAssignable::endVisit(ASTForItrStmt *element) {
+  LOG_S(1) << "Checking assignability of " << *element;
+
+  if (isAssignable(element->getVar()))
+    return;
+
+  std::ostringstream oss;
+  oss << "Address of error on line " << element->getLine() << ": ";
+  oss << *element->getVar() << " not an l-value\n";
+  throw SemanticError(oss.str());
+}
+
+void CheckAssignable::endVisit(ASTForRangeStmt *element) {
+  LOG_S(1) << "Checking assignability of " << *element;
+
+  if (isAssignable(element->getVar()))
+    return;
+
+  std::ostringstream oss;
+  oss << "Address of error on line " << element->getLine() << ": ";
+  oss << *element->getVar() << " not an l-value\n";
+  throw SemanticError(oss.str());
+}
+
 void CheckAssignable::check(ASTProgram *p) {
   LOG_S(1) << "Checking assignability";
   CheckAssignable visitor;
