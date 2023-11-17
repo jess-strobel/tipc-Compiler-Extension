@@ -1478,18 +1478,17 @@ llvm::Value *ASTArrConstructorExpr::codegen() {
 }
 
 llvm::Value *ASTArrLenOpExpr::codegen() { 
-  // LOG_S(1) << "Generating code for " << *this;
+  LOG_S(1) << "Generating code for " << *this;
 
-  // lValueGen = true;
-  // Value *arr = getRight()->codegen();
-  // lValueGen = false;
+  lValueGen = true;
+  Value *arr = getRight()->codegen();
+  lValueGen = false;
 
-  //   // //Access array element using reference operator
-  // std::vector<Value *> indices;
-  // indices.push_back(zeroV);
-  // auto *gep = Builder.CreateGEP(allocInst->getType()->getPointerElementType(), arr, indices, "inputidx");
-
-  return 0; 
+  //Access array size at first element using reference operator
+  std::vector<Value *> indices;
+  indices.push_back(zeroV);
+  auto *gep = Builder.CreateGEP(arr->getType()->getPointerElementType(), arr, indices, "inputidx");
+  return Builder.CreateLoad(gep->getType()->getPointerElementType(), gep, "arrRef");
 }
 
 /*
@@ -1534,7 +1533,7 @@ llvm::Value *ASTArrOfConstructorExpr::codegen() {
     //                                           "_tip_error", CurrentModule.get());
     // }
 
-    // std::vector<Value *> ArgsV(1, size);
+    // std::vector<Value *> ArgsV(1);
     // return Builder.CreateCall(errorIntrinsic, ArgsV);
 
     Builder.CreateBr(Merge0BB);
