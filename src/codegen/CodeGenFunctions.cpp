@@ -519,10 +519,14 @@ llvm::Value *ASTBinaryExpr::codegen() {
     return Builder.CreateIntCast(cmp, IntegerType::getInt64Ty(TheContext),
                                  false, "neqtmp");
   } else if (getOp() == "and") {
+    // auto *sum = Builder.CreateAdd(L, R, "_addtmp");
+    // auto *cmp = Builder.CreateICmpSGT(sum, ConstantInt::get(IntegerType::getInt64Ty(TheContext), 1), "_andtmp");
     auto *cmp = Builder.CreateAnd(L, R, "_andtmp");
     return Builder.CreateIntCast(cmp, IntegerType::getInt64Ty(TheContext),
                                   false, "_andtmp");
   } else if (getOp() == "or") {
+    // auto *sum = Builder.CreateAdd(L, R, "_addtmp");
+    // auto *cmp = Builder.CreateICmpSGT(sum, zeroV, "_ortmp");
     auto *cmp = Builder.CreateOr(L, R, "_ortmp");
     return Builder.CreateIntCast(cmp, IntegerType::getInt64Ty(TheContext),
                                   false, "_ortmp");
@@ -1472,16 +1476,16 @@ llvm::Value *ASTArrConstructorExpr::codegen() {
 }
 
 llvm::Value *ASTArrLenOpExpr::codegen() { 
-  LOG_S(1) << "Generating code for " << *this;
+  // LOG_S(1) << "Generating code for " << *this;
 
-  lValueGen = true;
-  Value *arr = getRight()->codegen();
-  lValueGen = false;
+  // lValueGen = true;
+  // Value *arr = getRight()->codegen();
+  // lValueGen = false;
 
-    // //Access array element using reference operator
-  std::vector<Value *> indices;
-  indices.push_back(zeroV);
-  auto *gep = Builder.CreateGEP(allocInst->getType()->getPointerElementType(), arr, indices, "inputidx");
+  //   // //Access array element using reference operator
+  // std::vector<Value *> indices;
+  // indices.push_back(zeroV);
+  // auto *gep = Builder.CreateGEP(allocInst->getType()->getPointerElementType(), arr, indices, "inputidx");
 
   return 0; 
 }
@@ -1544,6 +1548,7 @@ llvm::Value *ASTArrOfConstructorExpr::codegen() {
   auto *allocInst = Builder.CreateCall(callocFun, twoArg, "arrPtr");
   auto *castPtr = Builder.CreatePointerCast(
       allocInst, Type::getInt64PtrTy(TheContext), "castPtr");
+
   // // Initialize with argument
   // auto *initializingStore = Builder.CreateStore(argVal, castPtr);
   
@@ -1578,7 +1583,6 @@ llvm::Value *ASTArrOfConstructorExpr::codegen() {
   {
     TheFunction->getBasicBlockList().push_back(BodyBB);
     Builder.SetInsertPoint(BodyBB);
-
 
     Value *idx = Builder.CreateLoad(IntegerType::getInt64Ty(TheContext), iteratorL, "iterator");
     //Access array element using reference operator
@@ -1633,33 +1637,33 @@ llvm::Value *ASTArrRefExpr::codegen() {
 
   llvm::Function *TheFunction = Builder.GetInsertBlock()->getParent();
 
-  // Bounds checking for i < 0
-  labelNum++; // create shared labels for these BBs
-  BasicBlock *ThenBB = BasicBlock::Create(
-      TheContext, "then" + std::to_string(labelNum), TheFunction);
-  BasicBlock *MergeBB =
-      BasicBlock::Create(TheContext, "ifmerge" + std::to_string(labelNum));
+  // // Bounds checking for i < 0
+  // labelNum++; // create shared labels for these BBs
+  // BasicBlock *ThenBB = BasicBlock::Create(
+  //     TheContext, "then" + std::to_string(labelNum), TheFunction);
+  // BasicBlock *MergeBB =
+  //     BasicBlock::Create(TheContext, "ifmerge" + std::to_string(labelNum));
 
-  Builder.CreateCondBr(CondV, ThenBB, MergeBB);
+  // Builder.CreateCondBr(CondV, ThenBB, MergeBB);
 
-  {
-    Builder.SetInsertPoint(ThenBB);
+  // {
+  //   Builder.SetInsertPoint(ThenBB);
     
-    if (errorIntrinsic == nullptr) {
-      std::vector<Type *> oneInt(1, Type::getInt64Ty(TheContext));
-      auto *FT = FunctionType::get(Type::getInt64Ty(TheContext), oneInt, false);
-      errorIntrinsic = llvm::Function::Create(FT, llvm::Function::ExternalLinkage,
-                                              "_tip_error", CurrentModule.get());
-    }
+  //   if (errorIntrinsic == nullptr) {
+  //     std::vector<Type *> oneInt(1, Type::getInt64Ty(TheContext));
+  //     auto *FT = FunctionType::get(Type::getInt64Ty(TheContext), oneInt, false);
+  //     errorIntrinsic = llvm::Function::Create(FT, llvm::Function::ExternalLinkage,
+  //                                             "_tip_error", CurrentModule.get());
+  //   }
 
-    std::vector<Value *> ArgsV(1, idx);
-    return Builder.CreateCall(errorIntrinsic, ArgsV);
+  //   std::vector<Value *> ArgsV(1, idx);
+  //   return Builder.CreateCall(errorIntrinsic, ArgsV);
 
-    Builder.CreateBr(MergeBB);
-  }
+  //   Builder.CreateBr(MergeBB);
+  // }
 
-  TheFunction->getBasicBlockList().push_back(MergeBB);
-  Builder.SetInsertPoint(MergeBB);
+  // TheFunction->getBasicBlockList().push_back(MergeBB);
+  // Builder.SetInsertPoint(MergeBB);
 
   // // Bounds checking for i > #a%
   // auto *arrSize = Builder.CreateGEP(arr->getType(), arr, );
@@ -1702,7 +1706,8 @@ llvm::Value *ASTArrRefExpr::codegen() {
 
   auto *inVal = Builder.CreateLoad(gep->getType()->getPointerElementType(), gep, "tipArrRef");
   //return ConstantInt::get(Type::getInt64Ty(TheContext), 0); 
-  return Builder.CreatePtrToInt(inVal, Type::getInt64Ty(TheContext), "arrRef");
+  //return Builder.CreatePtrToInt(inVal, Type::getInt64Ty(TheContext), "arrRef");
+  return Builder.CreateLoad(gep->getType()->getPointerElementType(), gep, "tipArrRef");
 }
 
 llvm::Value *ASTBoolExpr::codegen() {
@@ -1711,9 +1716,9 @@ llvm::Value *ASTBoolExpr::codegen() {
   std::string boolV = getBool();
 
   if (boolV == "true") {
-    return ConstantInt::get(Type::getInt64Ty(TheContext), 1);
+    return oneV;
   } else {
-    return ConstantInt::get(Type::getInt64Ty(TheContext), 0);
+    return zeroV;
   }
 
 }
@@ -1739,5 +1744,6 @@ llvm::Value *ASTNotExpr::codegen() {
     throw InternalError("null value for not expression");
   }
 
-  return Builder.CreateNot(R, "nottmp");
+  //return Builder.CreateNot(R, "nottmp");
+  return Builder.CreateSub(oneV, R, "nottmp");
 }
