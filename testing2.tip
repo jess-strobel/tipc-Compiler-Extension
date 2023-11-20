@@ -12,5 +12,5 @@
               //if (x) {
               //  z = 4;
               //}
-              return #x;
+              return (#x);
             }
