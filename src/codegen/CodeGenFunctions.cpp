@@ -1399,9 +1399,8 @@ llvm::Value *ASTTernaryCondExpr::codegen() {
 llvm::Value *ASTArrConstructorExpr::codegen() { 
   LOG_S(1) << "Generating code for " << *this;
 
-  int i = 0;
   std::vector<ASTExpr *> args = getArgs();
-  Value *size = ConstantInt::get(Type::getInt64Ty(TheContext), args.size());
+  Value *size = ConstantInt::get(Type::getInt64Ty(TheContext), args.size() + 1);
   //Value *element = getRight()->codegen();
 
   // Allocate space in heap
@@ -1409,72 +1408,83 @@ llvm::Value *ASTArrConstructorExpr::codegen() {
   twoArg.push_back(size);
   twoArg.push_back(ConstantInt::get(Type::getInt64Ty(TheContext), 8));
   auto *allocInst = Builder.CreateCall(callocFun, twoArg, "arrPtr");
-  // auto *castPtr = Builder.CreatePointerCast(
-  //     allocInst, Type::getInt64PtrTy(TheContext), "castPtr");
-  // // Initialize with argument
-  // auto *initializingStore = Builder.CreateStore(argVal, castPtr);
+  auto *castPtr = Builder.CreatePointerCast(
+      allocInst, Type::getInt64PtrTy(TheContext), "castPtr");
+
   
-  // Initialize every element to E2
-  llvm::Function *TheFunction = Builder.GetInsertBlock()->getParent();
-  labelNum++; // create shared labels for these BBs
-
-  BasicBlock *HeaderBB = BasicBlock::Create(
-      TheContext, "header" + std::to_string(labelNum), TheFunction);
-  BasicBlock *BodyBB =
-      BasicBlock::Create(TheContext, "body" + std::to_string(labelNum));
-  BasicBlock *ExitBB =
-      BasicBlock::Create(TheContext, "exit" + std::to_string(labelNum));
-
-  //Initialize localAlloca to use as iterator for loop
-  AllocaInst *iteratorL = nullptr;
-  iteratorL = CreateEntryBlockAlloca(TheFunction, "i");
-  Builder.CreateStore(zeroV, iteratorL);
-
-  // Add an explicit branch from the current BB to the header
-  Builder.CreateBr(HeaderBB);
-
-  // Emit loop header
-  {
-    Builder.SetInsertPoint(HeaderBB);
-    // Create condition
-    Value *iterator = Builder.CreateLoad(IntegerType::getInt64Ty(TheContext), iteratorL, "iterator");
-    Value *CondV = Builder.CreateICmpSLT(iterator, size, "loopcond");
-    Builder.CreateCondBr(CondV, BodyBB, ExitBB);
-  }
-
-  // Emit loop body
-  {
-    TheFunction->getBasicBlockList().push_back(BodyBB);
-    Builder.SetInsertPoint(BodyBB);
-
-
-    Value *idx = Builder.CreateLoad(IntegerType::getInt64Ty(TheContext), iteratorL, "iterator");
-    Value *element = args[i]->codegen();
-
-    // //Access array element using reference operator
+  for (int i = 0; i < args.size() + 1; i++) {
     std::vector<Value *> indices;
-    indices.push_back(idx);
+    Value *element;
+    if (i == 0) {
+      indices.push_back(zeroV);
+      element = size;
+    } else {
+      indices.push_back(ConstantInt::get(Type::getInt64Ty(TheContext), i));
+      element = args[i-1]->codegen();
+    }
     auto *gep = Builder.CreateGEP(allocInst->getType()->getPointerElementType(), allocInst, indices, "inputidx");
-
-    //auto *inVal = Builder.CreateLoad(gep->getType()->getPointerElementType(), gep, "arrRef");
     Builder.CreateStore(element, gep);
-
-    Value *loadL = Builder.CreateLoad(IntegerType::getInt64Ty(TheContext), iteratorL, "iterator");
-    Value *newValue = Builder.CreateAdd(loadL, oneV, "increment by one");
-    i++;
-    
-    Builder.CreateStore(newValue, iteratorL);
-    Builder.CreateBr(HeaderBB);
+    indices.clear();
   }
 
-  // Emit loop exit block.
-  TheFunction->getBasicBlockList().push_back(ExitBB);
-  Builder.SetInsertPoint(ExitBB);
+  // // Initialize every element to E2
+  // llvm::Function *TheFunction = Builder.GetInsertBlock()->getParent();
+  // labelNum++; // create shared labels for these BBs
+
+  // BasicBlock *HeaderBB = BasicBlock::Create(
+  //     TheContext, "header" + std::to_string(labelNum), TheFunction);
+  // BasicBlock *BodyBB =
+  //     BasicBlock::Create(TheContext, "body" + std::to_string(labelNum));
+  // BasicBlock *ExitBB =
+  //     BasicBlock::Create(TheContext, "exit" + std::to_string(labelNum));
+
+  // //Initialize localAlloca to use as iterator for loop
+  // AllocaInst *iteratorL = nullptr;
+  // iteratorL = CreateEntryBlockAlloca(TheFunction, "i");
+  // Builder.CreateStore(zeroV, iteratorL);
+
+  // // Add an explicit branch from the current BB to the header
+  // Builder.CreateBr(HeaderBB);
+
+  // // Emit loop header
+  // {
+  //   Builder.SetInsertPoint(HeaderBB);
+  //   // Create condition
+  //   Value *iterator = Builder.CreateLoad(IntegerType::getInt64Ty(TheContext), iteratorL, "iterator");
+  //   Value *CondV = Builder.CreateICmpSLT(iterator, size, "loopcond");
+  //   Builder.CreateCondBr(CondV, BodyBB, ExitBB);
+  // }
+
+  // // Emit loop body
+  // {
+  //   TheFunction->getBasicBlockList().push_back(BodyBB);
+  //   Builder.SetInsertPoint(BodyBB);
+
+  //   Value *idx = Builder.CreateLoad(IntegerType::getInt64Ty(TheContext), iteratorL, "iterator");
+  //   Value *element = args[i]->codegen();
+
+  //   //Access array element using reference operator
+  //   std::vector<Value *> indices;
+  //   indices.push_back(idx);
+  //   auto *gep = Builder.CreateGEP(allocInst->getType()->getPointerElementType(), allocInst, indices, "inputidx");
+
+  //   //auto *inVal = Builder.CreateLoad(gep->getType()->getPointerElementType(), gep, "arrRef");
+  //   Builder.CreateStore(element, gep);
+
+  //   Value *loadL = Builder.CreateLoad(IntegerType::getInt64Ty(TheContext), iteratorL, "iterator");
+  //   Value *newValue = Builder.CreateAdd(loadL, oneV, "increment by one");
+  //   i++;
+    
+  //   Builder.CreateStore(newValue, iteratorL);
+  //   Builder.CreateBr(HeaderBB);
+  // }
+
+  // // Emit loop exit block.
+  // TheFunction->getBasicBlockList().push_back(ExitBB);
+  // Builder.SetInsertPoint(ExitBB);
   
-  // return Builder.CreatePtrToInt(castPtr, Type::getInt64Ty(TheContext),
-  //                               "allocArrVal");
-  return Builder.CreatePtrToInt(allocInst, Type::getInt64Ty(TheContext),
-                              "allocArrVal");
+  return Builder.CreatePtrToInt(castPtr, Type::getInt64Ty(TheContext),
+                                "allocArrVal");
 }
 
 llvm::Value *ASTArrLenOpExpr::codegen() { 
@@ -1491,7 +1501,7 @@ llvm::Value *ASTArrLenOpExpr::codegen() {
   return Builder.CreateLoad(gep->getType()->getPointerElementType(), gep, "arrRef");
 }
 
-/*
+/* [E1 of E2]
 1) allocate space (heap)
 2) initialize every element to E2
      for (i = 0; i < E1; i++)
@@ -1547,8 +1557,8 @@ llvm::Value *ASTArrOfConstructorExpr::codegen() {
   twoArg.push_back(size);
   twoArg.push_back(ConstantInt::get(Type::getInt64Ty(TheContext), 8));
   auto *allocInst = Builder.CreateCall(callocFun, twoArg, "arrPtr");
-  // auto *castPtr = Builder.CreatePointerCast(
-  //     allocInst, Type::getInt64PtrTy(TheContext), "castPtr");
+  auto *castPtr = Builder.CreatePointerCast(
+      allocInst, Type::getInt64PtrTy(TheContext), "castPtr");
 
   // auto *alloca = Builder.CreateAlloca(element->getType(), size);
   // auto *castPtr = Builder.CreatePointerCast(
@@ -1610,10 +1620,8 @@ llvm::Value *ASTArrOfConstructorExpr::codegen() {
   TheFunction->getBasicBlockList().push_back(ExitBB);
   Builder.SetInsertPoint(ExitBB);
   
-  // return Builder.CreatePtrToInt(castPtr, Type::getInt64Ty(TheContext),
-  //                               "allocArrVal");
-  return Builder.CreatePtrToInt(allocInst, Type::getInt64Ty(TheContext),
-                              "allocArrVal");
+  return Builder.CreatePtrToInt(castPtr, Type::getInt64Ty(TheContext),
+                                "allocArrVal");
 }
 
 /*
@@ -1628,11 +1636,11 @@ v% = load l% (load value stored at that address)
 */
 llvm::Value *ASTArrRefExpr::codegen() { 
   LOG_S(1) << "Generating code for " << *this;
+  Value *idx = getIndex()->codegen();
   lValueGen = true;
   Value *arr = getArr()->codegen();
   lValueGen = false;
-  Value *idx = getIndex()->codegen();
-
+  
   if (arr == nullptr) {
     throw InternalError(
       "failed to generate bitcode for array");
