@@ -87,7 +87,7 @@ void TypeConstraintVisitor::endVisit(ASTNumberExpr *element) {
   constraintHandler->handle(astToVar(element), std::make_shared<TipInt>());
 }
 
-/*! \brief Type constraints for binary operator.
+/*! \brief Type constraints for subinary operator.
  *
  * Type rules for "E1 op E2":
  *   [[E1 op E2]] = int
@@ -116,7 +116,7 @@ void TypeConstraintVisitor::endVisit(ASTBinaryExpr *element) {
 
 /*! \brief Type constraints for input statement.
  *
- * Type rules for "input":
+ * Type rules for "input": f
  *  [[input]] = int
  */
 void TypeConstraintVisitor::endVisit(ASTInputExpr *element) {

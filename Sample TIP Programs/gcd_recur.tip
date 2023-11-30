@@ -1,0 +1,14 @@
+main(n1, n2) {
+   return gcd_recur(n1, n2);
+}
+
+gcd_recur(n1, n2) {
+   var res;
+   if (n2 == 0) {
+      res = n1;
+   } else {
+      res = gcd_recur(n2, n1 - n2 * (n1 / n2));
+   }
+
+   return res;
+}

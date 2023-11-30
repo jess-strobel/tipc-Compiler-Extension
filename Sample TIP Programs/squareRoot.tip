@@ -1,0 +1,12 @@
+main(x) {
+  return sqrt(x);
+}
+
+sqrt(n) {
+  var s;
+  s = n;
+  while (s*s > n) {
+    s = s - 1;
+  }
+  return s;
+}
