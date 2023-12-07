@@ -1,0 +1,29 @@
+/*
+ * Benchmark for loop bounds split optimization.
+ * 
+ * Compile with and without the -split optimization then run:
+ *   time ./split 20000
+ * to observe the execution time of the benchmark.
+ */
+main(n) {
+  var i, r, v, c;
+  i = 0;
+  v = 42;
+  c = n * 2;
+  while (n > i) {
+    if (c > i) {
+      r = split(n);
+    }
+    i = i + 1;
+  }
+  return 0;
+}
+
+split(n) {
+  var i;
+  i = 0;
+  while (n > i) {
+    i = i + 1;
+  }
+  return n;
+}
