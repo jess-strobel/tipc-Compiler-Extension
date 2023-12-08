@@ -58,6 +58,7 @@ static cl::list<Optimization> OptimizationList(
 		cl::values(
 			clEnumVal(licm, "Loop Invariant Code Motion"),
 			clEnumVal(del, "Loop Deletion"),
+      clEnumVal(blk, "Block Extraction"),
       clEnumVal(unroll, "Loop Unrolling"),
       clEnumVal(split, "Loop Bound Split"),
       clEnumVal(unrollAndJam, "Loop Unroll and Jam"),

@@ -134,6 +134,11 @@ void Optimizer::optimize(llvm::Module *theModule,
     functionPassManager.addPass(llvm::JumpThreadingPass());
   }
 
+  if (contains(blk, enabledOpts)) {
+    // Add block extraction pass
+    modulePassManager.addPass(llvm::BlockExtractorPass()); 
+  }
+
   // Add loop pass managers with and w/out MemorySSA
   functionPassManager.addPass(
       createFunctionToLoopPassAdaptor(std::move(loopPassManagerWithMSSA),true));
