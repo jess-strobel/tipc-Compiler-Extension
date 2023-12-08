@@ -21,6 +21,7 @@
 #include "llvm/Transforms/Scalar/JumpThreading.h"
 #include "llvm/Transforms/Scalar/DivRemPairs.h"
 #include "llvm/Transforms/Scalar/IndVarSimplify.h"
+#include "llvm/Transforms/IPO/BlockExtractor.h"
 
 // For logging
 #include "loguru.hpp"
