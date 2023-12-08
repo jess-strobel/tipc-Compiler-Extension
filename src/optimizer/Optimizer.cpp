@@ -78,6 +78,11 @@ void Optimizer::optimize(llvm::Module *theModule,
 
   // Adding passes to the pipeline
 
+  if (contains(unroll, enabledOpts)) {
+    // Add loop unrolling pass
+    loopPassManager.addPass(llvm::LoopFullUnrollPass());
+  }
+
   functionPassManager.addPass(llvm::PromotePass()); // New Reg2Mem
   functionPassManager.addPass(llvm::InstCombinePass());
   // Reassociate expressions.
@@ -101,11 +106,6 @@ void Optimizer::optimize(llvm::Module *theModule,
     // Add loop bounds split pass
     loopPassManagerWithMSSA.addPass(llvm::LoopBoundSplitPass()); 
   }   
-
-  if (contains(unroll, enabledOpts)) {
-    // Add loop unrolling pass
-    functionPassManager.addPass(llvm::LoopUnrollPass());
-  }
 
   if (contains(unrollAndJam, enabledOpts)) {
     // Add loop unroll and jam pass

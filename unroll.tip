@@ -6,27 +6,27 @@
  * to observe the execution time of the benchmark.
  */
 main() {
-  var i, j, r, v, n;
-  i = 1;
+  var i, j, r, v;
+  i = 0;
+  j = 0;
   r = 0;
   v = 42;
-  n = 20000;
   //r = r + (v*v-v*v+v*v+v/2*v-v*v);
-  while (n > i) {
+  while (35 > i) {
     //r = unroll(n, v);
-    r = r + 101 + 3023 + v;
+    r = r + i + (v*v-v*v+v*v+v/2*v-v*v);
     i = i + 1;
   }
   return r;
 }
 
-//unroll(n, v) {
-//  var i, r;
-//  r = 0;
-//  i = 0;
-//  while (n > i) {
-//    r = r + (v*v-v*v+v*v+v/2*v-v*v);
-//    i = i + 1;
-//  }
-//  return n;
-//}
+unroll(n, v) {
+  var i, r;
+  r = 0;
+  i = 0;
+  while (n > i) {
+    r = r + (v*v-v*v+v*v+v/2*v-v*v);
+    i = i + 1;
+  }
+  return n;
+}

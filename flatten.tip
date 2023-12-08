@@ -1,10 +1,14 @@
 //   time ./flatten 10000
 main(n) {
-  var i, r, v;
+  var i, j, r, v;
   i = 0;
   v = 42;
-  while (n > i) {
-    r = unroll(n);
+  while (10000 > i) {
+    while (10000 > j) {
+      r = r + j;
+      j = j + 1;
+    }
+    //r = unroll(n);
     i = i + 1;
   }
   return 0;
