@@ -22,6 +22,7 @@
 #include "llvm/Transforms/Scalar/DivRemPairs.h"
 #include "llvm/Transforms/Scalar/IndVarSimplify.h"
 #include "llvm/Transforms/IPO/BlockExtractor.h"
+#include "llvm/Transforms/Scalar/SCCP.h"
 
 // For logging
 #include "loguru.hpp"
@@ -133,6 +134,11 @@ void Optimizer::optimize(llvm::Module *theModule,
   if (contains(jumpThreading, enabledOpts)) {
     // Add jump threading pass
     functionPassManager.addPass(llvm::JumpThreadingPass());
+  }
+
+  if (contains(sccp, enabledOpts)) {
+    // Add sparse conditional constant propagation and merging pass
+    functionPassManager.addPass(llvm::SCCPPass());
   }
 
   if (contains(blk, enabledOpts)) {

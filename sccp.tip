@@ -1,0 +1,13 @@
+main() {
+    var a, b, c;
+
+    a = 1;
+    b = a + a;
+    c = 0;
+
+    if (c) {
+        b = a + b;
+    }
+
+    return b;
+}

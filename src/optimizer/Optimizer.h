@@ -4,7 +4,7 @@
 #include "llvm/Support/CommandLine.h"
 
 enum Optimization {
-  licm, del, unroll, split, unrollAndJam, flatten, jumpThreading, divRemPair, indVarSimplify, blk
+  licm, del, unroll, split, unrollAndJam, flatten, jumpThreading, divRemPair, indVarSimplify, blk, sccp
 };
 
 /*! \class Optimizer

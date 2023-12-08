@@ -61,6 +61,7 @@ static cl::list<Optimization> OptimizationList(
       clEnumVal(blk, "Block Extraction"),
       clEnumVal(unroll, "Loop Unrolling"),
       clEnumVal(split, "Loop Bound Split"),
+      clEnumVal(sccp, "Sparse Conditional Constant Propagation"),
       clEnumVal(unrollAndJam, "Loop Unroll and Jam"),
       clEnumVal(flatten, "Loop Flattening"),
       clEnumVal(jumpThreading, "Jump Threading"),
