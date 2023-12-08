@@ -1,9 +1,10 @@
 /*
  * Benchmark for loop unrolling optimization.
  * 
- * Compile with and without the -unroll optimization then run:
- *   time ./unroll
- * to observe the execution time of the benchmark.
+ * Compile with and without the -unroll optimization
+ * Running as "time ./unroll" does not demonstrate a noticeable improvement in execution time, however, compiling with -asm and analyzing
+ * the generated .ll files with and without the optimization shows the application of the loop unrolling optimization to the program
+ *
  */
 main() {
   var i, j, r, v;
@@ -11,22 +12,11 @@ main() {
   j = 0;
   r = 0;
   v = 42;
-  //r = r + (v*v-v*v+v*v+v/2*v-v*v);
+
   while (35 > i) {
-    //r = unroll(n, v);
     r = r + i + (v*v-v*v+v*v+v/2*v-v*v);
     i = i + 1;
   }
-  return r;
-}
 
-unroll(n, v) {
-  var i, r;
-  r = 0;
-  i = 0;
-  while (n > i) {
-    r = r + (v*v-v*v+v*v+v/2*v-v*v);
-    i = i + 1;
-  }
-  return n;
+  return r;
 }
