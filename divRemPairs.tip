@@ -1,4 +1,4 @@
-//   time ./divRemPairs
+//  unused
 main() {
   var i, j, r, v;
   i = 0;

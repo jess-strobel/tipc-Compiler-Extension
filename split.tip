@@ -1,4 +1,5 @@
 /*
+ * Note: unused
  * Benchmark for loop bounds split optimization.
  * 
  * Compile with and without the -split optimization then run:

@@ -15,14 +15,17 @@
 #include "llvm/Transforms/Scalar/LICM.h"
 #include "llvm/Transforms/Scalar/LoopDeletion.h"
 #include "llvm/Transforms/Scalar/LoopUnrollPass.h"
-#include "llvm/Transforms/Scalar/LoopBoundSplit.h"
 #include "llvm/Transforms/Scalar/LoopUnrollAndJamPass.h"
-#include "llvm/Transforms/Scalar/LoopFlatten.h"
-#include "llvm/Transforms/Scalar/JumpThreading.h"
-#include "llvm/Transforms/Scalar/DivRemPairs.h"
 #include "llvm/Transforms/Scalar/IndVarSimplify.h"
 #include "llvm/Transforms/IPO/BlockExtractor.h"
 #include "llvm/Transforms/Scalar/SCCP.h"
+
+// Unused P5 passes
+#include "llvm/Transforms/Scalar/LoopBoundSplit.h"
+#include "llvm/Transforms/Scalar/LoopFlatten.h"
+#include "llvm/Transforms/Scalar/JumpThreading.h"
+#include "llvm/Transforms/Scalar/DivRemPairs.h"
+
 
 // For logging
 #include "loguru.hpp"
@@ -92,7 +95,7 @@ void Optimizer::optimize(llvm::Module *theModule,
     loopPassManager.addPass(llvm::LoopUnrollAndJamPass());
   }
 
-  if (contains(divRemPair, enabledOpts)) {
+  if (contains(divRemPair, enabledOpts)) { // unused
     // Add jump threading pass
     functionPassManager.addPass(llvm::DivRemPairsPass());
   }
@@ -121,17 +124,17 @@ void Optimizer::optimize(llvm::Module *theModule,
     loopPassManager.addPass(llvm::LoopDeletionPass()); 
   }   
 
-  if (contains(split, enabledOpts)) {
+  if (contains(split, enabledOpts)) { // unused
     // Add loop bounds split pass
     loopPassManagerWithMSSA.addPass(llvm::LoopBoundSplitPass()); 
   }   
 
-  if (contains(flatten, enabledOpts)) {
+  if (contains(flatten, enabledOpts)) { // unused
     // Add loop flattening pass
     loopPassManager.addPass(llvm::LoopFlattenPass());
   }
 
-  if (contains(jumpThreading, enabledOpts)) {
+  if (contains(jumpThreading, enabledOpts)) { // unused
     // Add jump threading pass
     functionPassManager.addPass(llvm::JumpThreadingPass());
   }

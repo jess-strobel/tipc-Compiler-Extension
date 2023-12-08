@@ -1,4 +1,4 @@
-//   time ./flatten 10000
+// unused
 main(n) {
   var i, j, r, v;
   i = 0;
