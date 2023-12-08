@@ -62,7 +62,9 @@ static cl::list<Optimization> OptimizationList(
       clEnumVal(split, "Loop Bound Split"),
       clEnumVal(unrollAndJam, "Loop Unroll and Jam"),
       clEnumVal(flatten, "Loop Flattening"),
-      clEnumVal(jumpThreading, "Jump Threading")),
+      clEnumVal(jumpThreading, "Jump Threading"),
+      clEnumVal(divRemPair, "Div Rem Pairs"),
+      clEnumVal(indVarSimplify, "Ind Var Simplify")),
 		cl::cat(TIPcat));
 
 /*! \brief tipc driver.

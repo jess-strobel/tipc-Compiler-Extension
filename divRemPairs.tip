@@ -1,14 +1,11 @@
-//   time ./flatten 10000
-main(n) {
+//   time ./divRemPairs
+main() {
   var i, j, r, v;
   i = 0;
+  r = 0;
   v = 42;
-  while (10000 > i) {
-    while (10000 > j) {
-      r = r + j;
-      j = j + 1;
-    }
-    //r = unroll(n);
+  while (20000 > i) {
+    r = v*v*5*v/v*2*v/2*v*4*v;
     i = i + 1;
   }
   return r;

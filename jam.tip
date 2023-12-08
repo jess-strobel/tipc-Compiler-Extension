@@ -5,27 +5,28 @@
  *   time ./jam 20000
  * to observe the execution time of the benchmark.
  */
-main(n) {
+main() {
   var i, j, r, v;
   i = 0;
+  r = 0;
   j = 0;
   v = 42;
-  while (n > i) {
-    r = unroll(n);
+  while (20000 > i) {
+    while (20000 > j) {
+      r = r + i * j;
+      //r = unroll(i, j);
+      j = j + 1;
+    }
     i = i + 1;
   }
-  while (n > j) {
-    r = unroll(n);
-    j = j + 1;
-  }
-  return 0;
+  return r;
 }
 
-unroll(n) {
-  var i;
-  i = 0;
-  while (n > i) {
-    i = i + 1;
+unroll(i, j) {
+  var x;
+  x = 0;
+  while (i > j) {
+    x = x + 1;
   }
-  return n;
+  return x;
 }

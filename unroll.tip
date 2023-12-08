@@ -2,7 +2,7 @@
  * Benchmark for loop unrolling optimization.
  * 
  * Compile with and without the -unroll optimization then run:
- *   time ./unroll 20000
+ *   time ./unroll
  * to observe the execution time of the benchmark.
  */
 main() {

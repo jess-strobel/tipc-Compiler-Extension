@@ -19,6 +19,8 @@
 #include "llvm/Transforms/Scalar/LoopUnrollAndJamPass.h"
 #include "llvm/Transforms/Scalar/LoopFlatten.h"
 #include "llvm/Transforms/Scalar/JumpThreading.h"
+#include "llvm/Transforms/Scalar/DivRemPairs.h"
+#include "llvm/Transforms/Scalar/IndVarSimplify.h"
 
 // For logging
 #include "loguru.hpp"
@@ -83,6 +85,21 @@ void Optimizer::optimize(llvm::Module *theModule,
     loopPassManager.addPass(llvm::LoopFullUnrollPass());
   }
 
+  if (contains(unrollAndJam, enabledOpts)) {
+    // Add loop unroll and jam pass
+    loopPassManager.addPass(llvm::LoopUnrollAndJamPass());
+  }
+
+  if (contains(divRemPair, enabledOpts)) {
+    // Add jump threading pass
+    functionPassManager.addPass(llvm::DivRemPairsPass());
+  }
+
+  if (contains(indVarSimplify, enabledOpts)) {
+    // Add induction variable simplify pass
+    loopPassManager.addPass(llvm::IndVarSimplifyPass());
+  }
+
   functionPassManager.addPass(llvm::PromotePass()); // New Reg2Mem
   functionPassManager.addPass(llvm::InstCombinePass());
   // Reassociate expressions.
@@ -106,11 +123,6 @@ void Optimizer::optimize(llvm::Module *theModule,
     // Add loop bounds split pass
     loopPassManagerWithMSSA.addPass(llvm::LoopBoundSplitPass()); 
   }   
-
-  if (contains(unrollAndJam, enabledOpts)) {
-    // Add loop unroll and jam pass
-    loopPassManager.addPass(llvm::LoopUnrollAndJamPass());
-  }
 
   if (contains(flatten, enabledOpts)) {
     // Add loop flattening pass
