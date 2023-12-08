@@ -1,3 +1,11 @@
+/*
+ * Benchmark for sparse conditional constant propagation optimization.
+ * 
+ * Compile with and without the -sccp optimization
+ * Running as "time ./sccp" does not demonstrate a noticeable improvement in execution time, however, compiling with -asm and analyzing
+ * the generated .ll files with and without the optimization shows the application of the loop unrolling optimization to the program
+ *
+ */
 main() {
     var a, b, c;
 

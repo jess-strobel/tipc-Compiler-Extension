@@ -1,3 +1,11 @@
+/*
+ * Benchmark for block extraction optimization.
+ * 
+ * Compile with and without the -blk optimization
+ * Running as "time ./blk 20000" does not demonstrate a noticeable improvement in execution time, however, compiling with -asm and analyzing
+ * the generated .ll files with and without the optimization shows the application of the loop unrolling optimization to the program
+ *
+ */
 main(n) {
     var a, b, c, d, e, i;
     a = 1;
