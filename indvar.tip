@@ -1,0 +1,20 @@
+/*
+ * Benchmark for induction variable simplification optimization.
+ * 
+ * Compile with and without the -indVarSimplify optimization
+ * Running as "time ./indVarSimplify 20000" does not demonstrate a noticeable improvement in execution time, however, compiling with -asm and analyzing
+ * the generated .ll files with and without the optimization shows the application of the loop unrolling optimization to the program
+ *
+ */
+main(n) {
+    var i, j;
+    i = 0;
+    j = 0;
+
+    while (n > i) {
+        j = 2*i;
+        i = i + 1;
+    }
+
+    return j;
+}
