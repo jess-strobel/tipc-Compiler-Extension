@@ -59,7 +59,10 @@ static cl::list<Optimization> OptimizationList(
 			clEnumVal(licm, "Loop Invariant Code Motion"),
 			clEnumVal(del, "Loop Deletion"),
       clEnumVal(unroll, "Loop Unrolling"),
-      clEnumVal(split, "Loop Bound Split")),
+      clEnumVal(split, "Loop Bound Split"),
+      clEnumVal(unrollAndJam, "Loop Unroll and Jam"),
+      clEnumVal(flatten, "Loop Flattening"),
+      clEnumVal(jumpThreading, "Jump Threading")),
 		cl::cat(TIPcat));
 
 /*! \brief tipc driver.
@@ -68,7 +71,7 @@ static cl::list<Optimization> OptimizationList(
  * using LLVM CommandLine support.  It runs the phases of the compiler in
  * sequence. If an error is detected, via an exception, it reports the error and
  * exits. If there is no error, then the LLVM bitcode is emitted to a file whose
- * name is the providvvved source file suffixed by ".bc".
+ * name is the provided source file suffixed by ".bc".
  */
 int main(int argc, char *argv[]) {
   cl::HideUnrelatedOptions(TIPcat);

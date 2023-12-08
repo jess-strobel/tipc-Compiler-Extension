@@ -9,8 +9,9 @@ main(n) {
   var i, r, v, c;
   i = 0;
   v = 42;
-  c = n * 2;
+  c = n / 2;
   while (n > i) {
+    r = split(n);
     if (c > i) {
       r = split(n);
     }

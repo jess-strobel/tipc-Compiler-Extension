@@ -16,6 +16,9 @@
 #include "llvm/Transforms/Scalar/LoopDeletion.h"
 #include "llvm/Transforms/Scalar/LoopUnrollPass.h"
 #include "llvm/Transforms/Scalar/LoopBoundSplit.h"
+#include "llvm/Transforms/Scalar/LoopUnrollAndJamPass.h"
+#include "llvm/Transforms/Scalar/LoopFlatten.h"
+#include "llvm/Transforms/Scalar/JumpThreading.h"
 
 // For logging
 #include "loguru.hpp"
@@ -95,13 +98,28 @@ void Optimizer::optimize(llvm::Module *theModule,
   }   
 
   if (contains(split, enabledOpts)) {
-    // Add loop deletion pass
-    loopPassManager.addPass(llvm::LoopBoundSplitPass()); 
+    // Add loop bounds split pass
+    loopPassManagerWithMSSA.addPass(llvm::LoopBoundSplitPass()); 
   }   
 
   if (contains(unroll, enabledOpts)) {
     // Add loop unrolling pass
     functionPassManager.addPass(llvm::LoopUnrollPass());
+  }
+
+  if (contains(unrollAndJam, enabledOpts)) {
+    // Add loop unroll and jam pass
+    loopPassManager.addPass(llvm::LoopUnrollAndJamPass());
+  }
+
+  if (contains(flatten, enabledOpts)) {
+    // Add loop flattening pass
+    loopPassManager.addPass(llvm::LoopFlattenPass());
+  }
+
+  if (contains(jumpThreading, enabledOpts)) {
+    // Add jump threading pass
+    functionPassManager.addPass(llvm::JumpThreadingPass());
   }
 
   // Add loop pass managers with and w/out MemorySSA
