@@ -2,6 +2,10 @@
 [![codecov.io](https://codecov.io/gh/matthewbdwyer/tipc/coverage.svg?branch=main&flag=codecoverage)](https://codecov.io/gh/matthewbdwyer/tipc?branch=main)
 [![codecov.io](https://img.shields.io/endpoint?logo=codecov&logoColor=blue&url=https%3A%2F%2Fmatthewbdwyer.github.io%2Ftipc%2Fdoccoverage.json)](https://codecov.io/gh/matthewbdwyer/tipc?branch=main)
 
+# tipc Compiler Extension
+
+This project extends the tipc compiler to recognize an expanded grammar, which adds a new set of data types and their operations to the TIP language. The documentation below orginiates from https://github.com/matthewbdwyer/tipc. This project was completed as part of the University of Virginia's Compilers course.
+
 tipc
 =========
 A compiler from TIP to llvm bitcode
